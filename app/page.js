@@ -11,7 +11,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <>
+    <section className="max-w-full h-auto overflow-hidden">
       
       <Banner />
       <About />
@@ -21,7 +21,7 @@ const page = () => {
       <Projects />
       <Reviews />
       <Contact />
-    </>
+    </section>
   );
 };
 

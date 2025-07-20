@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#040120] max-w-full h-auto overflow-x-hidden `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#040120]  `}
       >
         <Navbar />
         {children}
