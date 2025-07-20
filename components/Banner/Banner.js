@@ -8,8 +8,8 @@ const Banner = () => {
     >
       
       {/* circle bubble  */}
-      <div className="w-[35vw] h-[35vw]  rounded-full absolute top-[-1%] left-[-13%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
-      <div className="w-[35vw] h-[35vw]  rounded-full absolute top-[15%] right-[-8%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
+      <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[-1%] left-[-13%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
+      <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[15%] right-[-8%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
 
 
       <div className="container mx-auto flex lg:flex-nowrap flex-wrap relative z-10  ">

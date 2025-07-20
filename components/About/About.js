@@ -8,8 +8,8 @@ const About = () => {
       className="min-h-screen relative flex justify-center items-center lg:px-8 lg:py-12 px-4 py-8"
     >
       {/* circle bubble  */}
-      <div className="w-[35vw] h-[35vw]  rounded-full absolute top-[-1%] left-[-13%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
-      <div className="w-[35vw] h-[35vw]  rounded-full absolute top-[15%] right-[-8%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
+      <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[-1%] left-[-13%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
+      <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[15%] right-[-8%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
 
       {/* dotted image background  */}
       {/* <img className="absolute w-full h-auto bottom-0 left-0 opacity-[0.5]" src="assets/images/49189265_9211410 1-min.png" alt="" /> */}
