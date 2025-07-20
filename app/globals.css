@@ -5,11 +5,21 @@
   --breakpoint-smx:500px;
   --breakpoint-sm:640px;
   --breakpoint-md:768px;
-  --breakpoint-lgg:991px;
-  --breakpoint-lg:1024px;
+  --breakpoint-lg:991px;
+  --breakpoint-lgg:1024px;
   --breakpoint-xl:1280px;
   --breakpoint-xxl:1360px;
   --breakpoint-2xl:1536px;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');
+  font-style: normal;
+}
+
+body {
+  font-family: 'Urbanist', sans-serif;
 }
 
 :root {
