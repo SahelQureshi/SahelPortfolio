@@ -14,12 +14,11 @@
 
 @font-face {
   font-family: 'Urbanist';
-  src: url('/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');
-  font-style: normal;
+  src: url('/fonts/Urbanist/Urbanist-VariableFont_wght.ttf') format('truetype');
 }
 
 body {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'Urbanist', sans-serif !important;
 }
 
 :root {

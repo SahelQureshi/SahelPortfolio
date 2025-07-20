@@ -17,7 +17,7 @@ const Banner = () => {
           <span className="text-white font-semibold 2xl:text-[3.8rem] xll:text-[3.4rem] xl:text-[2.8rem] md:text-[2.9rem] text-[2.2rem] lg:inline-block block">
             Hi’ I am
           </span>
-          <h1 className="2xl:text-[5.7rem] xll:text-[5rem] xl:text-[4.7rem] md:text-[3.7rem] text-[3.2rem] lg:leading-[6.1rem] leading-[4.1rem] font-bold bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] bg-clip-text text-transparent ">
+          <h1 className="2xl:text-[5.7rem] font-extrabold xll:text-[5rem] xl:text-[4.7rem] md:text-[3.7rem] text-[3.2rem] lg:leading-[6.1rem] leading-[4.1rem]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] bg-clip-text text-transparent ">
             Sahel Qureshi
           </h1>
           <span className="text-white 2xl:text-[3rem] xl:text-[2.8rem] md:text-[2rem] text-[1.6rem] font-medium">

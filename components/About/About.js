@@ -15,7 +15,7 @@ const About = () => {
       {/* <img className="absolute w-full h-auto bottom-0 left-0 opacity-[0.5]" src="assets/images/49189265_9211410 1-min.png" alt="" /> */}
 
       <div className="container mx-auto  relative z-10">
-        <h2 className="xll:text-[6rem] xl:[5rem] lg:[4.5rem] text-[3.8rem] leading-[5rem] mb-[13rem] text-white lg:text-left text-center">
+        <h2 className="xll:text-[6rem] xl:[5rem] lg:[4.5rem] text-[3.8rem] leading-[5rem] lgg:mb-[13rem] mb-4 text-white lg:text-left text-center">
           About Me
         </h2>
         <div className="flex lg:flex-nowrap flex-wrap ">
