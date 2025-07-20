@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='xxl:flex hidden'>home Page</div>
+    <div>page</div>
   )
 }
 
