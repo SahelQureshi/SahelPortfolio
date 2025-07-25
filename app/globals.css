@@ -1,16 +1,7 @@
-@import "tailwindcss";
-@theme{
-  --breakpoint-*:initial;
-  --breakpoint-xs:480px;
-  --breakpoint-smx:500px;
-  --breakpoint-sm:640px;
-  --breakpoint-md:768px;
-  --breakpoint-lg:991px;
-  --breakpoint-lgg:1024px;
-  --breakpoint-xl:1280px;
-  --breakpoint-xxl:1360px;
-  --breakpoint-2xl:1536px;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 @font-face {
   font-family: 'Urbanist';

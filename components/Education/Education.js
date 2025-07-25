@@ -19,39 +19,60 @@ const Education = () => {
         </h2>
         <div className="flex lg:flex-nowrap flex-wrap ">
           <div className="lg:w-1/2 w-full lg:order-1 order-2 relative px-8 flex justify-center items-center">
-
-          <div>
-            {/* card 1 */}
-            <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF]  mb-6">
-              <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center">
-                <img className="w-full h-auto" src="assets/images/education.png" alt="" />
+            <div>
+              {/* card 1 */}
+              <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF]  mb-6">
+                <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center">
+                  <img
+                    className="w-full h-auto"
+                    src="assets/images/education.png"
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">
+                    Regent Education & Research Foundation Group of Institutions
+                  </h3>
+                  <p className="text-[1rem] text-white">
+                    Bachelor Of Computer Applications
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">Regent Education & Research Foundation Group of Institutions</h3>
-                <p className="text-[1rem] text-white">Bachelor Of Computer Applications</p>
+              {/* card 2 */}
+              <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF]  mb-6">
+                <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center">
+                  {" "}
+                  <img
+                    className="w-full h-auto"
+                    src="assets/images/education.png"
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">
+                    NCP Man MathaNath High School (H/S)
+                  </h3>
+                  <p className="text-[1rem] text-white">12’th Standard</p>
+                </div>
+              </div>
+              {/* card 3 */}
+              <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF] ">
+                <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center">
+                  {" "}
+                  <img
+                    className="w-full h-auto"
+                    src="assets/images/education.png"
+                    alt=""
+                  />
+                </div>
+                <div>
+                  <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">
+                    NCP Man MathaNath High School (H/S)
+                  </h3>
+                  <p className="text-[1rem] text-white">10’th Standard</p>
+                </div>
               </div>
             </div>
-          {/* card 2 */}
-            <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF]  mb-6">
-              <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center"> <img className="w-full h-auto" src="assets/images/education.png" alt="" /></div>
-              <div>
-                <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">NCP Man MathaNath High 
-School (H/S)</h3>
-                <p className="text-[1rem] text-white">12’th Standard</p>
-              </div>
-            </div>
-          {/* card 3 */}
-            <div className="w-full px-6 py-8 backdrop-blur-[5px] flex sm:flex-nowrap flex-wrap sm:justify-start justify-center sm:text-left text-center gap-3 rounded-[15px] border-[1px] items-center border-[#4470FF] ">
-              <div className="xl:min-w-[100px] xl:min-h-[100px] xl:w-[100px] xl:h-[100px] min-w-[65px] min-h-[65px] w-[65px] h-[65px] p-[10px]  bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] rounded-full flex items-center justify-center"> <img className="w-full h-auto" src="assets/images/education.png" alt="" /></div>
-              <div>
-                <h3 className="xl:text-[1.5rem] lgg:text-[1.2rem] lg:text-[1.4rem] md:text-[1.5rem] text-[1.2rem]  text-white">NCP Man MathaNath High 
-School (H/S)</h3>
-                <p className="text-[1rem] text-white">10’th Standard</p>
-              </div>
-            </div>
-          </div>
-
-
           </div>
           <div className="lg:w-1/2 w-full lg:order-2 order-1 flex py-4  justify-center items-center    lg:flex-nowrap flex-wrap">
             <img

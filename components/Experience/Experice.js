@@ -10,106 +10,102 @@ const Experice = () => {
       <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[-1%] left-[-13%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
       <div className="lg:w-[35vw] w-[45vh] lg:h-[35vw] h-[45vh]  rounded-full absolute top-[15%] right-[-8%] blur-[241px] bg-[#6002B3B8] opacity-60 "></div>
       <div className="container mx-auto relative z-10">
-        <h2 className="lg:mb-[4rem] mb-[2rem] xll:text-[6rem] xl:text-[5rem] lg:text-[4.5rem] text-[3.8rem] leading-[5rem]  text-white lg:text-left text-center">
-          Experience
-        </h2>
-        <div className="flex lg:flex-nowrap flex-wrap justify-between  gap-3">
-          <div class=" lg:w-[33%] w-full  ">
-            <div class=" p-9  lg:w-full sm:w-[450px] w-full     shadow-md mb-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10">
-              <div className="xxl:h-[500px] xl:h-[450px] lg:h-[400px] sm:h-[400px] h-[320px] w-full">
-                <img
-                  src="assets/images/top-view-unrecognizable-hacker-performing-cyberattack-night 2 (1)-min.jpg"
-                  alt="Programming Image"
-                  className="rounded-lg h-full  w-full mb-4 object-cover"
-                />
-              </div>
-              <p class="text-center text-lg px-4 text-purple-200">
-                A creative and sharp programmer, I weave logic like a master
-                architect, turning complex problems into elegant solutions with
-                precision and innovation.
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-20">
+          {/* <!-- Left Section --> */}
+          <div className="lg:w-1/2 space-y-8">
+            <div>
+              <span className="italic text-sm text-gray-400">Experience</span>
+              <h2 className="text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl mb-4 text-white lg:text-left text-center font-bold mt-2">
+                MY EXPERIENCE
+              </h2>
+            </div>
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 text-sm md:text-base text-white border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
+            >
+              Download my resume
+              <img
+                src="https://emojicdn.elk.sh/↗️"
+                alt="arrow"
+                className="w-4 h-4"
+              />
+            </a>
+          </div>
+
+          {/* <!-- Right Section --> */}
+          <div className="lg:w-1/2 space-y-12">
+            {/* <!-- Experience 1 --> */}
+            <div>
+              <p className="text-sm text-gray-400 italic mb-1">
+                2024_December - Present
               </p>
-            </div>
-          </div>
-
-          <div class=" lg:w-[42%] w-full flex flex-col gap-10">
-            <div class=" p-6 shadow-md flex items-center gap-4 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10">
-              <div className="bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] w-[100px] h-[120px] p-2 overflow-hidden rounded-[10px]">
-                <img
-                  className="w-full h-full object-contain"
-                  src="assets/images/company1.png"
-                  alt=""
-                />
-              </div>
-              <div>
-                <h3 class="xxl:text-3xl xl:text-2xl lg:text-xl text-[1.5rem] leading-relaxed font-semibold text-purple-400">
-                  Leelija Web Solutions Pvt Ltd
+              <div className="flex justify-between items-center">
+                <h3 className="my-4 text-h3-xs sm:text-h3-sm md:text-h3-md lg:text-h3-lg lgg:text-h3-lgg xl:text-h3-xl 2xl:text-h3-2xl  text-white 
+ font-bold">
+                  Mern Stack Developer
                 </h3>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem] text-white">
-                  <span class="font-semibold ">Position:</span> Web
-                  Developer
-                </p>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem] text-white">
-                  <span class="font-semibold">Joining Date:</span> 16 December
-                  &nbsp;&nbsp;<span class="font-semibold">Present</span>
+                <p className="text-sm text-gray-400">
+                  Leelia Web Solutions Pvt Ltd
                 </p>
               </div>
+              <p className="text-gray-300 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
+                At Leelia Web Solutions, I have been contributing to full-stack
+                development using the MERN stack. My responsibilities include
+                building scalable REST APIs, dynamic front-end interfaces, and
+                implementing secure authentication flows. I collaborate closely
+                with the UI/UX and DevOps teams to deliver modern and
+                high-performing web applications.
+              </p>
+              <div className="border-b border-gray-700 mt-2"></div>
             </div>
 
-            <div class=" p-6 shadow-md flex items-center gap-4 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10">
-              <div className="bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] w-[100px] h-[120px] p-2 overflow-hidden rounded-[10px]">
-                <img
-                  className="w-full h-full object-contain"
-                  src="assets/images/company1.png"
-                  alt=""
-                />
-              </div>
-              <div>
-                <h3 class="xxl:text-3xl xl:text-2xl lg:text-xl text-[1.5rem] leading-relaxed font-semibold text-purple-400">
-                  Leelija Web Solutions Pvt Ltd
+            {/* <!-- Experience 2 --> */}
+            <div>
+              <p className="text-sm text-gray-400 italic mb-1">
+                2024_October - 2024_December
+              </p>
+              <div className="flex justify-between items-center">
+                <h3 className="my-4 text-h3-xs sm:text-h3-sm md:text-h3-md lg:text-h3-lg lgg:text-h3-lgg xl:text-h3-xl 2xl:text-h3-2xl  text-white 
+ font-bold">
+                  React Js Developer
                 </h3>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem]  text-white">
-                  <span class="font-semibold">Position:</span> Web
-                  Developer
-                </p>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem] text-white ">
-                  <span class="font-semibold">Joining Date:</span> 16 December
-                  &nbsp;&nbsp;<span class="font-semibold">Present</span>
+                <p className="text-sm text-gray-400">
+                  Talentrise Technokrate Pvt Ltd
                 </p>
               </div>
+              <p className="text-gray-300 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
+                At Talentrise Technokrate, I specialized in crafting modern UI
+                components using React.js. I focused on building reusable
+                components, improving performance through code-splitting and
+                lazy loading, and integrating APIs to build dynamic dashboards.
+                My role helped shape intuitive user experiences for enterprise
+                clients.
+              </p>
+              <div className="border-b border-gray-700 mt-2"></div>
             </div>
 
-            <div class=" p-6 shadow-md flex items-center gap-4 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10">
-              <div className="bg-[linear-gradient(90deg,_rgba(152,79,242,1)_0%,_rgba(68,112,255,1)_100%)] w-[100px] h-[120px] p-2 overflow-hidden rounded-[10px]">
-                <img
-                  className="w-full h-full object-contain"
-                  src="assets/images/company1.png"
-                  alt=""
-                />
-              </div>
-              <div>
-                <h3 class="xxl:text-3xl xl:text-2xl lg:text-xl text-[1.5rem] leading-relaxed font-semibold text-purple-400">
-                  Leelija Web Solutions Pvt Ltd
+            {/* <!-- Experience 3 --> */}
+            <div>
+              <p className="text-sm text-gray-400 italic mb-1">
+                2024_June - 2024_September
+              </p>
+              <div className="flex justify-between items-center">
+                <h3 className="my-4 text-h3-xs sm:text-h3-sm md:text-h3-md lg:text-h3-lg lgg:text-h3-lgg xl:text-h3-xl 2xl:text-h3-2xl  text-white 
+ font-bold">
+                  Industrial Training - HTML, CSS, JavaScript, React.js
                 </h3>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem] text-white">
-                  <span class="font-semibold">Position:</span> Web
-                  Developer
-                </p>
-                <p class="xxl:text-xl lg:text-lg text-[1.2rem] text-white">
-                  <span class="font-semibold">Joining Date:</span> 16 December
-                  &nbsp;&nbsp;<span class="font-semibold">Present</span>
-                </p>
+                <p className="text-sm text-gray-400">EMEI</p>
               </div>
+              <p className="text-gray-300 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
+                During my industrial training at EMEI, I gained hands-on
+                experience with core front-end technologies and the React.js
+                framework. This period laid a strong foundation in responsive
+                design, component architecture, and version control using Git.
+                It prepared me for professional development roles with practical
+                exposure.
+              </p>
+              <div className="border-b border-gray-700 mt-2"></div>
             </div>
-          </div>
-          <div className="lg:w-[25%] lg:block hidden">
-            <video
-              className="w-full rounded-[15px]"
-              src="assets/images/coding-video.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-            ></video>
           </div>
         </div>
       </div>
