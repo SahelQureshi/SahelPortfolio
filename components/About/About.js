@@ -92,7 +92,7 @@ const About = () => {
             </div>
 
             {/* Right Column */}
-            <div className="w-full lg:w-auto space-y-8">
+            <div className="w-full lg:w-auto space-y-8 relative z-10">
               <h2
                 className="w-full text-white lg:text-left text-center text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl 
  font-bold"
@@ -158,8 +158,8 @@ const About = () => {
                       "With experience in full-stack development, I've acquired the skills and tools necessary to deliver production-ready solutions that make a real impact.",
                   },
                 ].map((item, index) => (
-                  <div key={index} className="bg-[#ffffff08] p-5 rounded-lg">
-                    <h3 className="text-pink-500 md:text-pink-600 text-3xl font-bold">
+                  <div key={index} className="bg-[#ffffff08] p-5 rounded-lg backdrop-blur-[28px]">
+                    <h3 className="text-pink-500 md:text-pink-600 text-3xl font-bold ">
                       {item.count}{" "}
                       <span className="text-white text-lg font-semibold italic">
                         {item.subtitle}
@@ -182,9 +182,10 @@ const About = () => {
                 </p>
               </div>
 
-              <a
+              <div className="flex lg:justify-start justify-center  xs:flex-nowrap flex-wrap gap-3">
+                <a
                 href="#"
-                className="lg:mr-auto lg:mx-0 mx-auto hover:text-gray-700 bg-gradient-to-r from-[#984ff2] to-[#4470ff] py-2 px-5 rounded-[35px] w-fit text-center flex justify-center  text-[1.1rem] no-underline transition-all duration-300 ease-in-out items-center gap-1 font-semibold"
+                className=" hover:text-gray-700 bg-gradient-to-r from-[#984ff2] to-[#4470ff] py-2 px-5 rounded-[35px] w-fit text-center flex justify-center  text-[1.1rem] no-underline transition-all duration-300 ease-in-out items-center gap-1 font-semibold"
               >
                 Download CV
                 <svg
@@ -195,6 +196,21 @@ const About = () => {
                   <path d="M12.293 2.293a1 1 0 011.414 0L18 6.586a1 1 0 010 1.414l-6.586 6.586a1 1 0 01-1.414-1.414L15.586 8H5a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" />
                 </svg>
               </a>
+              <a
+                href="#"
+                className=" hover:text-gray-700 bg-white py-2 px-5 rounded-[35px] w-fit text-center flex justify-center  text-[1.1rem] no-underline transition-all duration-300 ease-in-out items-center gap-1 font-semibold"
+              >
+                Contact Us
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M12.293 2.293a1 1 0 011.414 0L18 6.586a1 1 0 010 1.414l-6.586 6.586a1 1 0 01-1.414-1.414L15.586 8H5a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" />
+                </svg>
+               
+              </a>
+              </div>
             </div>
           </div>
         </div>
