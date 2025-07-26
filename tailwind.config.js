@@ -57,7 +57,7 @@ module.exports = {
         "h5-2xl": ["1.875rem", { lineHeight: "1.2" }],
 
         // Paragraph
-        "p-xs": ["0.875rem", { lineHeight: "1.5" }],
+        "p-xs": ["0.975rem", { lineHeight: "1.5" }],
         "p-sm": ["1rem", { lineHeight: "1.5" }],
         "p-md": ["1.025rem", { lineHeight: "1.5" }],
         "p-lg": ["1.050rem", { lineHeight: "1.5" }],
