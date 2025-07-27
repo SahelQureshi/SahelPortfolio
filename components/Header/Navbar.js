@@ -114,10 +114,12 @@ const Navbar = () => {
   }, [isOpen, isMobile]);
 
   const toggleMenu = () => {
+    document.body.style.overflow = isOpen ? "auto" : "hidden";
     setIsOpen(!isOpen);
   };
 
   const closeMenu = () => {
+    document.body.style.overflow = "auto";
     setIsOpen(false);
   };
 
