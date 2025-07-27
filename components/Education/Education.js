@@ -68,7 +68,7 @@ const Education = () => {
 
           {/* Video Column */}
           <div className="flex justify-center items-center relative">
-            <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 opacity-50 blur-xl"></div>
+            <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 opacity-50 blur-[269px]"></div>
             <video
               className="w-full h-auto rounded-lg z-10 border-2 border-cyan-400/30 shadow-lg shadow-purple-900/50"
               src="/assets/images/6963744-hd_1280_720_25fps.mp4"
