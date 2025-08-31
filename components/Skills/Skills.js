@@ -150,10 +150,10 @@ const Skills = () => {
             <Code2 className="h-4 w-4 text-fuchsia-300" />
             <span>Skills & Expertise</span>
           </div>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight md:text-5xl text-white">
+          <h2 className="mt-4 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
             My <span className="text-white">Skills</span>
           </h2>
-          <p className="mt-3 text-white/70">
+          <p className="mt-3 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
             Building delightful, performant web apps across the stack with modern tooling.
           </p>
         </div>
@@ -163,8 +163,8 @@ const Skills = () => {
           {/* Left: sticky info + filters */}
           <aside className="md:col-span-4 space-y-6 md:sticky md:top-24 self-start">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-              <h3 className="text-lg font-semibold">About my stack</h3>
-              <p className="mt-2 text-sm text-white/70">
+              <h3 className="font-semibold text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl">About my stack</h3>
+              <p className="mt-2 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
                 I specialize in React/Next.js, modern styling with Tailwind, and robust backends with Node & APIs.
               </p>
               <div className="mt-4 grid grid-cols-3 gap-3 text-center">
@@ -221,7 +221,7 @@ const Skills = () => {
                     <div className="rounded-xl bg-white/10 p-2.5 ring-1 ring-white/10">
                       <Icon className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <h3 className="font-semibold text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl">{title}</h3>
                   </div>
                   <Code2 className="h-5 w-5 text-white/50" />
                 </div>

@@ -154,7 +154,7 @@ const Reviews = () => {
           <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-white/10" />
         </div>
         <div className="min-w-0">
-          <h3 className="text-base font-semibold leading-tight">{r.name}</h3>
+          <h3 className="font-semibold leading-tight text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl">{r.name}</h3>
           <p className="text-xs text-white/60">{r.role}</p>
         </div>
       </div>
@@ -187,10 +187,10 @@ const Reviews = () => {
             <Sparkles className="h-4 w-4 text-fuchsia-300" />
             <span>What clients say</span>
           </div>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight md:text-5xl text-white">
+          <h2 className="mt-4 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
             Client <span className="text-white">Reviews</span>
           </h2>
-          <p className="mt-3 text-white/70">Stories from partners about building together.</p>
+          <p className="mt-3 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">Stories from partners about building together.</p>
         </div>
 
         {/* Owl-style carousel */}
@@ -236,7 +236,7 @@ const Reviews = () => {
 
         {/* CTA */}
         <div className="mx-auto mt-10 max-w-3xl text-center">
-          <p className="text-white/70">Want more references? I’m happy to connect you directly.</p>
+          <p className="text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">Want more references? I’m happy to connect you directly.</p>
         </div>
       </div>
     </section>

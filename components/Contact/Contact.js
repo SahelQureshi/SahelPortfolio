@@ -48,16 +48,16 @@ const Contact = () => {
         <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-wider text-white/70">
           <span className="h-1.5 w-1.5 rounded-full bg-fuchsia-400" /> Let's build something
         </span>
-        <h2 className="mt-4 text-3xl font-bold sm:text-4xl">Contact</h2>
-        <p className="mt-2 text-white/70">Have an idea or project in mind? Drop a line and I’ll get back to you.</p>
+        <h2 className="mt-4 font-bold text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl">Contact</h2>
+        <p className="mt-2 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">Have an idea or project in mind? Drop a line and I’ll get back to you.</p>
       </div>
 
       {/* grid */}
       <div className="mt-12 grid items-start gap-8 md:grid-cols-2">
         {/* left: info card */}
         <div ref={leftRef} className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-          <h3 className="text-xl font-semibold">Let’s talk</h3>
-          <p className="mt-2 text-sm text-white/70">
+          <h3 className="font-semibold text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl">Let’s talk</h3>
+          <p className="mt-2 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl">
             I’m available for freelance work, collaborations, and full-time roles. Tell me about your goals and timeline.
           </p>
 
