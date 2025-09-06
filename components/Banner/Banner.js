@@ -26,6 +26,22 @@ const Banner = () => {
   const socialRef = useRef(null);
   const ctaRef = useRef(null);
 
+  // Smooth scroll to contact section
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -105,25 +121,25 @@ const Banner = () => {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com",
+      href: "https://github.com/SahelQureshi",
       label: "GitHub",
       color: "hover:bg-gray-500/20 hover:border-gray-400/30"
     },
     {
       icon: Linkedin,
-      href: "https://linkedin.com",
+      href: "www.linkedin.com/in/sahel-qureshi-47b1252a8",
       label: "LinkedIn",
       color: "hover:bg-blue-500/20 hover:border-blue-400/30"
     },
     {
       icon: Facebook,
-      href: "https://facebook.com",
+      href: "https://www.facebook.com/sahel.qureshi.948",
       label: "Facebook",
       color: "hover:bg-blue-600/20 hover:border-blue-500/30"
     },
     {
       icon: Mail,
-      href: "mailto:sahel@example.com",
+      href: "mailto:sahelqureshi0089@gmail.com",
       label: "Email",
       color: "hover:bg-red-500/20 hover:border-red-400/30"
     }
@@ -213,8 +229,8 @@ const Banner = () => {
 
             {/* CTA Buttons */}
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-8">
-              <a
-                href="#contact"
+              <button
+                onClick={scrollToContact}
                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold py-4 px-8 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 text-center"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -223,7 +239,7 @@ const Banner = () => {
                   <span>Hire Me</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
-              </a>
+              </button>
 
               <a
                 href="#"
