@@ -189,7 +189,7 @@ const Footer = () => {
 
                 <p className="text-white/80 leading-relaxed max-w-md">
                   Passionate about creating exceptional digital experiences with
-                  modern technologies. Let's build something amazing together
+                  modern technologies. Let&apos;s build something amazing together
                   and turn your ideas into reality.
                 </p>
 
@@ -261,7 +261,7 @@ const Footer = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   <span className="relative flex items-center gap-2">
                     <MessageSquare className="h-4 w-4" />
-                    Let's Talk
+                    Let&apos;s Talk
                   </span>
                 </a>
               </div>

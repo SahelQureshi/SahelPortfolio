@@ -187,12 +187,12 @@ const Contact = () => {
           </div>
 
           <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
-            Let's <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Connect</span>
+          Let&apos;s <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Connect</span>
           </h2>
 
           <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed">
-            Ready to bring your ideas to life? I'd love to hear about your project and discuss
-            how we can work together to create something amazing. Let's start a conversation!
+          Ready to bring your ideas to life? I&apos;d love to hear about your project and discuss
+          how we can work together to create something amazing. Let&apos;s start a conversation!
           </p>
         </div>
 
@@ -300,7 +300,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-white">Send a Message</h3>
-                      <p className="text-white/60">I'd love to hear from you</p>
+                      <p className="text-white/60">I&apos;d love to hear from you</p>
                     </div>
                   </div>
 
@@ -432,12 +432,12 @@ const Contact = () => {
             <div className="relative">
               <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-4 py-2 mb-4">
                 <Sparkles className="h-4 w-4 text-purple-300" />
-                <span className="text-sm font-medium text-white">Let's build something amazing</span>
+                <span className="text-sm font-medium text-white">Let&apos;s build something amazing</span>
               </div>
 
               <p className="text-white/80 text-lg mb-6 leading-relaxed max-w-2xl mx-auto">
                 Whether you have a project in mind, need consultation, or just want to connect,
-                I'm always open to discussing new opportunities and creative collaborations.
+                I&apos;m always open to discussing new opportunities and creative collaborations.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

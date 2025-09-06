@@ -330,7 +330,7 @@ const Education = () => {
 
                   <p className="text-white/80 text-base mb-6 leading-relaxed">
                     Strong educational foundation combined with practical experience creates
-                    exceptional results. Let's build something amazing together.
+                    exceptional results. Let&apos;s build something amazing together.
                   </p>
 
                   <a
