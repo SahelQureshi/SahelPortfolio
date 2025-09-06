@@ -49,7 +49,8 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   // Web3Forms configuration
-  const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '39892bf2-61bd-4f09-8ce6-d62cc66ef296'; // Replace with your actual access key
+  const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+
 
   // Social links data
   const socialLinks = [
