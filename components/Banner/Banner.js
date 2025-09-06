@@ -133,7 +133,7 @@ const Banner = () => {
     <section
       ref={sectionRef}
       id="banner"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[3rem]"
+      className="relative min-h-screen flex items-center justify-center  pt-[5rem] lg:pb-[0rem] pb-[5rem]"
     >
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
@@ -253,7 +253,7 @@ const Banner = () => {
           </div>
 
           {/* Right Content - Profile Image */}
-          <div className="lg:col-span-5 flex justify-center items-center">
+          <div className="lg:col-span-5 flex justify-center items-start pt-[8rem] h-full">
           <div ref={imageRef} className="relative">
               {/* Animated background rings */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-3xl animate-pulse scale-110" />

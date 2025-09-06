@@ -95,7 +95,7 @@ const Education = () => {
     <section
       ref={sectionRef}
       id="education"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-24 md:py-32 "
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">

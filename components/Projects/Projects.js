@@ -149,7 +149,7 @@ const Projects = () => {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-24 md:py-32 "
     >
       {/* Enhanced background with more layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">

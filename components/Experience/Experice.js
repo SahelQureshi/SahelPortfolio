@@ -98,7 +98,7 @@ const Experience = () => {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-24 md:py-32 "
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -129,6 +129,118 @@ const Experience = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Enhanced Video/Stats Section */}
+          <div className="lg:col-span-5">
+            <div className="sticky top-24 space-y-8">
+              {/* Video section */}
+              <div className="group relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-1000" />
+
+                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
+                  {/* Video */}
+                  <div className="relative aspect-video overflow-hidden rounded-t-3xl">
+                    <video
+                      className="w-full h-full object-cover"
+                      src="/assets/images/6963744-hd_1280_720_25fps.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+
+                    {/* Play button overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="p-4 rounded-full bg-white/20 backdrop-blur-xl border border-white/30">
+                        <Play className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content overlay */}
+                  <div className="p-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
+                        <Building className="h-6 w-6 text-blue-300" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white">Professional Growth</h3>
+                        <p className="text-white/60 text-sm">Building Expertise & Impact</p>
+                      </div>
+                    </div>
+
+                    <p className="text-white/80 text-base leading-relaxed mb-6">
+                      Each role has been an opportunity to grow, learn, and contribute meaningfully.
+                      From internships to full-time positions, every experience has shaped my approach
+                      to development and problem-solving.
+                    </p>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div className="text-2xl font-bold text-blue-300 mb-1">2+</div>
+                        <div className="text-sm text-white/60">Years Experience</div>
+                      </div>
+                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div className="text-2xl font-bold text-purple-300 mb-1">3</div>
+                        <div className="text-sm text-white/60">Companies</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Download resume */}
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="relative text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4">
+                    <Download className="h-4 w-4 text-blue-300" />
+                    <span className="text-sm font-medium text-white">Download Resume</span>
+                  </div>
+
+                  <p className="text-white/80 text-base mb-6 leading-relaxed">
+                    Get a detailed overview of my skills, experience, and achievements.
+                    Download my resume to learn more about my professional background.
+                  </p>
+
+                  <a
+                    href="#"
+                    className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
+                  >
+                    <Download className="h-5 w-5" />
+                    <span>Download CV</span>
+                    <ChevronRight className="h-5 w-5" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Skills overview */}
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+                      <Star className="h-5 w-5 text-purple-300" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">Core Expertise</h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    {["Full-Stack Development", "Modern UI/UX", "API Development", "Performance Optimization"].map((skill, idx) => (
+                      <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
+                        <span className="text-sm text-white/80">{skill}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Experience Timeline */}
           <div className="lg:col-span-7">
             <div className="relative">
@@ -269,117 +381,7 @@ const Experience = () => {
             </div>
           </div>
 
-          {/* Enhanced Video/Stats Section */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-24 space-y-8">
-              {/* Video section */}
-              <div className="group relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-1000" />
-
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
-                  {/* Video */}
-                  <div className="relative aspect-video overflow-hidden rounded-t-3xl">
-                    <video
-                      className="w-full h-full object-cover"
-                      src="/assets/images/6963744-hd_1280_720_25fps.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-
-                    {/* Play button overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="p-4 rounded-full bg-white/20 backdrop-blur-xl border border-white/30">
-                        <Play className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content overlay */}
-                  <div className="p-8">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
-                        <Building className="h-6 w-6 text-blue-300" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white">Professional Growth</h3>
-                        <p className="text-white/60 text-sm">Building Expertise & Impact</p>
-                      </div>
-                    </div>
-
-                    <p className="text-white/80 text-base leading-relaxed mb-6">
-                      Each role has been an opportunity to grow, learn, and contribute meaningfully.
-                      From internships to full-time positions, every experience has shaped my approach
-                      to development and problem-solving.
-                    </p>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
-                        <div className="text-2xl font-bold text-blue-300 mb-1">2+</div>
-                        <div className="text-sm text-white/60">Years Experience</div>
-                      </div>
-                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
-                        <div className="text-2xl font-bold text-purple-300 mb-1">3</div>
-                        <div className="text-sm text-white/60">Companies</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Download resume */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative text-center">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4">
-                    <Download className="h-4 w-4 text-blue-300" />
-                    <span className="text-sm font-medium text-white">Download Resume</span>
-                  </div>
-
-                  <p className="text-white/80 text-base mb-6 leading-relaxed">
-                    Get a detailed overview of my skills, experience, and achievements.
-                    Download my resume to learn more about my professional background.
-                  </p>
-
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
-                  >
-                    <Download className="h-5 w-5" />
-                    <span>Download CV</span>
-                    <ChevronRight className="h-5 w-5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Skills overview */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20">
-                      <Star className="h-5 w-5 text-purple-300" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">Core Expertise</h3>
-                  </div>
-
-                  <div className="space-y-3">
-                    {["Full-Stack Development", "Modern UI/UX", "API Development", "Performance Optimization"].map((skill, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
-                        <span className="text-sm text-white/80">{skill}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
     </section>

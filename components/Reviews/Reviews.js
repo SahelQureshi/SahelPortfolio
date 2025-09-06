@@ -120,7 +120,7 @@ const Reviews = () => {
     <section
       ref={sectionRef}
       id="reviews"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-24 md:py-32 "
       onMouseEnter={() => setHoveredCard(true)}
       onMouseLeave={() => setHoveredCard(false)}
     >
