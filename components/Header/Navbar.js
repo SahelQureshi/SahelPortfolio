@@ -194,7 +194,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lgg:flex items-center gap-1">
+            <div className="hidden lgg:flex items-center xl:gap-1 gap-[1px]">
               {navItems.map((item, index) => (
                 <button
                   key={index}
@@ -205,7 +205,7 @@ const Navbar = () => {
                       : "text-white/80 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center xl:gap-2 gap-[3px]">
                     <item.icon
                       className={`h-4 w-4 transition-colors duration-300 ${
                         activeSection === item.href.substring(1)
