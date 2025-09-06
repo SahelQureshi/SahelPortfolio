@@ -192,7 +192,7 @@ const Projects = () => {
         {/* Enhanced stats and filters */}
         <div className="mb-12 flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Stats cards */}
-          <div className="flex gap-4">
+          <div className="flex sm:gap-4 gap-2 sm:flex-nowrap flex-wrap sm:justify-start justify-center">
             <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative flex items-center gap-3 text-sm text-white/70 mb-2">

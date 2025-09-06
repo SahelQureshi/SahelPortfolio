@@ -247,7 +247,7 @@ const Experience = () => {
               {/* Enhanced timeline line */}
               <div
                 ref={timelineRef}
-                className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 via-purple-400 to-pink-500 rounded-full shadow-lg"
+                className="absolute sm:block hidden left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 via-purple-400 to-pink-500 rounded-full shadow-lg"
                 style={{ transformOrigin: 'top' }}
               />
 
@@ -259,7 +259,7 @@ const Experience = () => {
                   className="relative mb-12 last:mb-0"
                 >
                   {/* Timeline node */}
-                  <div className={`absolute left-4 top-8 w-8 h-8 rounded-full border-4 border-gray-900 shadow-lg z-10 flex items-center justify-center ${
+                  <div className={`absolute left-4 top-8 w-8 h-8 rounded-full border-4 border-gray-900 shadow-lg z-10 sm:flex hidden items-center justify-center ${
                     exp.current
                       ? 'bg-gradient-to-br from-green-400 to-emerald-500 animate-pulse'
                       : 'bg-gradient-to-br from-blue-400 to-purple-500'
@@ -270,7 +270,7 @@ const Experience = () => {
                   </div>
 
                   {/* Experience card */}
-                  <div className="ml-20 group">
+                  <div className="sm:ml-20 group">
                     <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
                       {/* Current role indicator */}
                       {exp.current && (

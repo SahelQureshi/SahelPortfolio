@@ -48,6 +48,9 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  // Web3Forms configuration
+  const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '39892bf2-61bd-4f09-8ce6-d62cc66ef296'; // Replace with your actual access key
+
   // Social links data
   const socialLinks = [
     {
@@ -162,13 +165,32 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      const formDataToSend = new FormData();
+      formDataToSend.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('message', formData.message);
+      formDataToSend.append('subject', `New Contact Form Submission from ${formData.name}`);
+      formDataToSend.append('from_name', 'Portfolio Contact Form');
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formDataToSend
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error(data.message || 'Something went wrong');
+      }
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -308,7 +330,7 @@ const Contact = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-6 sm:flex-nowrap flex-wrap">
                     <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20">
                       <Send className="h-6 w-6 text-purple-300" />
                     </div>
@@ -373,7 +395,7 @@ const Contact = () => {
                     </div>
 
                     {/* Submit button */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between sm:flex-nowrap flex-wrap">
                       <div className="text-sm text-white/60">
                         * Required fields
                       </div>
