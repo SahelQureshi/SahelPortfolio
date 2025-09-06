@@ -277,7 +277,7 @@ const Navbar = () => {
       {/* Mobile Sidebar Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/95 backdrop-blur-xl border-r border-white/10 z-50 lg:hidden transform -translate-x-full`}
+        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 backdrop-blur-xl border-r border-white/10 z-50 lg:hidden transform -translate-x-full`}
       >
         <div className="h-full flex flex-col">
           {/* Header */}

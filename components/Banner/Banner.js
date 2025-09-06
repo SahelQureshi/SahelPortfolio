@@ -149,7 +149,7 @@ const Banner = () => {
     <section
       ref={sectionRef}
       id="banner"
-      className="relative min-h-screen flex items-center justify-center  pt-[5rem] lg:pb-[0rem] pb-[5rem]"
+      className="relative min-h-screen flex items-center justify-center  pt-[5rem] lg:pb-[0rem] pb-[2rem]"
     >
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
@@ -167,9 +167,10 @@ const Banner = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 min-h-screen items-center">
+          
 
           {/* Left Content */}
-          <div ref={textRef} className="lg:col-span-7 space-y-8">
+          <div ref={textRef} className="lg:col-span-7 space-y-8 lg:order-1 order-2">
             {/* Greeting */}
             <div className="space-y-4">
               <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 backdrop-blur-xl">
@@ -269,7 +270,7 @@ const Banner = () => {
           </div>
 
           {/* Right Content - Profile Image */}
-          <div className="lg:col-span-5 flex justify-center items-start pt-[8rem] h-full">
+          <div className="lg:col-span-5 flex justify-center items-start lg:pt-[8rem] pt-[2rem] h-full lg:order-2 order-1">
           <div ref={imageRef} className="relative">
               {/* Animated background rings */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-3xl animate-pulse scale-110" />
