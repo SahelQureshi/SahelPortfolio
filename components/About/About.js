@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
+
 import {
   Phone,
   Calendar,
@@ -308,11 +308,11 @@ const About = () => {
 
                       {/* Static profile image */}
                       <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/10">
-                        <Image
+                        <img
                           src="/assets/images/sahel2.png"
                           alt="Sahel Qureshi"
                           fill
-                          className="object-cover"
+                          className="w-full h-auto" 
                         />
                         {/* Overlay gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent" />

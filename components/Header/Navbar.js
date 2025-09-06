@@ -168,7 +168,7 @@ const Navbar = () => {
                 </div>
                 <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
               </div>
-              <div className="hidden sm:block">
+              <div className="hidden xl:block">
                 <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
                   Sahel Qureshi
                 </h3>
@@ -179,7 +179,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lgg:flex items-center gap-1">
               {navItems.map((item, index) => (
                 <button
                   key={index}
@@ -224,7 +224,7 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMenu}
-              className="lg:hidden relative p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-300"
+              className="lgg:hidden relative p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
