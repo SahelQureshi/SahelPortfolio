@@ -14,8 +14,9 @@ import {
   Code,
   Heart,
   Zap,
-  ChevronDown,
-  Play
+  ChevronUp,
+  Play,
+  ChevronDown
 } from "lucide-react";
 
 const Banner = () => {
@@ -40,6 +41,19 @@ const Banner = () => {
     }
   };
 
+  // Smooth scroll to about section
+  const scrollToAbout = () => {
+    const element = document.querySelector('#about');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
 
 
   useEffect(() => {
@@ -256,16 +270,16 @@ const Banner = () => {
 
             {/* Scroll indicator */}
             <div className="flex justify-center lg:justify-start pt-12">
-              <a
-                href="#about"
-                className="group flex flex-col items-center gap-4 text-white/60 hover:text-white transition-colors duration-300"
+              <button
+                onClick={scrollToAbout}
+                className="group flex flex-col items-center gap-4 text-white/60 hover:text-white transition-colors duration-300 cursor-pointer"
               >
                 <span className="text-sm font-medium">Scroll to explore</span>
                 <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
                   <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce" />
                 </div>
                 <ChevronDown className="h-5 w-5 animate-bounce" />
-              </a>
+              </button>
             </div>
           </div>
 
