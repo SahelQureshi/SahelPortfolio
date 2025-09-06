@@ -1,120 +1,138 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
-import { Star, Quote, ArrowRight, Facebook, Github, Mail, Linkedin, Sparkles, Trophy, Users, MessageSquare, ChevronLeft, ChevronRight, Heart, Award } from 'lucide-react'
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import {
+  Star,
+  Quote,
+  ArrowRight,
+  Facebook,
+  Github,
+  Mail,
+  Linkedin,
+  Sparkles,
+  Trophy,
+  Users,
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Award,
+} from "lucide-react";
 
 const testimonialsData = [
   {
-    name: 'Aisha Khan',
-    role: 'Product Manager, FinTech Co.',
+    name: "Aisha Khan",
+    role: "Product Manager, FinTech Co.",
     rating: 5,
     quote:
-      'Sahel delivered a robust web app ahead of schedule. The UI feels premium and performance is excellent. Our users love the smooth experience and the conversion rates have improved significantly.',
-    initials: 'AK',
-    avatar: '/avatar1.jpg',
-    company: 'FinTech Co.',
-    project: 'E-commerce Platform',
-    duration: '3 months',
+      "Sahel delivered a robust web app ahead of schedule. The UI feels premium and performance is excellent. Our users love the smooth experience and the conversion rates have improved significantly.",
+    initials: "AK",
+    avatar: "/avatar1.jpg",
+    company: "FinTech Co.",
+    project: "E-commerce Platform",
+    duration: "3 months",
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/aishakhan',
-      email: 'aisha@fintech.com'
+      linkedin: "https://linkedin.com/in/aishakhan",
+      email: "aisha@fintech.com",
     },
-    highlight: 'Conversion rates improved by 35%'
+    highlight: "Conversion rates improved by 35%",
   },
   {
-    name: 'Rahul Mehta',
-    role: 'Founder, StartupX',
+    name: "Rahul Mehta",
+    role: "Founder, StartupX",
     rating: 5,
     quote:
-      'Great communication and attention to detail. Our conversion rate improved noticeably after the revamp. The code quality is exceptional and the project was delivered on time.',
-    initials: 'RM',
-    avatar: '/avatar2.jpg',
-    company: 'StartupX',
-    project: 'SaaS Dashboard',
-    duration: '4 months',
+      "Great communication and attention to detail. Our conversion rate improved noticeably after the revamp. The code quality is exceptional and the project was delivered on time.",
+    initials: "RM",
+    avatar: "/avatar2.jpg",
+    company: "StartupX",
+    project: "SaaS Dashboard",
+    duration: "4 months",
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/rahulmehta',
-      github: 'https://github.com/rahulmehta'
+      linkedin: "https://linkedin.com/in/rahulmehta",
+      github: "https://github.com/rahulmehta",
     },
-    highlight: 'Delivered 2 weeks ahead of schedule'
+    highlight: "Delivered 2 weeks ahead of schedule",
   },
   {
-    name: 'Emily Chen',
-    role: 'Design Lead, Studio 9',
+    name: "Emily Chen",
+    role: "Design Lead, Studio 9",
     rating: 4,
     quote:
-      'Clean, maintainable code and smooth animations. Handoffs were easy and the result matched the designs perfectly. The collaboration was seamless.',
-    initials: 'EC',
-    avatar: '/avatar3.jpg',
-    company: 'Studio 9',
-    project: 'Design System',
-    duration: '2 months',
+      "Clean, maintainable code and smooth animations. Handoffs were easy and the result matched the designs perfectly. The collaboration was seamless.",
+    initials: "EC",
+    avatar: "/avatar3.jpg",
+    company: "Studio 9",
+    project: "Design System",
+    duration: "2 months",
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/emilychen',
-      email: 'emily@studio9.com'
+      linkedin: "https://linkedin.com/in/emilychen",
+      email: "emily@studio9.com",
     },
-    highlight: 'Pixel-perfect implementation'
+    highlight: "Pixel-perfect implementation",
   },
   {
-    name: 'Omar Farooq',
-    role: 'CTO, EduSphere',
+    name: "Omar Farooq",
+    role: "CTO, EduSphere",
     rating: 5,
     quote:
-      'Our dashboard loads faster and users love the new features. Highly recommend working with Sahel. The technical expertise and problem-solving skills are outstanding.',
-    initials: 'OF',
-    avatar: '/avatar4.jpg',
-    company: 'EduSphere',
-    project: 'Learning Management System',
-    duration: '6 months',
+      "Our dashboard loads faster and users love the new features. Highly recommend working with Sahel. The technical expertise and problem-solving skills are outstanding.",
+    initials: "OF",
+    avatar: "/avatar4.jpg",
+    company: "EduSphere",
+    project: "Learning Management System",
+    duration: "6 months",
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/omarfarooq',
-      github: 'https://github.com/omarfarooq'
+      linkedin: "https://linkedin.com/in/omarfarooq",
+      github: "https://github.com/omarfarooq",
     },
-    highlight: '50% faster load times'
+    highlight: "50% faster load times",
   },
-]
+];
 
 const Reviews = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [hoveredCard, setHoveredCard] = useState(null)
-  const sectionRef = useRef(null)
-  const cardRef = useRef(null)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const sectionRef = useRef(null);
+  const cardRef = useRef(null);
 
-  const currentTestimonial = testimonialsData[currentIndex]
-  const totalTestimonials = testimonialsData.length
+  const currentTestimonial = testimonialsData[currentIndex];
+  const totalTestimonials = testimonialsData.length;
 
   const nextTestimonial = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setCurrentIndex((prev) => (prev + 1) % testimonialsData.length)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex((prev) => (prev + 1) % testimonialsData.length);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   const prevTestimonial = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setCurrentIndex((prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setCurrentIndex(
+      (prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length
+    );
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   const goToTestimonial = (index) => {
-    if (isAnimating || index === currentIndex) return
-    setIsAnimating(true)
-    setCurrentIndex(index)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+    if (isAnimating || index === currentIndex) return;
+    setIsAnimating(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   // Auto-rotate testimonials
   useEffect(() => {
     const interval = setInterval(() => {
       if (!hoveredCard) {
-        nextTestimonial()
+        nextTestimonial();
       }
-    }, 8000)
-    return () => clearInterval(interval)
-  }, [hoveredCard])
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [hoveredCard, nextTestimonial]);
 
   return (
     <section
@@ -127,8 +145,14 @@ const Reviews = () => {
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+        <div
+          className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        />
+        <div
+          className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl animate-pulse"
+          style={{ animationDelay: "4s" }}
+        />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-fuchsia-500/10 to-transparent" />
       </div>
@@ -143,19 +167,22 @@ const Reviews = () => {
           </div>
 
           <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
-            What <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Clients Say</span>
+            What{" "}
+            <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              Clients Say
+            </span>
           </h2>
 
           <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed">
-            Real stories from partners who trusted me to bring their digital visions to life.
-            Each project represents a unique challenge and a successful collaboration.
+            Real stories from partners who trusted me to bring their digital
+            visions to life. Each project represents a unique challenge and a
+            successful collaboration.
           </p>
         </div>
 
         {/* Enhanced testimonial layout */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
             {/* Left Side - Enhanced Details */}
             <div className="order-2 lg:order-1 space-y-8">
               {/* Enhanced reviewer info */}
@@ -175,7 +202,9 @@ const Reviews = () => {
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500/30 to-cyan-500/30 text-white">
-                          <span className="text-2xl font-bold">{currentTestimonial.initials}</span>
+                          <span className="text-2xl font-bold">
+                            {currentTestimonial.initials}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -183,11 +212,17 @@ const Reviews = () => {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-bold text-2xl text-white mb-1">{currentTestimonial.name}</h3>
-                    <p className="text-white/70 text-lg mb-2">{currentTestimonial.role}</p>
+                    <h3 className="font-bold text-2xl text-white mb-1">
+                      {currentTestimonial.name}
+                    </h3>
+                    <p className="text-white/70 text-lg mb-2">
+                      {currentTestimonial.role}
+                    </p>
                     <div className="flex items-center gap-2">
                       <Award className="h-4 w-4 text-amber-400" />
-                      <span className="text-sm text-amber-300 font-medium">{currentTestimonial.highlight}</span>
+                      <span className="text-sm text-amber-300 font-medium">
+                        {currentTestimonial.highlight}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -201,15 +236,21 @@ const Reviews = () => {
                       key={idx}
                       className={`h-6 w-6 transition-all duration-300 ${
                         idx < currentTestimonial.rating
-                          ? 'text-yellow-300 scale-110'
-                          : 'text-white/20'
+                          ? "text-yellow-300 scale-110"
+                          : "text-white/20"
                       }`}
-                      fill={idx < currentTestimonial.rating ? 'currentColor' : 'none'}
+                      fill={
+                        idx < currentTestimonial.rating
+                          ? "currentColor"
+                          : "none"
+                      }
                     />
                   ))}
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20">
-                  <span className="text-white font-semibold">{currentTestimonial.rating}.0</span>
+                  <span className="text-white font-semibold">
+                    {currentTestimonial.rating}.0
+                  </span>
                   <span className="text-white/60">/ 5.0</span>
                 </div>
               </div>
@@ -223,7 +264,9 @@ const Reviews = () => {
                     </div>
                     <span className="text-white/60 font-medium">Company</span>
                   </div>
-                  <span className="text-white font-semibold">{currentTestimonial.company}</span>
+                  <span className="text-white font-semibold">
+                    {currentTestimonial.company}
+                  </span>
                 </div>
 
                 <div className="group flex justify-between items-center p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
@@ -233,7 +276,9 @@ const Reviews = () => {
                     </div>
                     <span className="text-white/60 font-medium">Project</span>
                   </div>
-                  <span className="text-white font-semibold">{currentTestimonial.project}</span>
+                  <span className="text-white font-semibold">
+                    {currentTestimonial.project}
+                  </span>
                 </div>
 
                 <div className="group flex justify-between items-center p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
@@ -243,7 +288,9 @@ const Reviews = () => {
                     </div>
                     <span className="text-white/60 font-medium">Duration</span>
                   </div>
-                  <span className="text-white font-semibold">{currentTestimonial.duration}</span>
+                  <span className="text-white font-semibold">
+                    {currentTestimonial.duration}
+                  </span>
                 </div>
               </div>
 
@@ -303,8 +350,8 @@ const Reviews = () => {
                       disabled={isAnimating}
                       className={`relative h-3 w-3 rounded-full transition-all duration-300 ${
                         idx === currentIndex
-                          ? 'bg-gradient-to-r from-fuchsia-400 to-cyan-400 scale-125 shadow-lg'
-                          : 'bg-white/30 hover:bg-white/50 hover:scale-110'
+                          ? "bg-gradient-to-r from-fuchsia-400 to-cyan-400 scale-125 shadow-lg"
+                          : "bg-white/30 hover:bg-white/50 hover:scale-110"
                       } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                       {idx === currentIndex && (
@@ -329,7 +376,7 @@ const Reviews = () => {
               <div
                 ref={cardRef}
                 className={`relative group transform transition-all duration-500 ${
-                  isAnimating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'
+                  isAnimating ? "scale-95 opacity-80" : "scale-100 opacity-100"
                 }`}
               >
                 {/* Enhanced glow effect */}
@@ -338,9 +385,18 @@ const Reviews = () => {
                 <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 lg:p-10 shadow-2xl">
                   {/* Animated particles */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
-                    <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
-                    <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
+                    <div
+                      className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
+                      style={{ animationDelay: "0s" }}
+                    />
+                    <div
+                      className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
+                      style={{ animationDelay: "0.5s" }}
+                    />
+                    <div
+                      className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
+                      style={{ animationDelay: "1s" }}
+                    />
                   </div>
 
                   {/* Enhanced quote mark */}
@@ -352,7 +408,7 @@ const Reviews = () => {
                   <div className="space-y-8 relative">
                     <div className="relative">
                       <p className="text-xl lg:text-2xl leading-relaxed text-white/90 font-medium italic">
-                        "{currentTestimonial.quote}"
+                        &ldquo;{currentTestimonial.quote}&rdquo;
                       </p>
                       {/* Text highlight effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg" />
@@ -366,11 +422,17 @@ const Reviews = () => {
 
                     {/* Enhanced author attribution */}
                     <div className="space-y-3">
-                      <h4 className="text-white font-bold text-xl">{currentTestimonial.name}</h4>
-                      <p className="text-white/70 text-lg">{currentTestimonial.role}</p>
+                      <h4 className="text-white font-bold text-xl">
+                        {currentTestimonial.name}
+                      </h4>
+                      <p className="text-white/70 text-lg">
+                        {currentTestimonial.role}
+                      </p>
                       <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
-                        <span className="text-sm text-white/60 font-medium">Testimonial {currentIndex + 1} of {totalTestimonials}</span>
+                        <span className="text-sm text-white/60 font-medium">
+                          Testimonial {currentIndex + 1} of {totalTestimonials}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -391,12 +453,15 @@ const Reviews = () => {
             <div className="relative">
               <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-500/20 to-purple-500/20 px-4 py-2 mb-4">
                 <Sparkles className="h-4 w-4 text-fuchsia-300" />
-                <span className="text-sm font-medium text-white">Ready to work together?</span>
+                <span className="text-sm font-medium text-white">
+                  Ready to work together?
+                </span>
               </div>
 
               <p className="text-white/80 text-lg mb-6 leading-relaxed">
-                Want more references or have a project in mind?
-                I'm always excited to connect and discuss how we can bring your ideas to life.
+                Want more references or have a project in mind? I&apos;m always
+                excited to connect and discuss how we can bring your ideas to
+                life.
               </p>
 
               <div className="flex items-center justify-center gap-4">
@@ -405,7 +470,7 @@ const Reviews = () => {
                   className="group/btn inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300 hover:scale-105"
                 >
                   <MessageSquare className="h-5 w-5" />
-                  <span>Let's Talk</span>
+                  <span>Let&apos;s Talk</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
                 </a>
               </div>
@@ -414,7 +479,7 @@ const Reviews = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Reviews
+export default Reviews;

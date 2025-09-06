@@ -183,7 +183,7 @@ const Projects = () => {
           </h2>
 
           <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed">
-            A curated collection of digital experiences I've crafted — from
+            A curated collection of digital experiences I&apos;ve crafted — from
             concept to deployment, each project represents innovation,
             performance, and user-centric design.
           </p>

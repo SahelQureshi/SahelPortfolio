@@ -241,7 +241,7 @@ const About = () => {
 
           <p className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
             Crafting exceptional digital experiences with modern technologies
-            and a passion for clean, scalable code. Let's build something
+            and a passion for clean, scalable code. Let&apos;s build something
             amazing together.
           </p>
 
@@ -433,7 +433,7 @@ const About = () => {
                       I specialize in building scalable, responsive, and
                       user-friendly web applications using the latest
                       technologies and best practices. With over 2 years of
-                      experience, I've had the privilege of working with diverse
+                      experience, I&apos;ve had the privilege of working with diverse
                       clients and delivering solutions that make a real impact.
                     </p>
                     <p>
