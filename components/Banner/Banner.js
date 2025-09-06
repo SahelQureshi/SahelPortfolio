@@ -304,10 +304,10 @@ const Banner = () => {
                 <div className="absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 animate-ping" />
 
                 {/* Floating tech icons */}
-                <div className="absolute -top-8 left-1/4 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce">
+                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce">
                   <Code className="h-6 w-6 text-purple-300" />
                 </div>
-                <div className="absolute -bottom-8 right-1/4 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
+                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
                   <Zap className="h-6 w-6 text-cyan-300" />
                 </div>
               </div>

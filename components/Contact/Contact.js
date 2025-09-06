@@ -26,6 +26,20 @@ const Contact = () => {
   const headerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Smooth scroll to projects section
+  const scrollToProjects = () => {
+    const element = document.querySelector('#projects');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -449,13 +463,13 @@ const Contact = () => {
                   <span>Email Me</span>
                 </a>
                 <span className="text-white/40 hidden sm:block">or</span>
-                <a
-                  href="#projects"
+                <button
+                  onClick={scrollToProjects}
                   className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 text-white font-semibold rounded-2xl border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105"
                 >
                   <span>View My Work</span>
                   <ArrowRight className="h-5 w-5" />
-                </a>
+                </button>
               </div>
             </div>
           </div>

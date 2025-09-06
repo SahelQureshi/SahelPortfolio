@@ -35,6 +35,20 @@ const About = () => {
   const headerRef = useRef(null);
   const quoteRef = useRef(null);
 
+  // Smooth scroll to contact section
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const stats = [
     {
       number: "2+",
@@ -516,15 +530,15 @@ const About = () => {
                 </div>
               </a>
 
-              <a
-                href="#contact"
+              <button
+                onClick={scrollToContact}
                 className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center"
               >
                 <div className="relative flex items-center justify-center gap-3">
                   <span>Get In Touch</span>
                   <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
-              </a>
+              </button>
             </div>
           </div>
         </div>

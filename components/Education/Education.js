@@ -46,6 +46,19 @@ const Education = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // Smooth scroll to contact section
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -333,13 +346,13 @@ const Education = () => {
                     exceptional results. Let&apos;s build something amazing together.
                   </p>
 
-                  <a
-                    href="#contact"
+                  <button
+                    onClick={scrollToContact}
                     className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 transition-all duration-300 hover:scale-105"
                   >
                     <span>Start a Project</span>
                     <ChevronRight className="h-5 w-5" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

@@ -98,6 +98,20 @@ const Reviews = () => {
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
 
+  // Smooth scroll to contact section
+  const scrollToContact = () => {
+    const element = document.querySelector('#contact');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const currentTestimonial = testimonialsData[currentIndex];
   const totalTestimonials = testimonialsData.length;
 
@@ -465,14 +479,14 @@ const Reviews = () => {
               </p>
 
               <div className="flex items-center justify-center gap-4">
-                <a
-                  href="#contact"
+                <button
+                  onClick={scrollToContact}
                   className="group/btn inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300 hover:scale-105"
                 >
                   <MessageSquare className="h-5 w-5" />
                   <span>Let&apos;s Talk</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
-                </a>
+                </button>
               </div>
             </div>
           </div>

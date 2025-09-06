@@ -15,14 +15,14 @@ import {
   Mail,
   Sparkles,
   ChevronDown,
-  Zap
+  Zap,
 } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('banner');
+  const [activeSection, setActiveSection] = useState("banner");
 
   const navbarRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -54,8 +54,8 @@ const Navbar = () => {
       setScrolled(currentScroll > 50);
 
       // Update active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1));
-      const current = sections.find(section => {
+      const sections = navItems.map((item) => item.href.substring(1));
+      const current = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -87,7 +87,7 @@ const Navbar = () => {
     const scrollAnimation = gsap.to(navbarRef.current, {
       y: scrolled ? -10 : 0,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     });
 
     // Add event listeners
@@ -132,13 +132,28 @@ const Navbar = () => {
     document.body.style.overflow = "auto";
   };
 
+  // Smooth scroll to contact section
+  const scrollToContact = () => {
+    const element = document.querySelector("#contact");
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+    closeMenu();
+  };
+
   const scrollToSection = (href) => {
     const element = document.querySelector(href);
     if (element) {
       const offsetTop = element.offsetTop - 80; // Account for navbar height
       window.scrollTo({
         top: offsetTop,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
     closeMenu();
@@ -160,7 +175,7 @@ const Navbar = () => {
             <div
               ref={logoRef}
               className="flex items-center gap-3 cursor-pointer group"
-              onClick={() => scrollToSection('#banner')}
+              onClick={() => scrollToSection("#banner")}
             >
               <div className="relative">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -191,11 +206,13 @@ const Navbar = () => {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <item.icon className={`h-4 w-4 transition-colors duration-300 ${
-                      activeSection === item.href.substring(1)
-                        ? "text-purple-300"
-                        : "text-white/60 group-hover:text-purple-300"
-                    }`} />
+                    <item.icon
+                      className={`h-4 w-4 transition-colors duration-300 ${
+                        activeSection === item.href.substring(1)
+                          ? "text-purple-300"
+                          : "text-white/60 group-hover:text-purple-300"
+                      }`}
+                    />
                     <span className="text-sm">{item.label}</span>
                   </div>
 
@@ -209,8 +226,8 @@ const Navbar = () => {
 
             {/* CTA Button */}
             <div className="hidden md:flex items-center gap-3">
-              <a
-                href="#contact"
+              <button
+                onClick={scrollToContact}
                 className="group relative px-6 py-2.5 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
@@ -218,7 +235,7 @@ const Navbar = () => {
                   <Zap className="h-4 w-4" />
                   Hire Me
                 </span>
-              </a>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -228,15 +245,21 @@ const Navbar = () => {
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
-                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
-                  isOpen ? "rotate-45 translate-y-1" : "-translate-y-1"
-                }`} />
-                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
-                  isOpen ? "opacity-0" : "opacity-100"
-                }`} />
-                <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
-                  isOpen ? "-rotate-45 -translate-y-1" : "translate-y-1"
-                }`} />
+                <span
+                  className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+                    isOpen ? "rotate-45 translate-y-1" : "-translate-y-1"
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+                    isOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+                    isOpen ? "-rotate-45 -translate-y-1" : "translate-y-1"
+                  }`}
+                />
               </div>
             </button>
           </nav>
@@ -290,11 +313,13 @@ const Navbar = () => {
                           : "text-white/80 hover:text-white hover:bg-white/5"
                       }`}
                     >
-                      <item.icon className={`h-5 w-5 ${
-                        activeSection === item.href.substring(1)
-                          ? "text-purple-300"
-                          : "text-white/60"
-                      }`} />
+                      <item.icon
+                        className={`h-5 w-5 ${
+                          activeSection === item.href.substring(1)
+                            ? "text-purple-300"
+                            : "text-white/60"
+                        }`}
+                      />
                       <span className="font-medium">{item.label}</span>
                       {activeSection === item.href.substring(1) && (
                         <div className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
@@ -323,7 +348,9 @@ const Navbar = () => {
                   <span className="text-xs text-white/60">EN</span>
                 </div>
                 <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                  <span className="text-xs text-purple-300 font-medium">Available</span>
+                  <span className="text-xs text-purple-300 font-medium">
+                    Available
+                  </span>
                 </div>
               </div>
             </div>
