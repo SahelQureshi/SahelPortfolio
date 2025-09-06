@@ -419,7 +419,7 @@ const About = () => {
 
                   <div className="space-y-6 text-white/80 leading-relaxed">
                     <p className="text-lg">
-                      Hello there! I'm{" "}
+                    Hello there! I&apos;m{" "}
                       <span className="text-blue-400 font-semibold text-xl">
                         Sahel Qureshi
                       </span>
@@ -437,7 +437,7 @@ const About = () => {
                       clients and delivering solutions that make a real impact.
                     </p>
                     <p>
-                      When I'm not coding, you can find me exploring new
+                    When I&apos;m not coding, you can find me exploring new
                       technologies, contributing to open-source projects, or
                       sharing knowledge with the developer community. I believe
                       in continuous learning and staying updated with the
@@ -457,8 +457,8 @@ const About = () => {
                   </div>
 
                   <blockquote className="text-2xl md:text-3xl text-white/90 font-medium italic leading-relaxed mb-8">
-                    "Great software is not built with just code, but with clarity, consistency, and care.
-                    I believe in clean, scalable solutions that solve real-world problems — one line at a time."
+                    &ldquo;Great software is not built with just code, but with clarity, consistency, and care.
+                    I believe in clean, scalable solutions that solve real-world problems — one line at a time.&rdquo;
                   </blockquote>
 
                   <div className="flex justify-center items-center gap-3">

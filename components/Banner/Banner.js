@@ -163,7 +163,7 @@ const Banner = () => {
 
               <div className="space-y-2">
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
-                  <span className="text-white">Hi, I'm </span>
+                <span className="text-white">Hi, I&apos;m </span>
                   <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
                     Sahel
                   </span>
@@ -191,7 +191,7 @@ const Banner = () => {
               <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
                 I craft exceptional digital experiences with modern technologies,
                 bringing ideas to life through clean code and innovative solutions.
-                Let's build something amazing together.
+                Let&apos;s build something amazing together.
               </p>
             </div>
 
