@@ -172,8 +172,8 @@ const Banner = () => {
           {/* Left Content */}
           <div ref={textRef} className="lg:col-span-7 space-y-8 lg:order-1 order-2">
             {/* Greeting */}
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 backdrop-blur-xl">
+            <div className="space-y-4 lg:text-left text-center">
+              <div className="inline-flex items-center lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 backdrop-blur-xl">
                 <Sparkles className="h-5 w-5 text-purple-300 animate-pulse" />
                 <span className="text-white/80 font-medium">Welcome to my portfolio</span>
               </div>
@@ -192,7 +192,7 @@ const Banner = () => {
                 </h2>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center lg:justify-start justify-center gap-4">
                 <div className="h-1 w-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
                 <Code className="h-8 w-8 text-purple-300" />
                 <div className="h-1 w-16 bg-gradient-to-r from-pink-400 to-cyan-400 rounded-full" />
@@ -200,7 +200,7 @@ const Banner = () => {
             </div>
 
             {/* Role and Description */}
-            <div className="space-y-6">
+            <div className="space-y-6 lg:text-left text-center">
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white">
                 Full Stack Web Developer
               </h3>
@@ -213,7 +213,7 @@ const Banner = () => {
             </div>
 
             {/* Social Links */}
-            <div ref={socialRef} className="flex items-center gap-4">
+            <div ref={socialRef} className="flex items-center gap-4 lg:justify-start justify-center">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
@@ -229,7 +229,7 @@ const Banner = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-8">
+            <div ref={ctaRef} className="flex lg:justify-start justify-center sm:flex-nowrap flex-wrap gap-4 pt-8">
               <button
                 onClick={scrollToContact}
                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold py-4 px-8 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 text-center"

@@ -56,13 +56,13 @@ const Contact = () => {
     {
       name: 'GitHub',
       icon: Github,
-      url: 'https://github.com',
+      url: 'https://github.com/SahelQureshi',
       color: 'hover:bg-gray-500/20 hover:border-gray-400/30'
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      url: 'https://linkedin.com',
+      url: 'http://localhost:3000/www.linkedin.com/in/sahel-qureshi-47b1252a8',
       color: 'hover:bg-blue-500/20 hover:border-blue-400/30'
     },
     {
@@ -78,21 +78,21 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'sahel@example.com',
-      link: 'mailto:sahel@example.com',
+      value: 'sahelqureshi0089.com',
+      link: 'mailto:sahelqureshi0089.com',
       color: 'from-purple-500/20 to-pink-500/20'
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      value: '+91 90079 47586',
+      link: 'tel:+919007947586',
       color: 'from-green-500/20 to-emerald-500/20'
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'Your City, Country',
+      value: 'Birlagate, Brrackpore, Kolkata, India',
       link: '#',
       color: 'from-blue-500/20 to-cyan-500/20'
     }
