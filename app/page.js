@@ -17,10 +17,10 @@ const page = () => {
       <About />
       <Education />
       <Experice />
-      {/* <Skills /> */}
-      {/* <Projects /> */}
-      {/* <Reviews /> */}
-      {/* <Contact /> */}
+      <Skills />
+      <Projects />
+      <Reviews />
+      <Contact />
     </section>
   );
 };
