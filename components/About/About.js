@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -38,7 +38,7 @@ const About = () => {
   const [isClient, setIsClient] = useState(false);
 
   // Handle client-side mounting
-  useLayoutEffect(() => {
+  useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
@@ -105,8 +105,6 @@ const About = () => {
   ];
 
   useEffect(() => {
-    if (!isClient) return; // Only run on client-side
-
     gsap.registerPlugin(ScrollTrigger);
 
     // Set initial states to ensure visibility
@@ -226,57 +224,55 @@ const About = () => {
         );
       }
 
-      // Add floating animation to decorative elements (only on desktop)
-      if (!disableBackgroundAnimations) {
-        gsap.to(".floating-element", {
-          y: "random(-20, 20)",
-          x: "random(-10, 10)",
-          duration: "random(3, 6)",
-          ease: "none",
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.5,
-        });
-      }
+      // Add floating animation to decorative elements
+      gsap.to(".floating-element", {
+        y: "random(-20, 20)",
+        x: "random(-10, 10)",
+        duration: "random(3, 6)",
+        ease: "none",
+        repeat: -1,
+        yoyo: true,
+        stagger: 0.5,
+      });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [isClient, disableBackgroundAnimations]);
+  }, []);
 
   return (
     <section ref={sectionRef} id="about" className="relative py-24 md:py-32 ">
       {/* Enhanced background with multiple animated layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-600/20 blur-3xl floating-element ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
+        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-600/20 blur-3xl floating-element animate-pulse" />
         <div
-          className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-pink-600/20 blur-3xl floating-element ${disableBackgroundAnimations ? '' : 'animate-pulse'}`}
+          className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-pink-600/20 blur-3xl floating-element animate-pulse"
           style={{ animationDelay: "2s" }}
         />
         <div
-          className={`absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/15 blur-3xl floating-element ${disableBackgroundAnimations ? '' : 'animate-pulse'}`}
+          className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/15 blur-3xl floating-element animate-pulse"
           style={{ animationDelay: "4s" }}
         />
         <div
-          className={`absolute top-1/2 left-1/2 h-48 w-48 rounded-full bg-gradient-to-br from-purple-500/15 to-rose-500/10 blur-3xl floating-element ${disableBackgroundAnimations ? '' : 'animate-pulse'}`}
+          className="absolute top-1/2 left-1/2 h-48 w-48 rounded-full bg-gradient-to-br from-purple-500/15 to-rose-500/10 blur-3xl floating-element animate-pulse"
           style={{ animationDelay: "6s" }}
         />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
 
         {/* Additional floating particles */}
-        <div className={`absolute top-20 left-20 w-2 h-2 rounded-full bg-blue-400 floating-element ${disableBackgroundAnimations ? '' : 'animate-ping'}`} />
-        <div className={`absolute bottom-32 right-32 w-3 h-3 rounded-full bg-purple-400 floating-element ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
-        <div className={`absolute top-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 floating-element ${disableBackgroundAnimations ? '' : 'animate-bounce'}`} />
-        <div className={`absolute bottom-1/4 right-1/3 w-2.5 h-2.5 rounded-full bg-pink-400 floating-element ${disableBackgroundAnimations ? '' : 'animate-ping'}`} />
+        <div className="absolute top-20 left-20 w-2 h-2 rounded-full bg-blue-400 floating-element animate-ping" />
+        <div className="absolute bottom-32 right-32 w-3 h-3 rounded-full bg-purple-400 floating-element animate-pulse" />
+        <div className="absolute top-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 floating-element animate-bounce" />
+        <div className="absolute bottom-1/4 right-1/3 w-2.5 h-2.5 rounded-full bg-pink-400 floating-element animate-ping" />
       </div>
 
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm text-white/80 backdrop-blur-xl shadow-lg">
-            <Sparkles className={`h-5 w-5 text-blue-300 ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
+            <Sparkles className="h-5 w-5 text-blue-300 animate-pulse" />
             <span className="font-medium">About Me</span>
-            <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
+            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse" />
           </div>
 
           <h2 className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
@@ -304,9 +300,9 @@ const About = () => {
             >
               {/* Animated particles effect */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className={`absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 ${disableBackgroundAnimations ? '' : 'animate-ping'}`} style={{ animationDelay: '0s' }} />
-                <div className={`absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 ${disableBackgroundAnimations ? '' : 'animate-ping'}`} style={{ animationDelay: '0.5s' }} />
-                <div className={`absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 ${disableBackgroundAnimations ? '' : 'animate-ping'}`} style={{ animationDelay: '1s' }} />
+                <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
+                <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
+                <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
               </div>
 
               <div className="relative z-10">
@@ -314,7 +310,7 @@ const About = () => {
                   <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
                     <stat.icon className="h-8 w-8 text-blue-300" />
                   </div>
-                  <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center ${disableBackgroundAnimations ? '' : 'animate-pulse'}`}>
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center animate-pulse">
                     <span className="text-2xl font-bold text-white">{stat.number}</span>
                   </div>
                 </div>
@@ -334,42 +330,42 @@ const About = () => {
           <div className="lg:col-span-5 flex justify-center">
             <div ref={profileRef} className="relative">
               {/* Animated background rings */}
-              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl ${disableBackgroundAnimations ? '' : 'animate-pulse'} scale-110`} />
-              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 blur-2xl ${disableBackgroundAnimations ? '' : 'animate-pulse'} scale-125`} style={{ animationDelay: '1s' }} />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl scale-110 animate-pulse" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 blur-2xl scale-125 animate-pulse" style={{ animationDelay: '1s' }} />
 
               {/* Profile container */}
-              <div className="relative w-80 h-80 md:w-96 md:h-96 xl:w-[28rem] lg:w-[22rem] xl:h-[28rem] lg:h-[22rem]">
+              <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
                 {/* Static profile image */}
                 <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-4 border-white/10">
                   <img
                     src="/assets/images/sahel2.png"
                     alt="Sahel Qureshi"
-                    className="w-[85%] mx-auto h-auto "
+                    className="w-[85%] h-auto mx-auto"
                   />
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent" />
                 </div>
 
                 {/* Rotating gradient ring */}
-                <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 p-1 ${disableBackgroundAnimations ? '' : 'animate-spin'}`} style={{ animationDuration: '8s' }}>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 p-1 animate-spin" style={{ animationDuration: '8s' }}>
                   <div className="w-full h-full rounded-full bg-transparent" />
                 </div>
 
                 {/* Inner rotating ring */}
-                <div className={`absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 p-0.5 ${disableBackgroundAnimations ? '' : 'animate-spin'}`} style={{ animationDuration: '6s', animationDirection: 'reverse' }}>
+                <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 p-0.5 animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}>
                   <div className="w-full h-full rounded-full bg-transparent" />
                 </div>
 
                 {/* Decorative elements */}
-                <div className={`absolute -top-4 -right-4 w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 ${disableBackgroundAnimations ? '' : 'animate-bounce'}`} />
-                <div className={`absolute -bottom-4 -left-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-400 ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
-                <div className={`absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 ${disableBackgroundAnimations ? '' : 'animate-ping'}`} />
+                <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-bounce" />
+                <div className="absolute -bottom-4 -left-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-400 animate-pulse" />
+                <div className="absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-ping" />
 
                 {/* Floating tech icons */}
-                <div className={`absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center ${disableBackgroundAnimations ? '' : 'animate-bounce'}`}>
+                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce">
                   <Code className="h-6 w-6 text-blue-300" />
                 </div>
-                <div className={`absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center ${disableBackgroundAnimations ? '' : 'animate-bounce'}`} style={{ animationDelay: '1s' }}>
+                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
                   <Zap className="h-6 w-6 text-purple-300" />
                 </div>
               </div>
@@ -377,7 +373,7 @@ const About = () => {
           </div>
 
           {/* Content Section */}
-          <div ref={contentRef} className="lg:col-span-7 space-y-8">
+          <div ref={contentRef} className="lg:col-span-7 space-y-8 z-10">
             <div>
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
               Passionate <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Full Stack Developer</span>
@@ -447,7 +443,7 @@ const About = () => {
             <div className="relative">
               {/* Quote background */}
               <div className="absolute inset-0 -z-10">
-                <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl ${disableBackgroundAnimations ? '' : 'animate-pulse'}`} />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl animate-pulse" />
               </div>
 
               <Quote className="h-16 w-16 text-blue-400 mx-auto mb-8 opacity-50" />
