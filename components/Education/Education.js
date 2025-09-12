@@ -9,7 +9,7 @@ const education = [
   {
     title: "Bachelor of Computer Application (BCA)",
     institution: "SVIMS",
-    date: "2012 - 2015",
+    date: "2021 - 2024",
     location: "India",
     grade: "First Class",
     desc: "Acquired comprehensive knowledge of computer applications, programming fundamentals (C, C++, Java), database management, and software development. Completed projects demonstrating practical implementation of theoretical concepts.",
@@ -17,9 +17,9 @@ const education = [
     achievements: ["First Class Grade", "Project Excellence Award"]
   },
   {
-    title: "12th Grade (Science)",
+    title: "12th Grade (Arts)",
     institution: "Man Matha Nath High School",
-    date: "2008 - 2010",
+    date: "2019 - 2021",
     location: "India",
     grade: "85%",
     desc: "Pursued Science stream with specialization in Physics, Chemistry, and Mathematics. Gained problem-solving skills and scientific thinking that formed the basis for my technical education.",
@@ -29,7 +29,7 @@ const education = [
   {
     title: "10th Grade",
     institution: "Man Matha Nath High School",
-    date: "2004 - 2007",
+    date: "2018",
     location: "India",
     grade: "88%",
     desc: "Completed secondary education with focus on foundational subjects including Mathematics, Science, and Languages. Developed strong academic fundamentals that prepared me for higher studies.",
