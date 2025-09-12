@@ -163,9 +163,9 @@ const Navbar = () => {
     <>
       <header
         ref={navbarRef}
-        className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+        className={`w-full fixed top-0 z-50 transition-all  duration-300 ${
           scrolled
-            ? "bg-black/20 backdrop-blur-xl border-b border-white/10 shadow-2xl"
+            ? "bg-black/20 backdrop-blur-xl border-b border-white/10 spec-side shadow-2xl"
             : "bg-transparent"
         }`}
       >
@@ -277,7 +277,7 @@ const Navbar = () => {
       {/* Mobile Sidebar Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 backdrop-blur-xl border-r border-white/10 z-50 lg:hidden transform -translate-x-full`}
+        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side backdrop-blur-xl border-r border-white/10 z-50 lg:hidden transform -translate-x-full`}
       >
         <div className="h-full flex flex-col">
           {/* Header */}

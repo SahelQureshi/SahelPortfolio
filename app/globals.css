@@ -17,3 +17,21 @@ body {
 
 }
 
+@media (max-width: 768px) {
+  /* .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  } */
+  .backdrop-blur-xl {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .spec-side{
+    background-color: #000000e8 !important;
+  }
+  /* .bg-gradient-to-r,
+  .bg-gradient-to-br {
+    background: rgba(59, 130, 246, 0.1);
+  } */
+}
+
