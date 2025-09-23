@@ -23,8 +23,8 @@ const education = [
     location: "India",
     grade: "85%",
     desc: "Pursued Science stream with specialization in Physics, Chemistry, and Mathematics. Gained problem-solving skills and scientific thinking that formed the basis for my technical education.",
-    highlights: ["Physics", "Chemistry", "Mathematics", "Problem Solving"],
-    achievements: ["Science Excellence", "Mathematics Topper"]
+    highlights: ["Geography", "English", "History", "Compute Applications"],
+    achievements: [ "Consistent Performer", "Subject Excellence"]
   },
   {
     title: "10th Grade",
@@ -34,7 +34,7 @@ const education = [
     grade: "88%",
     desc: "Completed secondary education with focus on foundational subjects including Mathematics, Science, and Languages. Developed strong academic fundamentals that prepared me for higher studies.",
     highlights: ["Mathematics", "Science", "Languages", "Academic Foundation"],
-    achievements: ["Consistent Performer", "Subject Excellence"]
+    achievements: ["Logical Reasoning", "Mathematics", "Science", "Languages", "Academic Foundation"]
   },
 ];
 
