@@ -295,9 +295,9 @@ const Banner = () => {
                 {/* Static profile image */}
                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/10">
                   <img
-                    src="/assets/images/sahel.png"
+                    src="/assets/images/Sahel-Qureshi.png"
                     alt="Sahel Qureshi"
-                    className="w-full h-full object-contain relative top-[15px] z-10"
+                    className="w-full h-[800px] object-contain relative top-[15px] z-10"
                   />
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/10 to-transparent" />
