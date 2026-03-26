@@ -13,47 +13,43 @@ import {
   ArrowUpRight,
   Eye,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 // Demo data — replace with your real projects later
 const projectsData = [
   {
-    title: "E‑Commerce UI Kit",
-    year: 2024,
-    description:
-      "High-performance storefront with Next.js, server components, and Tailwind.",
-    tags: ["Next.js", "Tailwind", "Stripe"],
-    live: "#",
-    repo: "#",
-    featured: true,
-  },
-  {
-    title: "Realtime Chat App",
-    year: 2024,
-    description:
-      "Socket-powered chat with auth, file uploads, and message reactions.",
-    tags: ["React", "Node", "Socket.io"],
-    live: "#",
-    repo: "#",
-    featured: false,
-  },
-  {
-    title: "Portfolio v2",
+    title: "Dresza E-Commerce Platform (User)",
     year: 2025,
-    description: "GSAP-driven animations, dynamic sections, and blazing UX.",
-    tags: ["Next.js", "GSAP", "Tailwind"],
-    live: "#",
-    repo: "#",
+    description:
+      "Full-stack e-commerce storefront built with Next.js featuring SSR for SEO, product browsing, cart, and secure Razorpay payments.",
+    tags: ["Next.js", "React", "Redux Toolkit", "React Query", "Tailwind"],
+    live: "https://dresza.netlify.app/",
+    repo: "https://github.com/SahelQureshi",
     featured: true,
+    images: [
+      "/assets/projects/dresza-website (1).png",
+      "/assets/projects/dresza-website (2).png",
+      "/assets/projects/dresza-website (3).png",
+      "/assets/projects/dresza-website (4).png"
+    ],
   },
   {
-    title: "Blog Platform",
-    year: 2023,
-    description: "MDX content, SEO, and CMS integration for content creators.",
-    tags: ["Next.js", "MDX", "Prisma"],
-    live: "#",
-    repo: "#",
-    featured: false,
+    title: "Dresza Admin Dashboard",
+    year: 2025,
+    description:
+      "React-based admin panel for managing products, orders, and users with full CRUD operations and real-time data handling.",
+    tags: ["React", "Redux Toolkit", "Node.js", "MongoDB", "Express"],
+    live: "https://dresza-admin.netlify.app/login",
+    repo: "https://github.com/SahelQureshi",
+    featured: true,
+    images: [
+      "/assets/projects/dresza-admin (1).png",
+      "/assets/projects/dresza-admin (2).png",
+      "/assets/projects/dresza-admin (3).png",
+      "/assets/projects/dresza-admin (4).png"
+    ],
   },
 ];
 
@@ -65,6 +61,7 @@ const Projects = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isFilterChanging, setIsFilterChanging] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
 
   const allTags = useMemo(() => {
     const t = new Set(["All"]);
@@ -77,6 +74,50 @@ const Projects = () => {
       ? projectsData
       : projectsData.filter((p) => p.tags.includes(activeFilter));
   }, [activeFilter]);
+
+  // Auto-advance carousel
+  useEffect(() => {
+    const intervals = {};
+
+    projectsData.forEach((project, projectIndex) => {
+      if (project.images && project.images.length > 1) {
+        intervals[projectIndex] = setInterval(() => {
+          setCurrentImageIndex((prev) => ({
+            ...prev,
+            [projectIndex]:
+              (prev[projectIndex] || 0) === project.images.length - 1
+                ? 0
+                : (prev[projectIndex] || 0) + 1,
+          }));
+        }, 3000); // Change image every 3 seconds
+      }
+    });
+
+    return () => {
+      Object.values(intervals).forEach(clearInterval);
+    };
+  }, []);
+
+  // Manual carousel navigation
+  const nextImage = (projectIndex, totalImages) => {
+    setCurrentImageIndex((prev) => ({
+      ...prev,
+      [projectIndex]:
+        (prev[projectIndex] || 0) === totalImages - 1
+          ? 0
+          : (prev[projectIndex] || 0) + 1,
+    }));
+  };
+
+  const prevImage = (projectIndex, totalImages) => {
+    setCurrentImageIndex((prev) => ({
+      ...prev,
+      [projectIndex]:
+        (prev[projectIndex] || 0) === 0
+          ? totalImages - 1
+          : (prev[projectIndex] || 0) - 1,
+    }));
+  };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -141,7 +182,7 @@ const Projects = () => {
   const totalProjects = projectsData.length;
   const currentYear = new Date().getFullYear();
   const recentProjects = projectsData.filter(
-    (p) => p.year >= currentYear - 1
+    (p) => p.year >= currentYear - 1,
   ).length;
   const featuredProjects = projectsData.filter((p) => p.featured).length;
 
@@ -266,8 +307,8 @@ const Projects = () => {
                 isFilterChanging
                   ? "opacity-60 scale-95"
                   : isLoaded
-                  ? "opacity-100 scale-100"
-                  : "opacity-0 scale-95"
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95"
               }`}
               style={{
                 transformStyle: "preserve-3d",
@@ -281,26 +322,105 @@ const Projects = () => {
                 </div>
               )}
 
-              {/* Enhanced gradient banner */}
-              <div className="relative h-40 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/20 to-cyan-500/30" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Enhanced image carousel */}
+              <div className="relative h-[16rem] w-full overflow-hidden rounded-t-3xl">
+                {project.images && project.images.length > 0 ? (
+                  <>
+                    {/* Main image */}
+                    <div className="relative h-full w-full">
+                      <img
+                        src={project.images[currentImageIndex[i] || 0]}
+                        alt={`${project.title} - Image ${currentImageIndex[i] || 0 + 1}`}
+                        className="h-full w-full object-cover transition-opacity duration-500"
+                      />
 
-                {/* Animated particles effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div
-                    className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
-                    style={{ animationDelay: "0s" }}
-                  />
-                  <div
-                    className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
-                    style={{ animationDelay: "0.5s" }}
-                  />
-                  <div
-                    className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
-                    style={{ animationDelay: "1s" }}
-                  />
-                </div>
+                      {/* Image overlay gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/20 to-cyan-500/30" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      {/* Navigation buttons */}
+                      {project.images.length > 1 && (
+                        <>
+                          <button
+                            onClick={() => prevImage(i, project.images.length)}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110"
+                            aria-label="Previous image"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => nextImage(i, project.images.length)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110"
+                            aria-label="Next image"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                        </>
+                      )}
+
+                      {/* Image indicators */}
+                      {project.images.length > 1 && (
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                          {project.images.map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={() =>
+                                setCurrentImageIndex((prev) => ({
+                                  ...prev,
+                                  [i]: index,
+                                }))
+                              }
+                              className={`h-2 w-2 rounded-full transition-all ${
+                                (currentImageIndex[i] || 0) === index
+                                  ? "bg-white w-6"
+                                  : "bg-white/50 hover:bg-white/70"
+                              }`}
+                              aria-label={`Go to image ${index + 1}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Animated particles effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div
+                          className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
+                          style={{ animationDelay: "0s" }}
+                        />
+                        <div
+                          className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
+                          style={{ animationDelay: "0.5s" }}
+                        />
+                        <div
+                          className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
+                          style={{ animationDelay: "1s" }}
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  /* Fallback gradient if no images */
+                  <div className="h-full w-full">
+                    <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/20 to-cyan-500/30" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    {/* Animated particles effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div
+                        className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
+                        style={{ animationDelay: "0s" }}
+                      />
+                      <div
+                        className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
+                        style={{ animationDelay: "0.5s" }}
+                      />
+                      <div
+                        className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
+                        style={{ animationDelay: "1s" }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="p-6">

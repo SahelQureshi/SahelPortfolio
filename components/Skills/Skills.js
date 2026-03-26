@@ -16,6 +16,10 @@ import {
   Zap,
   Star,
   ChevronRight,
+  Globe,
+  Cloud,
+  Shield,
+  Layers,
 } from "lucide-react";
 
 const skillsData = [
@@ -26,11 +30,28 @@ const skillsData = [
     ring: "ring-pink-500/30",
     gradient: "from-pink-500 to-fuchsia-500",
     items: [
-      { name: "HTML5", level: 95 },
-      { name: "CSS3 / SCSS", level: 90 },
-      { name: "JavaScript (ES6+)", level: 92 },
-      { name: "React / Next.js", level: 88 },
+      { name: "React.js", level: 92 },
+      { name: "Next.js (SSR/SSG)", level: 88 },
+      { name: "JavaScript (ES6+)", level: 90 },
+      { name: "Redux Toolkit", level: 85 },
+      { name: "React Query", level: 82 },
       { name: "Tailwind CSS", level: 90 },
+      { name: "Bootstrap", level: 85 },
+      { name: "HTML5/CSS3", level: 92 },
+    ],
+  },
+  {
+    title: "Mobile Development",
+    Icon: Smartphone,
+    color: "from-purple-500/20 to-pink-500/20",
+    ring: "ring-purple-500/30",
+    gradient: "from-purple-500 to-pink-500",
+    items: [
+      { name: "React Native", level: 85 },
+      { name: "Expo", level: 85 },
+      { name: "Expo Router", level: 80 },
+      { name: "Async Storage", level: 82 },
+      { name: "Push Notifications", level: 75 },
     ],
   },
   {
@@ -40,35 +61,57 @@ const skillsData = [
     ring: "ring-emerald-500/30",
     gradient: "from-emerald-500 to-teal-500",
     items: [
-      { name: "Node.js", level: 80 },
-      { name: "Express", level: 78 },
-      { name: "REST APIs", level: 85 },
-      { name: "Authentication (JWT/OAuth)", level: 75 },
+      { name: "Node.js", level: 85 },
+      { name: "Express.js", level: 85 },
+      { name: "REST API Development", level: 90 },
+      { name: "JWT Authentication", level: 88 },
+      { name: "MVC Pattern", level: 85 },
+      { name: "Middleware", level: 82 },
     ],
   },
   {
-    title: "Databases",
+    title: "Database & Cloud",
     Icon: Database,
     color: "from-cyan-500/20 to-blue-500/20",
     ring: "ring-cyan-500/30",
     gradient: "from-cyan-500 to-blue-500",
     items: [
-      { name: "MongoDB", level: 80 },
-      { name: "PostgreSQL", level: 70 },
-      { name: "Prisma / Mongoose", level: 72 },
+      { name: "MongoDB", level: 85 },
+      { name: "MongoDB Atlas", level: 85 },
+      { name: "Data Modeling", level: 80 },
+      { name: "Aggregation Pipeline", level: 78 },
+      { name: "Firebase", level: 75 },
+      { name: "Cloudinary", level: 80 },
     ],
   },
   {
-    title: "Tools & Technologies",
-    Icon: Wrench,
+    title: "Tools & Deployment",
+    Icon: Cloud,
     color: "from-amber-500/20 to-orange-500/20",
     ring: "ring-amber-500/30",
     gradient: "from-amber-500 to-orange-500",
     items: [
-      { name: "Git & GitHub", level: 88 },
-      { name: "CI/CD", level: 68 },
-      { name: "GSAP / Framer Motion", level: 70 },
-      { name: "Responsive / Mobile-First", level: 90 },
+      { name: "Git & GitHub", level: 90 },
+      { name: "Vercel / Netlify", level: 88 },
+      { name: "Render", level: 85 },
+      { name: "Postman", level: 85 },
+      { name: "Expo CLI", level: 80 },
+      { name: "CI/CD", level: 75 },
+    ],
+  },
+  {
+    title: "Core Technologies",
+    Icon: Shield,
+    color: "from-indigo-500/20 to-purple-500/20",
+    ring: "ring-indigo-500/30",
+    gradient: "from-indigo-500 to-purple-500",
+    items: [
+      { name: "State Management", level: 88 },
+      { name: "API Architecture", level: 85 },
+      { name: "Performance Optimization", level: 85 },
+      { name: "Scalable Systems", level: 80 },
+      { name: "SSR/SSG", level: 85 },
+      { name: "Authorization (RBAC)", level: 82 },
     ],
   },
 ];
@@ -79,6 +122,8 @@ const badgePalette = [
   "bg-cyan-500/10 text-cyan-300 ring-cyan-500/20",
   "bg-amber-500/10 text-amber-300 ring-amber-500/20",
   "bg-fuchsia-500/10 text-fuchsia-300 ring-fuchsia-500/20",
+  "bg-purple-500/10 text-purple-300 ring-purple-500/20",
+  "bg-indigo-500/10 text-indigo-300 ring-indigo-500/20",
 ];
 
 const Skills = () => {
@@ -116,6 +161,32 @@ const Skills = () => {
     e.currentTarget.style.transform = "";
   };
 
+  // Function to animate progress bars - FIXED VERSION
+  const animateProgressBars = (barsArray) => {
+    if (!barsArray || barsArray.length === 0) return;
+    
+    barsArray.forEach((bar, index) => {
+      if (!bar) return;
+      const level = Number(bar.getAttribute("data-level") || 0);
+      
+      // Kill any existing animations on this bar
+      gsap.killTweensOf(bar);
+      
+      // Animate from current width to target width
+      gsap.fromTo(
+        bar,
+        { width: "0%" },
+        {
+          width: `${level}%`,
+          duration: 1.2,
+          ease: "power3.out",
+          delay: index * 0.05,
+          overwrite: true,
+        }
+      );
+    });
+  };
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -127,9 +198,14 @@ const Skills = () => {
       transformOrigin: "top center",
     });
 
-    gsap.set(barsRef.current, {
-      width: "0%",
-    });
+    // Set initial width for all bars to 0%
+    if (barsRef.current.length > 0) {
+      barsRef.current.forEach((bar) => {
+        if (bar) {
+          gsap.set(bar, { width: "0%" });
+        }
+      });
+    }
 
     const ctx = gsap.context(() => {
       // Enhanced header animation
@@ -160,71 +236,62 @@ const Skills = () => {
         onComplete: () => {
           setIsLoaded(true);
           // Animate progress bars after cards are visible
-          animateProgressBars();
+          setTimeout(() => {
+            animateProgressBars(barsRef.current);
+          }, 100);
         },
       });
     }, sectionRef);
 
-    // Function to animate progress bars
-    const animateProgressBars = () => {
-      barsRef.current.forEach((bar, index) => {
-        if (!bar) return;
-        const level = Number(bar.dataset.level || 0);
-
-        gsap.fromTo(
-          bar,
-          { width: "0%" },
-          {
-            width: `${level}%`,
-            duration: 1.2,
-            ease: "power3.out",
-            delay: index * 0.1, // Stagger the animations
-          }
-        );
-      });
-    };
-
     return () => ctx.revert();
   }, []); // Only run once on mount
-
-  // Function to re-animate progress bars when filter changes
-  const reAnimateProgressBars = () => {
-    barsRef.current.forEach((bar, index) => {
-      if (!bar) return;
-      const level = Number(bar.dataset.level || 0);
-
-      gsap.fromTo(
-        bar,
-        { width: "0%" },
-        {
-          width: `${level}%`,
-          duration: 0.8,
-          ease: "power3.out",
-          delay: index * 0.05,
-        }
-      );
-    });
-  };
 
   // Handle filter changes with progress bar re-animation
   const handleFilterChange = (category) => {
     setIsFilterChanging(true);
     setActiveCat(category);
 
-    // Re-animate progress bars after filter change
+    // Wait for DOM to update with new filtered cards
     setTimeout(() => {
       setIsFilterChanging(false);
       if (isLoaded) {
-        setTimeout(() => reAnimateProgressBars(), 100);
+        // Reset and re-animate all progress bars
+        setTimeout(() => {
+          // Reset all bars to 0% first
+          if (barsRef.current.length > 0) {
+            barsRef.current.forEach((bar) => {
+              if (bar) {
+                gsap.set(bar, { width: "0%" });
+              }
+            });
+          }
+          // Then animate them
+          setTimeout(() => {
+            animateProgressBars(barsRef.current);
+          }, 50);
+        }, 100);
       }
     }, 300);
+  };
+
+  // Calculate total experience stats
+  const totalProjects = 8;
+  const experienceYears = 1.5;
+  const clientCountries = ["USA", "UK", "India"];
+
+  // Helper function to assign refs to bars
+  const setBarRef = (el, categoryIndex, skillIndex) => {
+    if (el) {
+      const globalIndex = categoryIndex * 20 + skillIndex;
+      barsRef.current[globalIndex] = el;
+    }
   };
 
   return (
     <section
       ref={sectionRef}
       id="skills"
-      className="relative py-24 md:py-32 "
+      className="relative py-24 md:py-32 overflow-hidden"
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -253,14 +320,14 @@ const Skills = () => {
           <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
             My{" "}
             <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Skills
+              Skills & Expertise
             </span>
           </h2>
 
-          <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed">
-            Crafting exceptional digital experiences with cutting-edge
-            technologies and best practices. From concept to deployment, I bring
-            ideas to life with precision and performance.
+          <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed max-w-2xl mx-auto">
+            Full Stack MERN Developer with expertise in React.js, Next.js, Node.js,
+            and MongoDB. Specializing in building scalable web and mobile applications
+            with modern technologies and best practices.
           </p>
         </div>
 
@@ -278,20 +345,22 @@ const Skills = () => {
                     <Trophy className="h-6 w-6 text-fuchsia-300" />
                   </div>
                   <h3 className="font-bold text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl text-white">
-                    Technical Stack
+                    Professional Stats
                   </h3>
                 </div>
 
                 <p className="text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed mb-6">
-                  Specializing in modern web technologies with a focus on
-                  React/Next.js ecosystems, scalable backend solutions, and
-                  cloud-native architectures.
+                  Full Stack MERN Developer with {experienceYears}+ year of experience
+                  building scalable web and mobile applications. Successfully delivered
+                  {totalProjects}+ production projects for clients across {clientCountries.join(", ")}.
                 </p>
 
                 {/* Enhanced stats grid */}
                 <div className="grid grid-cols-3 gap-4">
                   <div className="group/stat text-center p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                    <div className="text-3xl font-bold text-white mb-1">3+</div>
+                    <div className="text-3xl font-bold text-white mb-1">
+                      {experienceYears}+
+                    </div>
                     <div className="text-sm text-white/60 font-medium">
                       Years
                     </div>
@@ -299,7 +368,7 @@ const Skills = () => {
                   </div>
                   <div className="group/stat text-center p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
                     <div className="text-3xl font-bold text-white mb-1">
-                      25+
+                      {totalProjects}+
                     </div>
                     <div className="text-sm text-white/60 font-medium">
                       Projects
@@ -308,12 +377,26 @@ const Skills = () => {
                   </div>
                   <div className="group/stat text-center p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
                     <div className="text-3xl font-bold text-white mb-1">
-                      10+
+                      30%+
                     </div>
                     <div className="text-sm text-white/60 font-medium">
-                      Clients
+                      Performance
                     </div>
-                    <div className="text-xs text-white/40">Satisfied</div>
+                    <div className="text-xs text-white/40">Improvement</div>
+                  </div>
+                </div>
+
+                {/* Additional highlights */}
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/60">Client Satisfaction</span>
+                    <span className="text-white font-semibold">100%</span>
+                  </div>
+                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500"
+                      style={{ width: "100%" }}
+                    />
                   </div>
                 </div>
               </div>
@@ -346,18 +429,44 @@ const Skills = () => {
                 ))}
               </div>
             </div>
+
+            {/* Achievement badge */}
+            <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 backdrop-blur-xl shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <Sparkles className="h-5 w-5 text-amber-300" />
+                <h4 className="font-semibold text-white">Key Achievements</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-white/70">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 mt-1">▹</span>
+                  <span>30% performance improvement through code splitting and optimization</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 mt-1">▹</span>
+                  <span>25% reduction in development time with reusable component libraries</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 mt-1">▹</span>
+                  <span>99.9% uptime maintained for production applications</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 mt-1">▹</span>
+                  <span>95+ PageSpeed score achieved through performance optimization</span>
+                </li>
+              </ul>
+            </div>
           </aside>
 
           {/* Right content - Enhanced skills grid */}
           <div className="lg:col-span-8">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               {filtered.map(
-                ({ title, Icon, items, color, ring, gradient }, i) => (
+                ({ title, Icon, items, color, ring, gradient }, categoryIndex) => (
                   <article
                     key={`${title}-${activeCat}`}
-                    ref={(el) => (cardsRef.current[i] = el)}
+                    ref={(el) => (cardsRef.current[categoryIndex] = el)}
                     data-skill-card
-                    onMouseMove={(e) => handleTilt(e, i)}
+                    onMouseMove={(e) => handleTilt(e, categoryIndex)}
                     onMouseLeave={resetTilt}
                     className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${color} p-8 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
                       isFilterChanging
@@ -416,41 +525,46 @@ const Skills = () => {
 
                       {/* Enhanced skills list */}
                       <ul className="space-y-5">
-                        {items.map((skill, idx) => (
-                          <li key={skill.name} className="group/skill">
-                            <div className="flex items-center justify-between mb-2">
-                              <div
-                                className={`inline-flex items-center gap-2.5 rounded-full px-3 py-1.5 text-sm font-medium ring-1 transition-all duration-300 ${
-                                  badgePalette[(i + idx) % badgePalette.length]
-                                } group-hover/skill:scale-105`}
-                              >
-                                <div className="h-2 w-2 rounded-full bg-current opacity-70 animate-pulse" />
-                                {skill.name}
+                        {items.map((skill, skillIndex) => {
+                          const globalBarIndex = categoryIndex * 20 + skillIndex;
+                          return (
+                            <li key={skill.name} className="group/skill">
+                              <div className="flex items-center justify-between mb-2">
+                                <div
+                                  className={`inline-flex items-center gap-2.5 rounded-full px-3 py-1.5 text-sm font-medium ring-1 transition-all duration-300 ${
+                                    badgePalette[(categoryIndex + skillIndex) % badgePalette.length]
+                                  } group-hover/skill:scale-105`}
+                                >
+                                  <div className="h-2 w-2 rounded-full bg-current opacity-70 animate-pulse" />
+                                  {skill.name}
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-semibold text-white">
+                                    {skill.level}%
+                                  </span>
+                                  <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
+                                </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-white">
-                                  {skill.level}%
-                                </span>
-                                <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
-                              </div>
-                            </div>
 
-                            {/* Enhanced progress bar */}
-                            <div className="relative h-3 w-full overflow-hidden rounded-full bg-white/10 ring-1 ring-white/5">
-                              <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10" />
-                              <div
-                                ref={(el) =>
-                                  (barsRef.current[i * 10 + idx] = el)
-                                }
-                                data-level={skill.level}
-                                className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg`}
-                                style={{ width: "0%" }}
-                              />
-                              {/* Animated shine effect */}
-                              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
-                            </div>
-                          </li>
-                        ))}
+                              {/* Enhanced progress bar */}
+                              <div className="relative h-3 w-full overflow-hidden rounded-full bg-white/10 ring-1 ring-white/5">
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10" />
+                                <div
+                                  ref={(el) => {
+                                    if (el) {
+                                      barsRef.current[globalBarIndex] = el;
+                                    }
+                                  }}
+                                  data-level={skill.level}
+                                  className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg`}
+                                  style={{ width: "0%" }}
+                                />
+                                {/* Animated shine effect */}
+                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
 
