@@ -338,9 +338,9 @@ const About = () => {
                 {/* Static profile image */}
                 <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-4 border-white/10">
                   <img
-                    src="/assets/images/sahel2.png"
+                    src="/assets/images/Sahel-img2.png"
                     alt="Sahel Qureshi"
-                    className="w-[85%] h-auto mx-auto"
+                    className="w-full h-auto mx-auto ml-3 mt-2"
                   />
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent" />
