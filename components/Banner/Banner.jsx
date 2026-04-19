@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { performanceMonitor, gsapOptimizer, ResourceOptimizer } from "@/utils/performanceOptimizer";
 import {
   Github,
   Linkedin,
@@ -59,77 +60,92 @@ const Banner = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    // Start performance monitoring
+    performanceMonitor.startFPSMonitoring();
+    
+    // Get optimized settings based on device
+    const settings = ResourceOptimizer.getOptimizedAnimationSettings();
+    
     const ctx = gsap.context(() => {
-      // Hero text animation
-      const textAnimation = gsap.from(textRef.current, {
-        y: 100,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-      });
+      // Performance-marked animations
+      const textAnimation = performanceMonitor.measureAnimation('hero-text', () => 
+        gsap.from(textRef.current, {
+          y: 100,
+          opacity: 0,
+          duration: settings.duration,
+          ease: "power3.out",
+          scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
+            start: "top 80%",
+            once: true
+          }),
+        })
+      );
 
-      // Hero image animation
-      const imageAnimation = gsap.from(imageRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        },
-      });
+      const imageAnimation = performanceMonitor.measureAnimation('hero-image', () =>
+        gsap.from(imageRef.current, {
+          scale: 0.8,
+          opacity: 0,
+          duration: settings.duration * 1.2,
+          ease: "power3.out",
+          scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
+            start: "top 75%",
+            once: true
+          }),
+        })
+      );
 
-      // Social links animation
-      const socialAnimation = gsap.from(socialRef.current, {
+      // Optimized stagger animations
+      const socialStagger = gsapOptimizer.createOptimizedStagger([socialRef.current, ctaRef.current], {
         y: 30,
         opacity: 0,
-        duration: 0.8,
+        duration: settings.duration * 0.8,
         ease: "power3.out",
-        delay: 0.5,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
+        stagger: {
+          each: settings.stagger,
+          from: "start"
         },
-      });
-
-      // CTA buttons animation
-      const ctaAnimation = gsap.from(ctaRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.7,
-        scrollTrigger: {
-          trigger: sectionRef.current,
+        scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
           start: "top 70%",
-        },
+          once: true
+        }),
       });
 
-      // Add floating animation to decorative elements
-      gsap.to(".floating-element", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        duration: "random(3, 6)",
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.5,
-      });
-
-      return () => {
-        textAnimation.kill();
-        imageAnimation.kill();
-        socialAnimation.kill();
-        ctaAnimation.kill();
-      };
+      // Conditionally run floating animations based on device performance
+      if (settings.effects) {
+        const floatingAnimation = gsap.to(".floating-element", {
+          y: "random(-20, 20)",
+          x: "random(-10, 10)",
+          duration: "random(3, 6)",
+          ease: "none",
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.5,
+        });
+        
+        return () => {
+          textAnimation.execute().kill();
+          imageAnimation.execute().kill();
+          socialStagger.kill();
+          floatingAnimation.kill();
+        };
+      } else {
+        return () => {
+          textAnimation.execute().kill();
+          imageAnimation.execute().kill();
+          socialStagger.kill();
+        };
+      }
     }, sectionRef);
 
-    return () => ctx.revert();
+    // Performance cleanup
+    return () => {
+      ctx.revert();
+      performanceMonitor.stopFPSMonitoring();
+      
+      // Log performance metrics
+      const report = performanceMonitor.getPerformanceReport();
+      console.log('Banner Performance:', report);
+    };
   }, []);
 
   const socialLinks = [
