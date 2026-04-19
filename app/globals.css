@@ -35,3 +35,18 @@ body {
   } */
 }
 
+.stage {
+          perspective: 1200px;
+          transform-style: preserve-3d;
+        }
+        
+        .box {
+          transform-style: preserve-3d;
+          transition: all 0.3s ease;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+
