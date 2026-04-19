@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Menu,
   X,
@@ -40,6 +41,8 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
     const handleResize = () => {
       const mobile = window.innerWidth <= 991;
       setIsMobile(mobile);
@@ -50,7 +53,14 @@ const Navbar = () => {
     };
 
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
+      let currentScroll;
+      
+      if (window.smoother) {
+        currentScroll = window.smoother.scrollTop();
+      } else {
+        currentScroll = window.scrollY;
+      }
+      
       setScrolled(currentScroll > 50);
 
       // Update active section based on scroll position
@@ -92,11 +102,21 @@ const Navbar = () => {
 
     // Add event listeners
     window.addEventListener("resize", handleResize);
+    
+    // Listen to ScrollTrigger events (works with ScrollSmoother)
+    ScrollTrigger.addEventListener("refresh", handleScroll);
+    ScrollTrigger.addEventListener("scrollStart", handleScroll);
+    ScrollTrigger.addEventListener("scrollEnd", handleScroll);
+    
+    // Also add native scroll as fallback
     window.addEventListener("scroll", handleScroll);
 
     // Clean up
     return () => {
       window.removeEventListener("resize", handleResize);
+      ScrollTrigger.removeEventListener("refresh", handleScroll);
+      ScrollTrigger.removeEventListener("scrollStart", handleScroll);
+      ScrollTrigger.removeEventListener("scrollEnd", handleScroll);
       window.removeEventListener("scroll", handleScroll);
       scrollAnimation.kill();
     };
@@ -134,27 +154,35 @@ const Navbar = () => {
 
   // Smooth scroll to contact section
   const scrollToContact = () => {
-    const element = document.querySelector("#contact");
-    if (element) {
-      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
-      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
+    if (window.smoother) {
+      window.smoother.scrollTo("#contact", true, "offset 80px");
+    } else {
+      const element = document.querySelector("#contact");
+      if (element) {
+        const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
+        const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
 
-      window.scrollTo({
-        top: offsetTop,
-        behavior: "smooth",
-      });
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        });
+      }
     }
     closeMenu();
   };
 
   const scrollToSection = (href) => {
-    const element = document.querySelector(href);
-    if (element) {
-      const offsetTop = element.offsetTop - 80; // Account for navbar height
-      window.scrollTo({
-        top: offsetTop,
-        behavior: "smooth",
-      });
+    if (window.smoother) {
+      window.smoother.scrollTo(href, true, "offset 80px");
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        const offsetTop = element.offsetTop - 80; // Account for navbar height
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        });
+      }
     }
     closeMenu();
   };

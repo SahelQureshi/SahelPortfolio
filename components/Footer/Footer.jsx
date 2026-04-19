@@ -58,29 +58,46 @@ const Footer = () => {
   ];
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const scrollToSection = (href) => {
-    const element = document.querySelector(href);
-    if (element) {
-      const offsetTop = element.offsetTop - 80;
+    if (window.smoother) {
+      window.smoother.scrollTo(0, true);
+    } else {
       window.scrollTo({
-        top: offsetTop,
+        top: 0,
         behavior: "smooth",
       });
     }
   };
 
+  const scrollToSection = (href) => {
+    if (window.smoother) {
+      window.smoother.scrollTo(href, true, "offset 80px");
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        const offsetTop = element.offsetTop - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   // Calculate scroll progress
   const updateScrollProgress = () => {
-    const scrollTop = window.scrollY;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
+    let scrollTop, docHeight;
+    
+    if (window.smoother) {
+      // Use ScrollSmoother's scroll position
+      scrollTop = window.smoother.scrollTop();
+      docHeight = window.smoother.maxScroll; // Property, not function
+    } else {
+      // Fallback to native scroll
+      scrollTop = window.scrollY;
+      docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    }
+    
+    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     setScrollProgress(scrollPercent);
     setIsVisible(scrollTop > 300); // Show button after scrolling 300px
   };
@@ -90,7 +107,15 @@ const Footer = () => {
 
     // Update scroll progress on scroll
     const handleScroll = () => updateScrollProgress();
+    
+    // Listen to ScrollTrigger events (works with ScrollSmoother)
+    ScrollTrigger.addEventListener("refresh", handleScroll);
+    ScrollTrigger.addEventListener("scrollStart", handleScroll);
+    ScrollTrigger.addEventListener("scrollEnd", handleScroll);
+    
+    // Also add native scroll as fallback
     window.addEventListener("scroll", handleScroll);
+    
     updateScrollProgress(); // Initial call
 
     const ctx = gsap.context(() => {
@@ -132,6 +157,10 @@ const Footer = () => {
     }, footerRef);
 
     return () => {
+      // Clean up scroll listeners
+      ScrollTrigger.removeEventListener("refresh", handleScroll);
+      ScrollTrigger.removeEventListener("scrollStart", handleScroll);
+      ScrollTrigger.removeEventListener("scrollEnd", handleScroll);
       window.removeEventListener("scroll", handleScroll);
       ctx.revert();
     };
