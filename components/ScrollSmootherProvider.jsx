@@ -5,7 +5,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import Navbar from "./Header/Navbar";
-
+import ScrollToTopCircle from "./spinner/ScrollSpinner";
+ // Import the component
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -17,19 +18,26 @@ const ScrollSmootherProvider = ({ children }) => {
     const smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
-      smooth: 1, // seconds it takes to catch up
-      effects: true, // enables data-speed / data-lag
-      smoothTouch: 0.1, // light smooth on mobile
-      normalizeScroll: true, // fixes iOS bounce
+      smooth: 1,
+      effects: true,
+      smoothTouch: 0.1,
+      normalizeScroll: true,
       ignoreMobileResize: true,
     });
 
     smootherRef.current = smoother;
-
-    // Make smoother globally available
     window.smoother = smoother;
 
-    // Refresh ScrollTrigger after initialization
+    // Dispatch custom event for progress tracking
+    const dispatchSmootherScroll = () => {
+      window.dispatchEvent(new CustomEvent("smootherScroll"));
+    };
+
+    // Listen to ScrollTrigger events (works with ScrollSmoother)
+    ScrollTrigger.addEventListener("scrollStart", dispatchSmootherScroll);
+    ScrollTrigger.addEventListener("scrollEnd", dispatchSmootherScroll);
+    ScrollTrigger.addEventListener("refresh", dispatchSmootherScroll);
+
     ScrollTrigger.refresh();
 
     // Cleanup
@@ -37,11 +45,13 @@ const ScrollSmootherProvider = ({ children }) => {
       if (smootherRef.current) {
         smootherRef.current.kill();
       }
+      ScrollTrigger.removeEventListener("scrollStart", dispatchSmootherScroll);
+      ScrollTrigger.removeEventListener("scrollEnd", dispatchSmootherScroll);
+      ScrollTrigger.removeEventListener("refresh", dispatchSmootherScroll);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
-  // Global refresh function for dynamic content
   useEffect(() => {
     window.refreshSmoother = () => {
       if (smootherRef.current) {
@@ -57,7 +67,7 @@ const ScrollSmootherProvider = ({ children }) => {
       <div id="smooth-content">
         {children}
       </div>
-      
+      <ScrollToTopCircle /> {/* Add the circle button here */}
     </div>
   );
 };

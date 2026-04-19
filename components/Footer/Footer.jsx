@@ -24,9 +24,6 @@ const Footer = () => {
   const footerRef = useRef(null);
   const contentRef = useRef(null);
   const socialRef = useRef(null);
-  const scrollButtonRef = useRef(null);
-  const progressCircleRef = useRef(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   const socialLinks = [
@@ -83,30 +80,14 @@ const Footer = () => {
     }
   };
 
-  // Calculate scroll progress
-  const updateScrollProgress = () => {
-    let scrollTop, docHeight;
-    
-    if (window.smoother) {
-      // Use ScrollSmoother's scroll position
-      scrollTop = window.smoother.scrollTop();
-      docHeight = window.smoother.maxScroll; // Property, not function
-    } else {
-      // Fallback to native scroll
-      scrollTop = window.scrollY;
-      docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    }
-    
-    const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    setScrollProgress(scrollPercent);
-    setIsVisible(scrollTop > 300); // Show button after scrolling 300px
-  };
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Update scroll progress on scroll
-    const handleScroll = () => updateScrollProgress();
+    // Simple scroll visibility logic
+    const handleScroll = () => {
+      const scrollTop = window.smoother ? window.smoother.scrollTop() : window.scrollY;
+      setIsVisible(scrollTop > 300); // Show button after scrolling 300px
+    };
     
     // Listen to ScrollTrigger events (works with ScrollSmoother)
     ScrollTrigger.addEventListener("refresh", handleScroll);
@@ -116,7 +97,7 @@ const Footer = () => {
     // Also add native scroll as fallback
     window.addEventListener("scroll", handleScroll);
     
-    updateScrollProgress(); // Initial call
+    handleScroll(); // Initial call
 
     const ctx = gsap.context(() => {
       // Footer content animation
@@ -165,22 +146,6 @@ const Footer = () => {
       ctx.revert();
     };
   }, []);
-
-  // Update progress circle
-  useEffect(() => {
-    if (progressCircleRef.current) {
-      const circumference = 2 * Math.PI * 45; // radius = 45
-      const strokeDasharray = circumference;
-      const strokeDashoffset =
-        circumference - (scrollProgress / 100) * circumference;
-
-      gsap.to(progressCircleRef.current, {
-        strokeDashoffset: strokeDashoffset,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  }, [scrollProgress]);
 
   return (
     <>
@@ -343,56 +308,7 @@ const Footer = () => {
         <div className="absolute top-8 right-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce footer-floating" />
       </footer>
 
-      {/* Floating Scroll to Top Button with Progress Border */}
-      <div
-        ref={scrollButtonRef}
-        className={`fixed bottom-8 right-8 z-50 transition-all duration-500 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
-        }`}
-      >
-        <div className="relative group w-20 h-20 flex items-center justify-center">
-          {/* Progress Border Ring */}
-          <div
-            className="absolute inset-0 rounded-full transition-all duration-500 ease-out"
-            style={{
-              background: `conic-gradient(from 0deg,
-                #8b5cf6 0%,
-                #ec4899 ${scrollProgress}%,
-                #06b6d4 ${scrollProgress}%,
-                transparent ${scrollProgress}%)`,
-              padding: "3px",
-            }}
-          >
-            <div className="w-full h-full rounded-full bg-gray-900/90 backdrop-blur-xl" />
-          </div>
-
-          {/* Main Button */}
-          <button
-            onClick={scrollToTop}
-            className="relative w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-110 flex items-center justify-center border-2 border-transparent hover:border-white/20 group/button"
-            aria-label="Scroll to top"
-          >
-            {/* Button glow effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover/button:opacity-50 transition-opacity duration-300 animate-pulse" />
-
-            {/* Icon */}
-            <ChevronUp className="h-6 w-6 text-white relative z-10 transition-transform duration-300 group-hover/button:-translate-y-1" />
-
-            {/* Percentage text */}
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900/95 backdrop-blur-xl text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover/button:opacity-100 transition-all duration-300 whitespace-nowrap border border-white/10 pointer-events-none">
-              {Math.round(scrollProgress)}%{/* Tooltip arrow */}
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900/95"></div>
-            </div>
-          </button>
-
-          {/* Floating particles */}
-          <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-            <div className="absolute top-2 left-2 w-1 h-1 bg-white/60 rounded-full animate-ping" />
-            <div className="absolute bottom-3 right-3 w-0.5 h-0.5 bg-white/40 rounded-full animate-pulse" />
-            <div className="absolute top-1/2 right-2 w-0.5 h-0.5 bg-white/50 rounded-full animate-bounce" />
-          </div>
-        </div>
-      </div>
+     
     </>
   );
 };
