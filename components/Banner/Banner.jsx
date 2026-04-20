@@ -60,92 +60,76 @@ const Banner = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Start performance monitoring
-    performanceMonitor.startFPSMonitoring();
-    
-    // Get optimized settings based on device
-    const settings = ResourceOptimizer.getOptimizedAnimationSettings();
-    
+    // Set initial states for all elements
+    gsap.set(textRef.current, {
+      opacity: 0,
+      y: 100,
+    });
+
+    gsap.set(imageRef.current, {
+      opacity: 0,
+      scale: 0.8,
+    });
+
+    gsap.set([socialRef.current, ctaRef.current], {
+      opacity: 0,
+      y: 30,
+    });
+
     const ctx = gsap.context(() => {
-      // Performance-marked animations
-      const textAnimation = performanceMonitor.measureAnimation('hero-text', () => 
-        gsap.from(textRef.current, {
-          y: 100,
-          opacity: 0,
-          duration: settings.duration,
-          ease: "power3.out",
-          scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
-            start: "top 80%",
-            once: true
-          }),
-        })
-      );
-
-      const imageAnimation = performanceMonitor.measureAnimation('hero-image', () =>
-        gsap.from(imageRef.current, {
-          scale: 0.8,
-          opacity: 0,
-          duration: settings.duration * 1.2,
-          ease: "power3.out",
-          scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
-            start: "top 75%",
-            once: true
-          }),
-        })
-      );
-
-      // Optimized stagger animations
-      const socialStagger = gsapOptimizer.createOptimizedStagger([socialRef.current, ctaRef.current], {
-        y: 30,
-        opacity: 0,
-        duration: settings.duration * 0.8,
+      // Text animation
+      gsap.to(textRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
         ease: "power3.out",
-        stagger: {
-          each: settings.stagger,
-          from: "start"
-        },
-        scrollTrigger: gsapOptimizer.createOptimizedScrollTrigger(sectionRef.current, {
-          start: "top 70%",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
           once: true
-        }),
+        },
       });
 
-      // Conditionally run floating animations based on device performance
-      if (settings.effects) {
-        const floatingAnimation = gsap.to(".floating-element", {
-          y: "random(-20, 20)",
-          x: "random(-10, 10)",
-          duration: "random(3, 6)",
-          ease: "none",
-          repeat: -1,
-          yoyo: true,
-          stagger: 0.5,
-        });
-        
-        return () => {
-          textAnimation.execute().kill();
-          imageAnimation.execute().kill();
-          socialStagger.kill();
-          floatingAnimation.kill();
-        };
-      } else {
-        return () => {
-          textAnimation.execute().kill();
-          imageAnimation.execute().kill();
-          socialStagger.kill();
-        };
-      }
+      // Image animation
+      gsap.to(imageRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true
+        },
+      });
+
+      // Social and CTA stagger animation
+      gsap.to([socialRef.current, ctaRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true
+        },
+      });
+
+      // Floating animation for decorative elements
+      gsap.to(".floating-element", {
+        y: "random(-20, 20)",
+        x: "random(-10, 10)",
+        duration: "random(3, 6)",
+        ease: "none",
+        repeat: -1,
+        yoyo: true,
+        stagger: 0.5,
+      });
     }, sectionRef);
 
-    // Performance cleanup
-    return () => {
-      ctx.revert();
-      performanceMonitor.stopFPSMonitoring();
-      
-      // Log performance metrics
-      const report = performanceMonitor.getPerformanceReport();
-      console.log('Banner Performance:', report);
-    };
+    return () => ctx.revert();
   }, []);
 
   const socialLinks = [

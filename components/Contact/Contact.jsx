@@ -102,52 +102,60 @@ const Contact = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Set initial states for all elements
+    // Set initial states for all elements to start invisible
     gsap.set(cardsRef.current, {
-      opacity: 1,
-      y: 0,
+      opacity: 0,
+      y: 30,
     });
 
     gsap.set(formRef.current, {
-      opacity: 1,
-      y: 0,
+      opacity: 0,
+      y: 30,
+    });
+
+    gsap.set(headerRef.current, {
+      opacity: 0,
+      y: 30,
     });
 
     const ctx = gsap.context(() => {
       // Header animation
-      gsap.from(headerRef.current, {
-        y: 30,
-        opacity: 0,
+      gsap.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: headerRef.current,
           start: "top 80%",
+          once: true,
         },
       });
 
-      // Cards stagger animation with better control
-      gsap.from(cardsRef.current, {
-        y: 30,
-        opacity: 0,
+      // Cards stagger animation
+      gsap.to(cardsRef.current, {
+        opacity: 1,
+        y: 0,
         duration: 0.6,
         ease: "power3.out",
         stagger: 0.15,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 75%",
+          once: true,
         },
       });
 
       // Form animation
-      gsap.from(formRef.current, {
-        y: 30,
-        opacity: 0,
+      gsap.to(formRef.current, {
+        opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: formRef.current,
           start: "top 80%",
+          once: true,
         },
         onComplete: () => setIsLoaded(true),
       });

@@ -122,7 +122,12 @@ const Projects = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Set initial states for all cards
+    // Set initial states for all elements
+    gsap.set(headerRef.current, {
+      opacity: 0,
+      y: 30,
+    });
+
     gsap.set(cardsRef.current, {
       opacity: 0,
       y: 50,
@@ -131,18 +136,19 @@ const Projects = () => {
 
     const ctx = gsap.context(() => {
       // Header animation
-      gsap.from(headerRef.current, {
-        y: 30,
-        opacity: 0,
+      gsap.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: headerRef.current,
           start: "top 80%",
+          once: true,
         },
       });
 
-      // Cards entrance with enhanced stagger
+      // Cards entrance animation
       gsap.to(cardsRef.current, {
         opacity: 1,
         y: 0,
@@ -153,7 +159,7 @@ const Projects = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 75%",
-          once: true, // Only animate once
+          once: true,
         },
         onComplete: () => setIsLoaded(true),
       });

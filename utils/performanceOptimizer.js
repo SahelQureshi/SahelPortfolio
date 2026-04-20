@@ -3,6 +3,12 @@
  * Industry-standard performance monitoring and optimization tools
  */
 
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
+
 // Performance monitoring class
 export class PerformanceMonitor {
   constructor() {

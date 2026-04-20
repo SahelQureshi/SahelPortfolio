@@ -191,6 +191,11 @@ const Skills = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Set initial states for all elements
+    gsap.set(headerRef.current, {
+      opacity: 0,
+      y: 30,
+    });
+
     gsap.set(cardsRef.current, {
       opacity: 0,
       y: 50,
@@ -208,19 +213,20 @@ const Skills = () => {
     }
 
     const ctx = gsap.context(() => {
-      // Enhanced header animation
-      gsap.from(headerRef.current, {
-        y: 30,
-        opacity: 0,
+      // Header animation
+      gsap.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: headerRef.current,
           start: "top 80%",
+          once: true,
         },
       });
 
-      // Enhanced cards stagger with better effects
+      // Cards entrance animation
       gsap.to(cardsRef.current, {
         opacity: 1,
         y: 0,

@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Star,
   Quote,
@@ -97,6 +99,7 @@ const Reviews = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const sectionRef = useRef(null);
   const cardRef = useRef(null);
+  const headerRef = useRef(null);
 
   // Smooth scroll to contact section
   const scrollToContact = () => {
@@ -111,6 +114,53 @@ const Reviews = () => {
       });
     }
   };
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Set initial states for all elements
+    gsap.set(headerRef.current, {
+      opacity: 0,
+      y: 30,
+    });
+
+    gsap.set(cardRef.current, {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    });
+
+    const ctx = gsap.context(() => {
+      // Header animation
+      gsap.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+
+      // Testimonial card animation
+      gsap.to(cardRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const currentTestimonial = testimonialsData[currentIndex];
   const totalTestimonials = testimonialsData.length;
@@ -173,7 +223,7 @@ const Reviews = () => {
 
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
-        <div className="mx-auto max-w-4xl text-center mb-16">
+        <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
             <MessageSquare className="h-5 w-5 text-fuchsia-300 animate-pulse" />
             <span className="font-medium">Client Testimonials</span>

@@ -107,56 +107,51 @@ const About = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Set initial states to ensure visibility
+    // Set initial states to ensure elements start invisible
     gsap.set([headerRef.current, profileRef.current, contentRef.current, quoteRef.current], {
-      opacity: 1,
-      y: 0,
-      scale: 1
+      opacity: 0,
+      y: 30,
+      scale: 0.95
     });
 
     // Set initial state for stats elements
     if (statsRef.current) {
       gsap.set(statsRef.current, {
-        opacity: 1,
-        y: 0
+        opacity: 0,
+        y: 30
       });
     }
 
     const ctx = gsap.context(() => {
-      // Header animation - using gsap.fromTo for better control
+      // Header animation - using gsap.to for better control
       if (headerRef.current) {
-        gsap.fromTo(headerRef.current, 
-          { y: 30, opacity: 0 }, // from
-          { // to
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headerRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse"
-            },
-          }
-        );
+        gsap.to(headerRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 80%",
+            once: true
+          },
+        });
       }
 
       // Profile image animation
       if (profileRef.current) {
-        gsap.fromTo(profileRef.current,
-          { scale: 0.8, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1.2,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: profileRef.current,
-              start: "top 75%",
-              toggleActions: "play none none reverse"
-            },
-          }
-        );
+        gsap.to(profileRef.current, {
+          scale: 1,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: profileRef.current,
+            start: "top 75%",
+            once: true
+          },
+        });
       }
 
       // Stats animation - fixed for array handling
@@ -167,21 +162,18 @@ const About = () => {
         const validRefs = statsRef.current.filter(ref => ref !== null);
         
         if (validRefs.length > 0) {
-          gsap.fromTo(validRefs,
-            { y: 30, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              ease: "power3.out",
-              stagger: 0.15,
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top 75%",
-                toggleActions: "play none none reverse"
-              },
-            }
-          );
+          gsap.to(validRefs, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              once: true
+            },
+          });
         }
       };
 
@@ -190,38 +182,34 @@ const About = () => {
 
       // Content animation
       if (contentRef.current) {
-        gsap.fromTo(contentRef.current,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: contentRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse"
-            },
-          }
-        );
+        gsap.to(contentRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: "top 80%",
+            once: true
+          },
+        });
       }
 
       // Quote animation
       if (quoteRef.current) {
-        gsap.fromTo(quoteRef.current,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: quoteRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse"
-            },
-          }
-        );
+        gsap.to(quoteRef.current, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: quoteRef.current,
+            start: "top 80%",
+            once: true
+          },
+        });
       }
 
       // Add floating animation to decorative elements
