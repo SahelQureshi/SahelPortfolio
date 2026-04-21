@@ -1,9 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { performanceMonitor, gsapOptimizer, ResourceOptimizer } from "@/utils/performanceOptimizer";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Github,
   Linkedin,
@@ -56,81 +53,68 @@ const Banner = () => {
     }
   };
 
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Optimized Intersection Observer for scroll animations
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
 
-    // Set initial states for all elements
-    gsap.set(textRef.current, {
-      opacity: 0,
-      y: 100,
-    });
-
-    gsap.set(imageRef.current, {
-      opacity: 0,
-      scale: 0.8,
-    });
-
-    gsap.set([socialRef.current, ctaRef.current], {
-      opacity: 0,
-      y: 30,
-    });
-
-    const ctx = gsap.context(() => {
-      // Text animation
-      gsap.to(textRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true
-        },
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('banner-text')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('banner-image')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('banner-social') || element.classList.contains('banner-cta')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          }
+          
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+          }
+        }
       });
+    };
 
-      // Image animation
-      gsap.to(imageRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true
-        },
-      });
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-      // Social and CTA stagger animation
-      gsap.to([socialRef.current, ctaRef.current], {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          once: true
-        },
-      });
+    // Observe elements
+    if (textRef.current) {
+      textRef.current.classList.add('banner-text');
+      observer.observe(textRef.current);
+    }
 
-      // Floating animation for decorative elements
-      gsap.to(".floating-element", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        duration: "random(3, 6)",
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.5,
-      });
-    }, sectionRef);
+    if (imageRef.current) {
+      imageRef.current.classList.add('banner-image');
+      observer.observe(imageRef.current);
+    }
 
-    return () => ctx.revert();
-  }, []);
+    if (socialRef.current) {
+      socialRef.current.classList.add('banner-social');
+      observer.observe(socialRef.current);
+    }
+
+    if (ctaRef.current) {
+      ctaRef.current.classList.add('banner-cta');
+      observer.observe(ctaRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isLoaded]);
 
   const socialLinks = [
     {
@@ -167,16 +151,16 @@ const Banner = () => {
     >
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl animate-pulse floating-element" />
-        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-600/20 blur-3xl animate-pulse floating-element" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/15 blur-3xl animate-pulse floating-element" style={{ animationDelay: '4s' }} />
+        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl css-float" />
+        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-cyan-600/20 blur-3xl css-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/15 blur-3xl css-float" style={{ animationDelay: '4s' }} />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-purple-500/10 to-transparent" />
 
         {/* Additional decorative elements */}
-        <div className="absolute top-20 left-20 w-2 h-2 rounded-full bg-purple-400 animate-ping floating-element" />
-        <div className="absolute bottom-32 right-32 w-3 h-3 rounded-full bg-cyan-400 animate-pulse floating-element" />
-        <div className="absolute top-1/3 left-1/4 w-1 h-1 rounded-full bg-pink-400 animate-ping floating-element" />
+        <div className="absolute top-20 left-20 w-2 h-2 rounded-full bg-purple-400 css-ping" />
+        <div className="absolute bottom-32 right-32 w-3 h-3 rounded-full bg-cyan-400 css-pulse" />
+        <div className="absolute top-1/3 left-1/4 w-1 h-1 rounded-full bg-pink-400 css-ping" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">

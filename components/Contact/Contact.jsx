@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Mail,
   Phone,
@@ -25,6 +23,67 @@ const Contact = () => {
   const cardsRef = useRef([]);
   const headerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Optimized Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
+
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('contact-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('contact-card')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+              const cardIndex = Array.from(element.parentNode.children).indexOf(element);
+              element.style.setProperty('--stagger-delay', `${cardIndex * 0.15}s`);
+            }
+          } else if (element.classList.contains('contact-form')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          }
+          
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('contact-header');
+      observer.observe(headerRef.current);
+    }
+
+    if (formRef.current) {
+      formRef.current.classList.add('contact-form');
+      observer.observe(formRef.current);
+    }
+
+    // Observe cards elements
+    cardsRef.current.forEach(card => {
+      if (card) {
+        card.classList.add('contact-card');
+        observer.observe(card);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [isLoaded]);
 
   // Smooth scroll to projects section
   const scrollToProjects = () => {
@@ -98,71 +157,6 @@ const Contact = () => {
       color: 'from-blue-500/20 to-cyan-500/20'
     }
   ];
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Set initial states for all elements to start invisible
-    gsap.set(cardsRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    gsap.set(formRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    gsap.set(headerRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.to(headerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      });
-
-      // Cards stagger animation
-      gsap.to(cardsRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
-        },
-      });
-
-      // Form animation
-      gsap.to(formRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: formRef.current,
-          start: "top 80%",
-          once: true,
-        },
-        onComplete: () => setIsLoaded(true),
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   const handleInputChange = (e) => {
     setFormData({

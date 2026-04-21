@@ -1,0 +1,529 @@
+/* Performance-optimized CSS animations to replace GSAP */
+
+/* Floating background elements - optimized with transform instead of position changes */
+.css-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(5px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-5px) translateX(3px);
+  }
+}
+
+/* Scroll-triggered animations using Intersection Observer */
+.skills-header,
+.skill-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.skills-header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+/* Progress bar animations */
+.progress-bar {
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--animation-delay, 0s);
+}
+
+.progress-bar.animate-progress {
+  width: var(--target-width, 0%);
+}
+
+/* Optimized hover animations */
+.skill-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .css-float,
+  .skills-header,
+  .skill-card,
+  .progress-bar {
+    animation: none;
+    transition: none;
+  }
+  
+  .skills-header,
+  .skill-card {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .progress-bar {
+    width: var(--target-width, 0%);
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  .css-float {
+    animation-duration: 8s; /* Slower animation on mobile */
+  }
+  
+  .skill-card:hover {
+    transform: translateY(-4px) scale(1.01); /* Subtle hover on mobile */
+  }
+}
+
+/* Banner-specific animations */
+.banner-text,
+.banner-image,
+.banner-social,
+.banner-cta {
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.banner-text {
+  transform: translateY(100px);
+}
+
+.banner-image {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.banner-social,
+.banner-cta {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.banner-text.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-image.animate-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.banner-social.animate-in,
+.banner-cta.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-social.animate-in {
+  transition-delay: 0.2s;
+}
+
+.banner-cta.animate-in {
+  transition-delay: 0.4s;
+}
+
+/* Additional decorative animations */
+.css-ping {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.css-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.css-bounce {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* About-specific animations */
+.about-header,
+.about-profile,
+.about-stat,
+.about-content,
+.about-quote {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.about-header,
+.about-content,
+.about-quote {
+  transform: translateY(30px) scale(0.95);
+}
+
+.about-profile {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.about-stat {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.about-header.animate-in,
+.about-content.animate-in,
+.about-quote.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.about-profile.animate-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.about-stat.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+/* Reviews-specific animations */
+.reviews-header,
+.reviews-card {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reviews-header {
+  transform: translateY(30px);
+}
+
+.reviews-card {
+  transform: translateY(50px) scale(0.95);
+}
+
+.reviews-header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reviews-card.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Contact-specific animations */
+.contact-header,
+.contact-card,
+.contact-form {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.contact-header,
+.contact-form {
+  transform: translateY(30px);
+}
+
+.contact-card {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.contact-header.animate-in,
+.contact-form.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+/* Projects-specific animations */
+.projects-header,
+.projects-card {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.projects-header {
+  transform: translateY(30px);
+}
+
+.projects-card {
+  transform: translateY(50px) scale(0.95);
+}
+
+.projects-header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.projects-card.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+/* Navbar-specific animations */
+.navbar-main {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-main.scrolled {
+  transform: translateY(-10px);
+}
+
+/* Mobile menu animations */
+.mobile-menu {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mobile-menu-open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.mobile-menu-closed {
+  transform: translateX(-300px);
+  opacity: 0;
+}
+
+/* Footer-specific animations */
+.footer-content,
+.footer-social {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.footer-content {
+  transform: translateY(50px);
+}
+
+.footer-social {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.footer-content.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-social.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Directional animation classes */
+.animate-from-top {
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-from-bottom {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-from-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-from-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-from-scale {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-from-rotate {
+  opacity: 0;
+  transform: rotate(-10deg) scale(0.8);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Animation completion states */
+.animate-from-top.animate-in,
+.animate-from-bottom.animate-in,
+.animate-from-left.animate-in,
+.animate-from-right.animate-in,
+.animate-from-scale.animate-in,
+.animate-from-rotate.animate-in {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1) rotate(0);
+}
+
+/* Education-specific animations */
+.education-header,
+.education-timeline,
+.education-card {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.education-header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.education-timeline.animate-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.education-card.animate-in {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* Experience-specific animations */
+.experience-header,
+.experience-timeline,
+.experience-card {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.experience-header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.experience-timeline.animate-in {
+  opacity: 1;
+  transform: scale(1) rotate(0);
+}
+
+.experience-card.animate-in {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* GPU-accelerated animations */
+.skills-header,
+.skill-card,
+.progress-bar,
+.banner-text,
+.banner-image,
+.banner-social,
+.banner-cta,
+.about-header,
+.about-profile,
+.about-stat,
+.about-content,
+.about-quote,
+.reviews-header,
+.reviews-card,
+.contact-header,
+.contact-card,
+.contact-form,
+.projects-header,
+.projects-card,
+.navbar-main,
+.mobile-menu,
+.footer-content,
+.footer-social,
+.animate-from-top,
+.animate-from-bottom,
+.animate-from-left,
+.animate-from-right,
+.animate-from-scale,
+.animate-from-rotate,
+.education-header,
+.education-timeline,
+.education-card,
+.experience-header,
+.experience-timeline,
+.experience-card {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Remove will-change after animation completes */
+.skill-card.animate-in,
+.progress-bar.animate-progress,
+.banner-text.animate-in,
+.banner-image.animate-in,
+.banner-social.animate-in,
+.banner-cta.animate-in,
+.about-header.animate-in,
+.about-profile.animate-in,
+.about-stat.animate-in,
+.about-content.animate-in,
+.about-quote.animate-in,
+.reviews-header.animate-in,
+.reviews-card.animate-in,
+.contact-header.animate-in,
+.contact-card.animate-in,
+.contact-form.animate-in,
+.projects-header.animate-in,
+.projects-card.animate-in,
+.mobile-menu-open,
+.mobile-menu-closed,
+.footer-content.animate-in,
+.footer-social.animate-in,
+.animate-from-top.animate-in,
+.animate-from-bottom.animate-in,
+.animate-from-left.animate-in,
+.animate-from-right.animate-in,
+.animate-from-scale.animate-in,
+.animate-from-rotate.animate-in,
+.education-header.animate-in,
+.education-timeline.animate-in,
+.education-card.animate-in,
+.experience-header.animate-in,
+.experience-timeline.animate-in,
+.experience-card.animate-in {
+  will-change: auto;
+}

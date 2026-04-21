@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   Sparkles,
   FolderGit2,
@@ -61,6 +59,58 @@ const Projects = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isFilterChanging, setIsFilterChanging] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Optimized Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
+
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('projects-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('projects-card')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+              const cardIndex = Array.from(element.parentNode.children).indexOf(element);
+              element.style.setProperty('--stagger-delay', `${cardIndex * 0.15}s`);
+            }
+          }
+          
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('projects-header');
+      observer.observe(headerRef.current);
+    }
+
+    // Observe cards elements
+    cardsRef.current.forEach(card => {
+      if (card) {
+        card.classList.add('projects-card');
+        observer.observe(card);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [isLoaded]);
   const [currentImageIndex, setCurrentImageIndex] = useState({});
 
   const allTags = useMemo(() => {
@@ -119,55 +169,7 @@ const Projects = () => {
     }));
   };
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Set initial states for all elements
-    gsap.set(headerRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    gsap.set(cardsRef.current, {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    });
-
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.to(headerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      });
-
-      // Cards entrance animation
-      gsap.to(cardsRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
-        },
-        onComplete: () => setIsLoaded(true),
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []); // Only run once on mount
-
+  
   // Enhanced 3D hover tilt with better sensitivity
   const onTilt = (e, index) => {
     setHoveredCard(index);

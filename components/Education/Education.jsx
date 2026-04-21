@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { GraduationCap, Calendar, MapPin, Award, BookOpen, Sparkles, Trophy, Star, ChevronRight, Play } from "lucide-react";
 
 const education = [
@@ -60,48 +58,60 @@ const Education = () => {
     }
   };
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    // Optimized Intersection Observer for scroll animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
 
-    const ctx = gsap.context(() => {
-      // Enhanced header animation
-      gsap.from(headerRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-        },
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('education-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('education-timeline')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('education-card')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          }
+        }
       });
+    };
 
-      // Timeline animation
-      gsap.from(timelineRef.current, {
-        scaleY: 0,
-        duration: 1.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        },
-      });
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-      // Cards stagger animation
-      gsap.from(cardsRef.current, {
-        x: -50,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-        onComplete: () => setIsVisible(true),
-      });
-    }, sectionRef);
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('education-header', 'animate-from-top');
+      observer.observe(headerRef.current);
+    }
 
-    return () => ctx.revert();
+    if (timelineRef.current) {
+      timelineRef.current.classList.add('education-timeline', 'animate-from-scale');
+      observer.observe(timelineRef.current);
+    }
+
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        // Alternate animation directions for visual interest
+        const animationClass = index % 2 === 0 ? 'animate-from-left' : 'animate-from-right';
+        card.classList.add('education-card', animationClass);
+        card.style.transitionDelay = `${index * 0.15}s`;
+        observer.observe(card);
+      }
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -112,9 +122,9 @@ const Education = () => {
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-emerald-500/30 to-cyan-600/20 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/15 blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-emerald-500/30 to-cyan-600/20 blur-3xl css-float" />
+        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl css-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/15 blur-3xl css-float" style={{ animationDelay: '4s' }} />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
       </div>

@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 
 import {
   Phone,
@@ -104,154 +102,112 @@ const About = () => {
     }
   ];
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Optimized Intersection Observer for scroll animations
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
 
-    // Set initial states to ensure elements start invisible
-    gsap.set([headerRef.current, profileRef.current, contentRef.current, quoteRef.current], {
-      opacity: 0,
-      y: 30,
-      scale: 0.95
-    });
-
-    // Set initial state for stats elements
-    if (statsRef.current) {
-      gsap.set(statsRef.current, {
-        opacity: 0,
-        y: 30
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('about-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('about-profile')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('about-stat')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+              const statIndex = Array.from(element.parentNode.children).indexOf(element);
+              element.style.setProperty('--stagger-delay', `${statIndex * 0.15}s`);
+            }
+          } else if (element.classList.contains('about-content')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('about-quote')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          }
+          
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+          }
+        }
       });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('about-header');
+      observer.observe(headerRef.current);
     }
 
-    const ctx = gsap.context(() => {
-      // Header animation - using gsap.to for better control
-      if (headerRef.current) {
-        gsap.to(headerRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headerRef.current,
-            start: "top 80%",
-            once: true
-          },
-        });
+    if (profileRef.current) {
+      profileRef.current.classList.add('about-profile');
+      observer.observe(profileRef.current);
+    }
+
+    if (contentRef.current) {
+      contentRef.current.classList.add('about-content');
+      observer.observe(contentRef.current);
+    }
+
+    if (quoteRef.current) {
+      quoteRef.current.classList.add('about-quote');
+      observer.observe(quoteRef.current);
+    }
+
+    // Observe stats elements
+    statsRef.current.forEach(stat => {
+      if (stat) {
+        stat.classList.add('about-stat');
+        observer.observe(stat);
       }
+    });
 
-      // Profile image animation
-      if (profileRef.current) {
-        gsap.to(profileRef.current, {
-          scale: 1,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: profileRef.current,
-            start: "top 75%",
-            once: true
-          },
-        });
-      }
-
-      // Stats animation - fixed for array handling
-      const animateStats = () => {
-        if (!statsRef.current || statsRef.current.length === 0) return;
-
-        // Filter out null refs
-        const validRefs = statsRef.current.filter(ref => ref !== null);
-        
-        if (validRefs.length > 0) {
-          gsap.to(validRefs, {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power3.out",
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 75%",
-              once: true
-            },
-          });
-        }
-      };
-
-      // Use setTimeout to ensure refs are populated
-      setTimeout(animateStats, 100);
-
-      // Content animation
-      if (contentRef.current) {
-        gsap.to(contentRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: contentRef.current,
-            start: "top 80%",
-            once: true
-          },
-        });
-      }
-
-      // Quote animation
-      if (quoteRef.current) {
-        gsap.to(quoteRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: quoteRef.current,
-            start: "top 80%",
-            once: true
-          },
-        });
-      }
-
-      // Add floating animation to decorative elements
-      gsap.to(".floating-element", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        duration: "random(3, 6)",
-        ease: "none",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.5,
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    return () => observer.disconnect();
+  }, [isLoaded]);
 
   return (
     <section ref={sectionRef} id="about" className="relative py-24 md:py-32 ">
       {/* Enhanced background with multiple animated layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-600/20 blur-3xl floating-element animate-pulse" />
+        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-600/20 blur-3xl css-float" />
         <div
-          className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-pink-600/20 blur-3xl floating-element animate-pulse"
+          className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-pink-600/20 blur-3xl css-float"
           style={{ animationDelay: "2s" }}
         />
         <div
-          className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/15 blur-3xl floating-element animate-pulse"
+          className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/15 blur-3xl css-float"
           style={{ animationDelay: "4s" }}
         />
         <div
-          className="absolute top-1/2 left-1/2 h-48 w-48 rounded-full bg-gradient-to-br from-purple-500/15 to-rose-500/10 blur-3xl floating-element animate-pulse"
+          className="absolute top-1/2 left-1/2 h-48 w-48 rounded-full bg-gradient-to-br from-purple-500/15 to-rose-500/10 blur-3xl css-float"
           style={{ animationDelay: "6s" }}
         />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/10 to-transparent" />
 
         {/* Additional floating particles */}
-        <div className="absolute top-20 left-20 w-2 h-2 rounded-full bg-blue-400 floating-element animate-ping" />
-        <div className="absolute bottom-32 right-32 w-3 h-3 rounded-full bg-purple-400 floating-element animate-pulse" />
-        <div className="absolute top-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 floating-element animate-bounce" />
-        <div className="absolute bottom-1/4 right-1/3 w-2.5 h-2.5 rounded-full bg-pink-400 floating-element animate-ping" />
+        <div className="absolute top-20 left-20 w-2 h-2 rounded-full bg-blue-400 css-ping" />
+        <div className="absolute bottom-32 right-32 w-3 h-3 rounded-full bg-purple-400 css-pulse" />
+        <div className="absolute top-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 css-bounce" />
+        <div className="absolute bottom-1/4 right-1/3 w-2.5 h-2.5 rounded-full bg-pink-400 css-ping" />
       </div>
 
       <div className="container mx-auto px-6">

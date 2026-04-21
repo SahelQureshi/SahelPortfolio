@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Star,
   Quote,
@@ -115,52 +113,54 @@ const Reviews = () => {
     }
   };
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Optimized Intersection Observer for scroll animations
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3]
+    };
 
-    // Set initial states for all elements
-    gsap.set(headerRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    gsap.set(cardRef.current, {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    });
-
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.to(headerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-          once: true,
-        },
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('reviews-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('reviews-card')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          }
+          
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+          }
+        }
       });
+    };
 
-      // Testimonial card animation
-      gsap.to(cardRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
-        },
-      });
-    }, sectionRef);
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-    return () => ctx.revert();
-  }, []);
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('reviews-header');
+      observer.observe(headerRef.current);
+    }
+
+    if (cardRef.current) {
+      cardRef.current.classList.add('reviews-card');
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isLoaded]);
 
   const currentTestimonial = testimonialsData[currentIndex];
   const totalTestimonials = testimonialsData.length;

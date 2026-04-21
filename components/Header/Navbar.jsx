@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Menu,
   X,
@@ -41,8 +39,6 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    
     const handleResize = () => {
       const mobile = window.innerWidth <= 991;
       setIsMobile(mobile);
@@ -83,30 +79,8 @@ const Navbar = () => {
     handleResize();
     handleScroll();
 
-    // GSAP animations
-    gsap.set(navbarRef.current, {
-      y: 0,
-      opacity: 1,
-    });
-
-    gsap.set(logoRef.current, {
-      scale: 1,
-    });
-
-    // Add scroll-based navbar animation
-    const scrollAnimation = gsap.to(navbarRef.current, {
-      y: scrolled ? -10 : 0,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-
     // Add event listeners
     window.addEventListener("resize", handleResize);
-    
-    // Listen to ScrollTrigger events (works with ScrollSmoother)
-    ScrollTrigger.addEventListener("refresh", handleScroll);
-    ScrollTrigger.addEventListener("scrollStart", handleScroll);
-    ScrollTrigger.addEventListener("scrollEnd", handleScroll);
     
     // Also add native scroll as fallback
     window.addEventListener("scroll", handleScroll);
@@ -114,30 +88,19 @@ const Navbar = () => {
     // Clean up
     return () => {
       window.removeEventListener("resize", handleResize);
-      ScrollTrigger.removeEventListener("refresh", handleScroll);
-      ScrollTrigger.removeEventListener("scrollStart", handleScroll);
-      ScrollTrigger.removeEventListener("scrollEnd", handleScroll);
       window.removeEventListener("scroll", handleScroll);
-      scrollAnimation.kill();
     };
   }, [scrolled]);
 
   useEffect(() => {
-    // Animate mobile menu
+    // Animate mobile menu with CSS classes
     if (isMobile && mobileMenuRef.current) {
       if (isOpen) {
-        gsap.fromTo(
-          mobileMenuRef.current,
-          { x: -300, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
-        );
+        mobileMenuRef.current.classList.add('mobile-menu-open');
+        mobileMenuRef.current.classList.remove('mobile-menu-closed');
       } else {
-        gsap.to(mobileMenuRef.current, {
-          x: -300,
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in",
-        });
+        mobileMenuRef.current.classList.add('mobile-menu-closed');
+        mobileMenuRef.current.classList.remove('mobile-menu-open');
       }
     }
   }, [isOpen, isMobile]);

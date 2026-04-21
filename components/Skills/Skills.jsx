@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Code2,
   Layout,
@@ -161,98 +159,82 @@ const Skills = () => {
     e.currentTarget.style.transform = "";
   };
 
-  // Function to animate progress bars - FIXED VERSION
-  const animateProgressBars = (barsArray) => {
+  // Optimized progress bar animation using CSS classes
+  const animateProgressBars = useCallback((barsArray) => {
     if (!barsArray || barsArray.length === 0) return;
     
     barsArray.forEach((bar, index) => {
       if (!bar) return;
       const level = Number(bar.getAttribute("data-level") || 0);
       
-      // Kill any existing animations on this bar
-      gsap.killTweensOf(bar);
+      // Reset and animate with CSS
+      bar.style.width = "0%";
+      bar.style.setProperty('--target-width', `${level}%`);
+      bar.style.setProperty('--animation-delay', `${index * 0.05}s`);
       
-      // Animate from current width to target width
-      gsap.fromTo(
-        bar,
-        { width: "0%" },
-        {
-          width: `${level}%`,
-          duration: 1.2,
-          ease: "power3.out",
-          delay: index * 0.05,
-          overwrite: true,
-        }
-      );
+      // Trigger CSS animation
+      requestAnimationFrame(() => {
+        bar.classList.add('animate-progress');
+      });
     });
-  };
+  }, []);
 
+  // Optimized Intersection Observer for scroll animations
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.1, 0.3, 0.6]
+    };
 
-    // Set initial states for all elements
-    gsap.set(headerRef.current, {
-      opacity: 0,
-      y: 30,
-    });
-
-    gsap.set(cardsRef.current, {
-      opacity: 0,
-      y: 50,
-      rotateX: -10,
-      transformOrigin: "top center",
-    });
-
-    // Set initial width for all bars to 0%
-    if (barsRef.current.length > 0) {
-      barsRef.current.forEach((bar) => {
-        if (bar) {
-          gsap.set(bar, { width: "0%" });
+    const handleIntersection = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const threshold = entry.intersectionRatio;
+          
+          if (element.classList.contains('skills-header')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+            }
+          } else if (element.classList.contains('skill-card')) {
+            if (threshold > 0.1) {
+              element.classList.add('animate-in');
+              const cardIndex = Array.from(element.parentNode.children).indexOf(element);
+              element.style.setProperty('--stagger-delay', `${cardIndex * 0.15}s`);
+            }
+          }
+          
+          // Animate progress bars when cards are visible
+          if (threshold > 0.3 && !isLoaded) {
+            setIsLoaded(true);
+            setTimeout(() => {
+              animateProgressBars(barsRef.current);
+            }, 100);
+          }
         }
       });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+
+    // Observe elements
+    if (headerRef.current) {
+      headerRef.current.classList.add('skills-header');
+      observer.observe(headerRef.current);
     }
 
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.to(headerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      });
+    cardsRef.current.forEach(card => {
+      if (card) {
+        card.classList.add('skill-card');
+        observer.observe(card);
+      }
+    });
 
-      // Cards entrance animation
-      gsap.to(cardsRef.current, {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
-        },
-        onComplete: () => {
-          setIsLoaded(true);
-          // Animate progress bars after cards are visible
-          setTimeout(() => {
-            animateProgressBars(barsRef.current);
-          }, 100);
-        },
-      });
-    }, sectionRef);
+    return () => observer.disconnect();
+  }, [isLoaded, animateProgressBars]);
 
-    return () => ctx.revert();
-  }, []); // Only run once on mount
-
-  // Handle filter changes with progress bar re-animation
+  // Handle filter changes with optimized progress bar re-animation
   const handleFilterChange = (category) => {
     setIsFilterChanging(true);
     setActiveCat(category);
@@ -267,7 +249,8 @@ const Skills = () => {
           if (barsRef.current.length > 0) {
             barsRef.current.forEach((bar) => {
               if (bar) {
-                gsap.set(bar, { width: "0%" });
+                bar.classList.remove('animate-progress');
+                bar.style.width = "0%";
               }
             });
           }
@@ -301,13 +284,13 @@ const Skills = () => {
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl css-float" />
         <div
-          className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl animate-pulse"
+          className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl css-float"
           style={{ animationDelay: "2s" }}
         />
         <div
-          className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl animate-pulse"
+          className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl css-float"
           style={{ animationDelay: "4s" }}
         />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -562,8 +545,8 @@ const Skills = () => {
                                     }
                                   }}
                                   data-level={skill.level}
-                                  className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg`}
-                                  style={{ width: "0%" }}
+                                  className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg progress-bar`}
+                                  style={{ width: "0%", '--target-width': `${skill.level}%` }}
                                 />
                                 {/* Animated shine effect */}
                                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
