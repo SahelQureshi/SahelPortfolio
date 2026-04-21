@@ -25,6 +25,22 @@ const Banner = () => {
   const socialRef = useRef(null);
   const ctaRef = useRef(null);
 
+  // Typing animation state
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const designations = [
+    
+    "MERN Stack Developer", 
+    "React.js Specialist",
+    "React Native Developer",
+    "Next.js Full Stack Developer",
+    "Frontend Developer",
+  ];
+
+  const currentWord = designations[currentWordIndex];
+
   // Smooth scroll to contact section
   const scrollToContact = () => {
     const element = document.querySelector('#contact');
@@ -54,6 +70,44 @@ const Banner = () => {
   };
 
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Typing animation effect
+  useEffect(() => {
+    const typingSpeed = 100; // milliseconds per character
+    const deletingSpeed = 50; // milliseconds per character when deleting
+    const pauseDuration = 2000; // pause between words
+    
+    if (isTyping) {
+      if (displayedText.length < currentWord.length) {
+        // Typing effect
+        const timeout = setTimeout(() => {
+          setDisplayedText(currentWord.slice(0, displayedText.length + 1));
+        }, typingSpeed);
+        return () => clearTimeout(timeout);
+      } else {
+        // Word completed, pause before deleting
+        const timeout = setTimeout(() => {
+          setIsTyping(false);
+        }, pauseDuration);
+        return () => clearTimeout(timeout);
+      }
+    } else {
+      if (displayedText.length > 0) {
+        // Deleting effect
+        const timeout = setTimeout(() => {
+          setDisplayedText(displayedText.slice(0, -1));
+        }, deletingSpeed);
+        return () => clearTimeout(timeout);
+      } else {
+        // Move to next word
+        const timeout = setTimeout(() => {
+          setCurrentWordIndex((prev) => (prev + 1) % designations.length);
+          setIsTyping(true);
+        }, 500);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [displayedText, isTyping, currentWord, designations.length]);
 
   // Optimized Intersection Observer for scroll animations
   useEffect(() => {
@@ -200,7 +254,8 @@ const Banner = () => {
             {/* Role and Description */}
             <div className="space-y-6 lg:text-left text-center">
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white">
-                Full Stack Web Developer
+                {displayedText}
+                <span className="inline-block w-1 h-8 bg-cyan-400 ml-1 animate-pulse" />
               </h3>
 
               <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">

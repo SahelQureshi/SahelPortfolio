@@ -34,6 +34,20 @@ const About = () => {
   const quoteRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState(1024); // Default to desktop
   const [isClient, setIsClient] = useState(false);
+  
+  // Typing animation state
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const designations = [
+    "Passionate Full Stack Developer",
+    "Creative Problem Solver",
+    "Tech Enthusiast",
+    "Code Architect"
+  ];
+
+  const currentWord = designations[currentWordIndex];
 
   // Handle client-side mounting
   useEffect(() => {
@@ -56,6 +70,46 @@ const About = () => {
     window.addEventListener('resize', updateScreenWidth);
     return () => window.removeEventListener('resize', updateScreenWidth);
   }, [isClient]);
+
+  // Typing animation effect
+  useEffect(() => {
+    if (!isClient) return;
+    
+    const typingSpeed = 100; // milliseconds per character
+    const deletingSpeed = 50; // milliseconds per character when deleting
+    const pauseDuration = 2000; // pause between words
+    
+    if (isTyping) {
+      if (displayedText.length < currentWord.length) {
+        // Typing effect
+        const timeout = setTimeout(() => {
+          setDisplayedText(currentWord.slice(0, displayedText.length + 1));
+        }, typingSpeed);
+        return () => clearTimeout(timeout);
+      } else {
+        // Word completed, pause before deleting
+        const timeout = setTimeout(() => {
+          setIsTyping(false);
+        }, pauseDuration);
+        return () => clearTimeout(timeout);
+      }
+    } else {
+      if (displayedText.length > 0) {
+        // Deleting effect
+        const timeout = setTimeout(() => {
+          setDisplayedText(displayedText.slice(0, -1));
+        }, deletingSpeed);
+        return () => clearTimeout(timeout);
+      } else {
+        // Move to next word
+        const timeout = setTimeout(() => {
+          setCurrentWordIndex((prev) => (prev + 1) % designations.length);
+          setIsTyping(true);
+        }, 500);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [displayedText, isTyping, currentWord, designations.length, isClient]);
 
   // Determine if animations should be disabled (screen width < 991px)
   const disableBackgroundAnimations = isClient && screenWidth < 991;
@@ -320,7 +374,8 @@ const About = () => {
           <div ref={contentRef} className="lg:col-span-7 space-y-8 z-10">
             <div>
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Passionate <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Full Stack Developer</span>
+                {displayedText}
+                <span className="inline-block w-1 h-8 bg-cyan-400 ml-1 animate-pulse" />
               </h3>
 
               <div className="space-y-6 text-white/80 text-lg leading-relaxed">
