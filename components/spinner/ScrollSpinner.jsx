@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { gsap } from "gsap";
 import { ChevronUp } from "lucide-react";
 
 const ScrollToTopCircle = () => {
@@ -60,41 +59,24 @@ const ScrollToTopCircle = () => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
 
-    if (window.smoother) {
-      // Use ScrollSmoother's smooth scroll
-      gsap.to(window.smoother, {
-        scrollTop: 0,
-        duration: 1.2,
-        ease: "power3.inOut",
-        onComplete: () => {
-          isAnimatingRef.current = false;
-        }
-      });
-    } else {
-      // Fallback to native smooth scroll
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-      setTimeout(() => {
-        isAnimatingRef.current = false;
-      }, 1000);
+    // Add click animation class
+    if (circleRef.current) {
+      circleRef.current.classList.add('circle-click-animation');
     }
 
-    // Animate the circle on click
-    if (circleRef.current) {
-      gsap.timeline()
-        .to(circleRef.current, {
-          scale: 1.15,
-          duration: 0.15,
-          ease: "power2.out"
-        })
-        .to(circleRef.current, {
-          scale: 1,
-          duration: 0.4,
-          ease: "elastic.out(1, 0.3)"
-        });
-    }
+    // Use native smooth scroll (works with or without ScrollSmoother)
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    // Reset animation flag and remove class after animation
+    setTimeout(() => {
+      isAnimatingRef.current = false;
+      if (circleRef.current) {
+        circleRef.current.classList.remove('circle-click-animation');
+      }
+    }, 1200);
   };
 
   return (
@@ -162,9 +144,9 @@ const ScrollToTopCircle = () => {
         
         {/* Floating particles */}
         <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-          <div className="absolute top-2 left-2 w-1 h-1 bg-white/60 rounded-full animate-ping" />
-          <div className="absolute bottom-3 right-3 w-0.5 h-0.5 bg-white/40 rounded-full animate-pulse" />
-          <div className="absolute top-1/2 right-2 w-0.5 h-0.5 bg-white/50 rounded-full animate-bounce" />
+          <div className="absolute top-2 left-2 w-1 h-1 bg-white/60 rounded-full css-ping" />
+          <div className="absolute bottom-3 right-3 w-0.5 h-0.5 bg-white/40 rounded-full css-pulse" />
+          <div className="absolute top-1/2 right-2 w-0.5 h-0.5 bg-white/50 rounded-full css-bounce" />
         </div>
       </div>
     </div>

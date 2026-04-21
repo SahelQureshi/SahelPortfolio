@@ -167,10 +167,15 @@ const Skills = () => {
       if (!bar) return;
       const level = Number(bar.getAttribute("data-level") || 0);
       
-      // Reset and animate with CSS
-      bar.style.width = "0%";
+      // Remove animation class first
+      bar.classList.remove('animate-progress');
+      
+      // Reset and set CSS variables
       bar.style.setProperty('--target-width', `${level}%`);
       bar.style.setProperty('--animation-delay', `${index * 0.05}s`);
+      
+      // Force a reflow to ensure the reset takes effect
+      void bar.offsetWidth;
       
       // Trigger CSS animation
       requestAnimationFrame(() => {
@@ -245,12 +250,11 @@ const Skills = () => {
       if (isLoaded) {
         // Reset and re-animate all progress bars
         setTimeout(() => {
-          // Reset all bars to 0% first
+          // Reset all bars first
           if (barsRef.current.length > 0) {
             barsRef.current.forEach((bar) => {
               if (bar) {
                 bar.classList.remove('animate-progress');
-                bar.style.width = "0%";
               }
             });
           }
@@ -546,7 +550,6 @@ const Skills = () => {
                                   }}
                                   data-level={skill.level}
                                   className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg progress-bar`}
-                                  style={{ width: "0%", '--target-width': `${skill.level}%` }}
                                 />
                                 {/* Animated shine effect */}
                                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
