@@ -40,7 +40,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 991;
+      const mobile = window.innerWidth <= 1023;
       setIsMobile(mobile);
       if (!mobile) {
         setIsOpen(false);
@@ -268,7 +268,9 @@ const Navbar = () => {
       {/* Mobile Sidebar Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side backdrop-blur-xl border-r border-white/10 z-50 lg:hidden transform -translate-x-full`}
+        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side backdrop-blur-xl border-r border-white/10 z-50 lgg:hidden transform transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
         <div className="h-full flex flex-col">
           {/* Header */}
