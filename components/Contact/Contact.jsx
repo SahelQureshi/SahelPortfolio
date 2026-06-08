@@ -219,7 +219,7 @@ const Contact = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
             <MessageSquare className="h-5 w-5 text-purple-300 animate-pulse" />
             <span className="font-medium">Get In Touch</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
@@ -245,7 +245,7 @@ const Contact = () => {
                 <div
                   key={index}
                   ref={(el) => (cardsRef.current[index] = el)}
-                  className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
+                  className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
                   style={{ opacity: 1 }}
                 >
                   {/* Animated particles effect */}
@@ -277,7 +277,7 @@ const Contact = () => {
               ))}
 
               {/* Social links */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative">
@@ -302,7 +302,7 @@ const Contact = () => {
               </div>
 
               {/* Availability status */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative flex items-center gap-4">
@@ -322,7 +322,7 @@ const Contact = () => {
             <div className="lg:col-span-7">
               <div
                 ref={formRef}
-                className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-2xl"
+                className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-8 shadow-2xl"
                 style={{ opacity: 1 }}
               >
                 {/* Animated particles effect */}
@@ -465,7 +465,7 @@ const Contact = () => {
 
         {/* Call to action */}
         <div className="mt-20 text-center">
-          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-xl shadow-xl">
+          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8  shadow-xl">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="relative">

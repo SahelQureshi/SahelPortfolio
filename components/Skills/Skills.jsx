@@ -304,7 +304,7 @@ const Skills = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
             <Zap className="h-5 w-5 text-fuchsia-300 animate-pulse" />
             <span className="font-medium">Technical Expertise</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
@@ -329,7 +329,7 @@ const Skills = () => {
           {/* Left sidebar - Enhanced */}
           <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start">
             {/* About section with enhanced design */}
-            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8  shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative">
@@ -396,7 +396,7 @@ const Skills = () => {
             </div>
 
             {/* Enhanced filter section */}
-            <div className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
+            <div className="rounded-3xl border border-white/20 bg-white/10 p-6  shadow-xl">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="h-5 w-5 text-cyan-300" />
                 <h4 className="font-semibold text-white">Filter by Category</h4>
@@ -410,7 +410,7 @@ const Skills = () => {
                     className={`group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                       activeCat === c
                         ? "bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white shadow-lg shadow-fuchsia-500/25 scale-105"
-                        : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20 backdrop-blur-xl border border-white/20 hover:border-white/30"
+                        : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20  border border-white/20 hover:border-white/30"
                     }`}
                     aria-pressed={activeCat === c}
                   >
@@ -424,7 +424,7 @@ const Skills = () => {
             </div>
 
             {/* Achievement badge */}
-            <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 backdrop-blur-xl shadow-xl">
+            <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6  shadow-xl">
               <div className="flex items-center gap-3 mb-3">
                 <Sparkles className="h-5 w-5 text-amber-300" />
                 <h4 className="font-semibold text-white">Key Achievements</h4>
@@ -461,7 +461,7 @@ const Skills = () => {
                     data-skill-card
                     onMouseMove={(e) => handleTilt(e, categoryIndex)}
                     onMouseLeave={resetTilt}
-                    className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${color} p-8 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
+                    className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${color} p-8  shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
                       isFilterChanging
                         ? "opacity-60 scale-95"
                         : isLoaded

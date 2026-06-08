@@ -225,7 +225,7 @@ const Banner = () => {
           <div ref={textRef} className="lg:col-span-7 space-y-8 lg:order-1 order-2">
             {/* Greeting */}
             <div className="space-y-4 lg:text-left text-center">
-              <div className="inline-flex items-center lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 backdrop-blur-xl">
+              <div className="inline-flex items-center lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 ">
                 <Sparkles className="h-5 w-5 text-purple-300 animate-pulse" />
                 <span className="text-white/80 font-medium">Welcome to my portfolio</span>
               </div>
@@ -273,7 +273,7 @@ const Banner = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative overflow-hidden rounded-2xl bg-white/10 border border-white/20 p-4 backdrop-blur-xl transition-all duration-300 hover:scale-110 ${social.color}`}
+                  className={`group relative overflow-hidden rounded-2xl bg-white/10 border border-white/20 p-4  transition-all duration-300 hover:scale-110 ${social.color}`}
                   aria-label={social.label}
                 >
                   <social.icon className="h-6 w-6 text-white group-hover:text-white transition-colors" />
@@ -297,7 +297,7 @@ const Banner = () => {
 
               <a
                 href="#"
-                className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center"
+                className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10  text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center"
               >
                 <div className="relative flex items-center justify-center gap-3">
                   <Download className="h-5 w-5" />
@@ -358,10 +358,10 @@ const Banner = () => {
                 <div className="absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 animate-ping" />
 
                 {/* Floating tech icons */}
-                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce">
+                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10  border border-white/20 flex items-center justify-center animate-bounce">
                   <Code className="h-6 w-6 text-purple-300" />
                 </div>
-                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
+                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10  border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
                   <Zap className="h-6 w-6 text-cyan-300" />
                 </div>
               </div>

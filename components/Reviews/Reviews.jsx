@@ -224,7 +224,7 @@ const Reviews = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
             <MessageSquare className="h-5 w-5 text-fuchsia-300 animate-pulse" />
             <span className="font-medium">Client Testimonials</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
@@ -250,7 +250,7 @@ const Reviews = () => {
             {/* Left Side - Enhanced Details */}
             <div className="order-2 lg:order-1 space-y-8">
               {/* Enhanced reviewer info */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6  shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative flex items-center gap-6">
@@ -446,7 +446,7 @@ const Reviews = () => {
                 {/* Enhanced glow effect */}
                 <div className="absolute -inset-2 bg-gradient-to-r from-fuchsia-500/20 via-purple-500/15 to-cyan-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-1000" />
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 lg:p-10 shadow-2xl">
+                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-8 lg:p-10 shadow-2xl">
                   {/* Animated particles */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div
@@ -511,7 +511,7 @@ const Reviews = () => {
 
         {/* Enhanced call to action */}
         <div className="mx-auto mt-20 max-w-3xl text-center">
-          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-xl shadow-xl">
+          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8  shadow-xl">
             <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="relative">

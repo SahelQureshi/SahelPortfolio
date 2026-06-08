@@ -267,7 +267,7 @@ const About = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm text-white/80  shadow-lg">
             <Sparkles className="h-5 w-5 text-blue-300 animate-pulse" />
             <span className="font-medium">About Me</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse" />
@@ -293,7 +293,7 @@ const About = () => {
                   statsRef.current[index] = el;
                 }
               }}
-              className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] opacity-100"
+              className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] opacity-100"
               style={{ opacity: 1, transform: 'translateY(0)' }} // Ensure visibility
             >
               {/* Animated particles effect */}
@@ -360,10 +360,10 @@ const About = () => {
                 <div className="absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-ping" />
 
                 {/* Floating tech icons */}
-                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce">
+                <div className="absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10  border border-white/20 flex items-center justify-center animate-bounce">
                   <Code className="h-6 w-6 text-blue-300" />
                 </div>
-                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
+                <div className="absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10  border border-white/20 flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
                   <Zap className="h-6 w-6 text-purple-300" />
                 </div>
               </div>

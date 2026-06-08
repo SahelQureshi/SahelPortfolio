@@ -154,13 +154,14 @@ const Navbar = () => {
     <>
       <header
         ref={navbarRef}
-        className={`w-full fixed top-0 z-50 transition-all  duration-300 ${
+        className={`w-full fixed top-0 z-50 transition-all  duration-300  overflow-hidden ${
           scrolled
-            ? "bg-black/20 backdrop-blur-xl border-b border-white/10 spec-side shadow-2xl"
+            ? "bg-black/20  border-b border-white/10 spec-side shadow-2xl"
             : "bg-transparent"
         }`}
       >
-        <div className="container mx-auto px-6">
+        <div className="absolute top-0 left-0  w-full h-full backdrop-blur-[109px]"></div>
+        <div className="container mx-auto px-6 relative">
           <nav className="flex justify-between items-center h-16 md:h-20">
             {/* Logo/Brand */}
             <div
@@ -268,7 +269,7 @@ const Navbar = () => {
       {/* Mobile Sidebar Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side backdrop-blur-xl border-r border-white/10 z-50 lgg:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side  border-r border-white/10 z-50 lgg:hidden transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

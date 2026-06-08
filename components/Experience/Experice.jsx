@@ -122,7 +122,7 @@ const Experience = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
             <Briefcase className="h-5 w-5 text-blue-300 animate-pulse" />
             <span className="font-medium">Professional Journey</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse" />
@@ -146,7 +146,7 @@ const Experience = () => {
               <div className="group relative">
                 <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-1000" />
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
+                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  shadow-2xl">
                   {/* Video */}
                   <div className="relative aspect-video overflow-hidden rounded-t-3xl">
                     <video
@@ -161,7 +161,7 @@ const Experience = () => {
 
                     {/* Play button overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="p-4 rounded-full bg-white/20 backdrop-blur-xl border border-white/30">
+                      <div className="p-4 rounded-full bg-white/20  border border-white/30">
                         <Play className="h-8 w-8 text-white" />
                       </div>
                     </div>
@@ -201,7 +201,7 @@ const Experience = () => {
               </div>
 
               {/* Download resume */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6  shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative text-center">
@@ -227,7 +227,7 @@ const Experience = () => {
               </div>
 
               {/* Skills overview */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-xl shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6  shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative">
@@ -281,7 +281,7 @@ const Experience = () => {
 
                   {/* Experience card */}
                   <div className="sm:ml-20 group">
-                    <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
+                    <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
                       {/* Current role indicator */}
                       {exp.current && (
                         <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30">

@@ -218,7 +218,7 @@ const Projects = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 backdrop-blur-xl shadow-lg">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
             <Sparkles className="h-5 w-5 text-fuchsia-300 animate-pulse" />
             <span className="font-medium">Featured Projects</span>
             <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
@@ -242,7 +242,7 @@ const Projects = () => {
         <div className="mb-12 flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Stats cards */}
           <div className="flex sm:gap-4 gap-2 sm:flex-nowrap flex-wrap sm:justify-start justify-center">
-            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center  shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative flex items-center gap-3 text-sm text-white/70 mb-2">
                 <FolderGit2 className="h-5 w-5 text-fuchsia-300" />
@@ -253,7 +253,7 @@ const Projects = () => {
               </div>
             </div>
 
-            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center  shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative flex items-center gap-3 text-sm text-white/70 mb-2">
                 <Calendar className="h-5 w-5 text-cyan-300" />
@@ -264,7 +264,7 @@ const Projects = () => {
               </div>
             </div>
 
-            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center  shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative flex items-center gap-3 text-sm text-white/70 mb-2">
                 <Star className="h-5 w-5 text-amber-300" />
@@ -290,7 +290,7 @@ const Projects = () => {
                 className={`group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                   activeFilter === tag
                     ? "bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white shadow-lg shadow-fuchsia-500/25 scale-105"
-                    : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20 backdrop-blur-xl border border-white/20 hover:border-white/30"
+                    : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20  border border-white/20 hover:border-white/30"
                 }`}
                 aria-pressed={activeFilter === tag}
               >
@@ -311,7 +311,7 @@ const Projects = () => {
               ref={(el) => (cardsRef.current[i] = el)}
               onMouseMove={(e) => onTilt(e, i)}
               onMouseLeave={resetTilt}
-              className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
+              className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
                 isFilterChanging
                   ? "opacity-60 scale-95"
                   : isLoaded
