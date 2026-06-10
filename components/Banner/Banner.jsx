@@ -338,7 +338,7 @@ const Banner = () => {
               <div className={`absolute -inset-12 rounded-full bg-gradient-to-r from-cyan-500/15 to-blue-500/15 blur-3xl ${!isMobile ? 'animate-pulse scale-125' : ''}`} style={!isMobile ? { animationDelay: '1s' } : {}} />
               
               {/* Main circle container */}
-              <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[22rem] xl:w-[28rem] lg:h-[22rem] xl:h-[28rem]">
+              <div className="relative w-60 sm:w-80 h-60 sm:h-80 md:w-96 md:h-96 lg:w-[22rem] xl:w-[28rem] lg:h-[22rem] xl:h-[28rem]">
                 
                 {/* Outer rotating gradient ring */}
                 <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 p-[4px] ${!isMobile ? 'animate-spin-slow' : ''}`}>
@@ -384,7 +384,7 @@ const Banner = () => {
                 )}
 
                 {/* Floating tech badges */}
-                <div className={`absolute -top-6 -right-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border border-purple-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`}>
+                <div className={`absolute -top-6 -right-9 xs:-right-12 sm:-right-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border border-purple-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`}>
                   <div className="flex items-center gap-2">
                     <Code className="h-4 w-4 text-purple-300" />
                     <span className="text-xs font-medium text-white">React Expert</span>
