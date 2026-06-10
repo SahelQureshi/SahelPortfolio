@@ -23,6 +23,9 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("banner");
   const [disableAnimations, setDisableAnimations] = useState(false);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrollTimeout, setScrollTimeout] = useState(null);
 
   const navbarRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -51,27 +54,37 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
+  // Handle navbar hide/show on scroll
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 1023;
-      setIsMobile(mobile);
-      if (!mobile) {
-        setIsOpen(false);
-        document.body.style.overflow = "auto";
-      }
-    };
-
     const handleScroll = () => {
-      let currentScroll;
+      const currentScrollY = window.scrollY;
       
-      if (window.smoother) {
-        currentScroll = window.smoother.scrollTop();
-      } else {
-        currentScroll = window.scrollY;
+      // Update scrolled state for background opacity
+      setScrolled(currentScrollY > 50);
+      
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down - hide navbar
+        setIsNavbarVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show navbar
+        setIsNavbarVisible(true);
       }
       
-      setScrolled(currentScroll > 50);
-
+      setLastScrollY(currentScrollY);
+      
+      // Clear previous timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      
+      // Set timeout to show navbar when scrolling stops
+      const timeout = setTimeout(() => {
+        setIsNavbarVisible(true);
+      }, 500);
+      
+      setScrollTimeout(timeout);
+      
       // Update active section based on scroll position
       const sections = navItems.map((item) => item.href.substring(1));
       const current = sections.find((section) => {
@@ -82,28 +95,37 @@ const Navbar = () => {
         }
         return false;
       });
-
+      
       if (current) {
         setActiveSection(current);
       }
     };
-
+    
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 1023;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setIsOpen(false);
+        document.body.style.overflow = "auto";
+      }
+    };
+    
     // Initial setup
     handleResize();
-    handleScroll();
-
+    
     // Add event listeners
     window.addEventListener("resize", handleResize);
-    
-    // Also add native scroll as fallback
     window.addEventListener("scroll", handleScroll);
-
+    
     // Clean up
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
     };
-  }, [scrolled]);
+  }, [lastScrollY, scrollTimeout]);
 
   useEffect(() => {
     // Animate mobile menu with CSS classes
@@ -118,14 +140,47 @@ const Navbar = () => {
     }
   }, [isOpen, isMobile]);
 
+  // Handle body scroll when sidebar opens/closes
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      // Disable scroll on body when sidebar is open
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      // Re-enable scroll when sidebar is closed
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+    };
+  }, [isOpen, isMobile]);
+
   const toggleMenu = () => {
+    if (!isOpen) {
+      // Store current scroll position before opening
+      const scrollY = window.scrollY;
+      document.body.dataset.scrollY = scrollY;
+    }
     setIsOpen(!isOpen);
-    document.body.style.overflow = isOpen ? "auto" : "hidden";
   };
 
   const closeMenu = () => {
     setIsOpen(false);
-    document.body.style.overflow = "auto";
   };
 
   // Smooth scroll to contact section
@@ -167,13 +222,17 @@ const Navbar = () => {
     <>
       <header
         ref={navbarRef}
-        className={`w-full fixed top-0 z-50 transition-all duration-300 overflow-hidden ${
+        className={`w-full fixed top-0 z-50 transition-all duration-500 backdrop-blur-[109px] ease-in-out ${
+          isNavbarVisible 
+            ? "translate-y-0 opacity-100" 
+            : "-translate-y-full opacity-0"
+        } ${
           scrolled
             ? "bg-black/20 border-b border-white/10 spec-side shadow-2xl"
             : "bg-transparent"
         }`}
       >
-        <div className="absolute top-0 left-0 w-full h-full backdrop-blur-[109px]"></div>
+      
         <div className="container mx-auto px-6 relative">
           <nav className="flex justify-between items-center h-16 md:h-20">
             {/* Logo/Brand */}
@@ -275,7 +334,7 @@ const Navbar = () => {
       </header>
 
       {/* Mobile Menu Overlay */}
-      {isOpen && (
+      {isOpen && isMobile && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={closeMenu}
@@ -310,7 +369,7 @@ const Navbar = () => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex-1 px-6 py-8">
+          <div className="flex-1 px-6 py-8 overflow-y-auto">
             <nav>
               <ul className="space-y-2">
                 {navItems.map((item, index) => (
@@ -345,14 +404,13 @@ const Navbar = () => {
           {/* Footer Actions */}
           <div className="p-6 border-t border-white/10">
             <div className="space-y-3">
-              <a
-                href="#contact"
-                onClick={closeMenu}
+              <button
+                onClick={scrollToContact}
                 className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105"
               >
                 <Mail className="h-4 w-4" />
                 Get In Touch
-              </a>
+              </button>
 
               <div className="flex items-center justify-center gap-4 pt-4">
                 <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
