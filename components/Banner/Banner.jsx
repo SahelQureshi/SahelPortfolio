@@ -83,6 +83,45 @@ const Banner = () => {
     }
   };
 
+  // Download CV function
+  const downloadCV = () => {
+    // Option 1: Direct link to CV file in public folder
+    const cvUrl = '/assets/doc/Sahel_Resume.pdf'; // Make sure to place your CV file in public/assets/
+    
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = 'Sahel_Qureshi_CV.pdf'; // This specifies the download filename
+    
+    // Alternative: If you want to use a different filename
+    // link.download = 'Sahel_Qureshi_Resume_2024.pdf';
+    
+    // Append to body, click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Alternative download function with fetch (useful for dynamic content or error handling)
+  const downloadCVWithFetch = async () => {
+    try {
+      const response = await fetch('/assets/Sahel_Qureshi_CV.pdf');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Sahel_Qureshi_CV.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading CV:', error);
+      // Fallback: Open in new tab if download fails
+      window.open('/assets/Sahel_Qureshi_CV.pdf', '_blank');
+    }
+  };
+
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Typing animation effect
@@ -303,16 +342,16 @@ const Banner = () => {
                 </div>
               </button>
 
-              <a
-                href="#"
-                className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center"
+              <button
+                onClick={downloadCV}
+                className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/10 text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center cursor-pointer"
               >
                 <div className="relative flex items-center justify-center gap-3">
                   <Download className="h-5 w-5" />
-                  <span>Download CV</span>
+                  <span>Download Resume</span>
                   <Download className="h-5 w-5 transition-transform group-hover:translate-y-1" />
                 </div>
-              </a>
+              </button>
             </div>
 
             {/* Scroll indicator */}

@@ -17,6 +17,7 @@ import {
   MessageSquare,
   ChevronUp,
 } from "lucide-react";
+import ScrollToTopCircle from "../spinner/ScrollSpinner";
 
 const Footer = () => {
   const footerRef = useRef(null);
@@ -286,6 +287,8 @@ const Footer = () => {
       <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-purple-400 css-ping" />
       <div className="absolute bottom-8 left-8 w-1 h-1 rounded-full bg-pink-400 css-pulse" />
       <div className="absolute top-8 right-1/4 w-1.5 h-1.5 rounded-full bg-cyan-400 css-bounce" />
+
+      
     </footer>
   );
 };

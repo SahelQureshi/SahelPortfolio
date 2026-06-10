@@ -81,6 +81,17 @@ const Experience = () => {
 
   const disableAnimations = isClient && screenWidth < 991;
 
+  // Download CV function
+  const downloadCV = () => {
+    const cvUrl = '/assets/doc/Sahel_Resume.pdf';
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = 'Sahel_Qureshi_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -473,14 +484,14 @@ const Experience = () => {
                     contribute to your next project.
                   </p>
 
-                  <a
-                    href="#"
-                    className="group/btn inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
+                  <button
+                    onClick={downloadCV}
+                    className="group/btn inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105 cursor-pointer"
                   >
                     <Download className="h-5 w-5" />
                     <span>Download CV</span>
                     <ChevronRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
-                  </a>
+                  </button>
                 </div>
               </div>
 

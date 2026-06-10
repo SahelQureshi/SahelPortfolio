@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Header/Navbar";
+import ScrollToTopCircle from "@/components/spinner/ScrollSpinner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <Navbar />
 
         {children}
+        <ScrollToTopCircle/>
         <Footer />
       </body>
     </html>

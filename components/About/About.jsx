@@ -125,6 +125,17 @@ const About = () => {
     }
   };
 
+  // Download CV function
+  const downloadCV = () => {
+    const cvUrl = '/assets/doc/Sahel_Resume.pdf';
+    const link = document.createElement('a');
+    link.href = cvUrl;
+    link.download = 'Sahel_Qureshi_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Enhanced stats data with colors and icons
   const statsData = [
     {
@@ -236,18 +247,35 @@ const About = () => {
     return () => observer.disconnect();
   }, [isLoaded]);
 
+  // Social links with actual URLs
+  const socialLinks = [
+    {
+      icon: Github,
+      href: "https://github.com/SahelQureshi",
+      label: "GitHub"
+    },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/sahel-qureshi-47b1252a8",
+      label: "LinkedIn"
+    },
+    {
+      icon: Twitter,
+      href: "https://twitter.com/yourusername",
+      label: "Twitter"
+    }
+  ];
+
   return (
     <section ref={sectionRef} id="about" className="relative py-24 md:py-32 ">
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-       
-        
         {/* Animated gradient orbs */}
         <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/40 to-cyan-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '6s' }} />
         <div className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/40 to-pink-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
         <div className={`absolute top-1/3 left-1/3 h-64 w-64 rounded-full bg-gradient-to-br from-indigo-500/30 to-violet-500/15 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '10s', animationDelay: '2s' }} />
         
-        {/* Grid pattern overlay - FIXED: Properly escaped SVG */}
+        {/* Grid pattern overlay */}
         <div 
           className="absolute inset-0 opacity-50"
           style={{
@@ -463,7 +491,10 @@ const About = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
               
-              <button className="group px-8 py-3.5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105">
+              <button 
+                onClick={downloadCV}
+                className="group px-8 py-3.5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105"
+              >
                 <span className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
                   Download Resume
@@ -473,15 +504,18 @@ const About = () => {
 
             {/* Social links */}
             <div className="flex gap-4 pt-2">
-              <a href="#" className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                <Github className="h-5 w-5" />
-              </a>
-              <a href="#" className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                <Twitter className="h-5 w-5" />
-              </a>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
