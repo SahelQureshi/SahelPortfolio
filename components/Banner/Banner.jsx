@@ -14,7 +14,11 @@ import {
   Zap,
   ChevronUp,
   Play,
-  ChevronDown
+  ChevronDown,
+  Star,
+  Rocket,
+  Award,
+  Shield
 } from "lucide-react";
 
 const Banner = () => {
@@ -32,7 +36,6 @@ const Banner = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   const designations = [
-    
     "MERN Stack Developer", 
     "React.js Specialist",
     "React Native Developer",
@@ -58,9 +61,8 @@ const Banner = () => {
   const scrollToContact = () => {
     const element = document.querySelector('#contact');
     if (element) {
-      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
-      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
-      
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
+      const offsetTop = element.offsetTop - navbarHeight - 20;
       window.scrollTo({
         top: offsetTop,
         behavior: 'smooth'
@@ -72,9 +74,8 @@ const Banner = () => {
   const scrollToAbout = () => {
     const element = document.querySelector('#about');
     if (element) {
-      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
-      const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
-      
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
+      const offsetTop = element.offsetTop - navbarHeight - 20;
       window.scrollTo({
         top: offsetTop,
         behavior: 'smooth'
@@ -86,19 +87,17 @@ const Banner = () => {
 
   // Typing animation effect
   useEffect(() => {
-    const typingSpeed = 100; // milliseconds per character
-    const deletingSpeed = 50; // milliseconds per character when deleting
-    const pauseDuration = 2000; // pause between words
+    const typingSpeed = 100;
+    const deletingSpeed = 50;
+    const pauseDuration = 2000;
     
     if (isTyping) {
       if (displayedText.length < currentWord.length) {
-        // Typing effect
         const timeout = setTimeout(() => {
           setDisplayedText(currentWord.slice(0, displayedText.length + 1));
         }, typingSpeed);
         return () => clearTimeout(timeout);
       } else {
-        // Word completed, pause before deleting
         const timeout = setTimeout(() => {
           setIsTyping(false);
         }, pauseDuration);
@@ -106,13 +105,11 @@ const Banner = () => {
       }
     } else {
       if (displayedText.length > 0) {
-        // Deleting effect
         const timeout = setTimeout(() => {
           setDisplayedText(displayedText.slice(0, -1));
         }, deletingSpeed);
         return () => clearTimeout(timeout);
       } else {
-        // Move to next word
         const timeout = setTimeout(() => {
           setCurrentWordIndex((prev) => (prev + 1) % designations.length);
           setIsTyping(true);
@@ -159,7 +156,6 @@ const Banner = () => {
 
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
 
-    // Observe elements
     if (textRef.current) {
       textRef.current.classList.add('banner-text');
       observer.observe(textRef.current);
@@ -192,7 +188,7 @@ const Banner = () => {
     },
     {
       icon: Linkedin,
-      href: "www.linkedin.com/in/sahel-qureshi-47b1252a8",
+      href: "https://www.linkedin.com/in/sahel-qureshi-47b1252a8",
       label: "LinkedIn",
       color: "hover:bg-blue-500/20 hover:border-blue-400/30"
     },
@@ -214,7 +210,7 @@ const Banner = () => {
     <section
       ref={sectionRef}
       id="banner"
-      className="relative min-h-screen flex items-center justify-center pt-[5rem] lg:pb-[0rem] pb-[2rem]"
+      className="relative min-h-screen flex items-center justify-center pt-[5rem] lg:pb-[0rem] pb-[2rem] "
     >
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
@@ -233,7 +229,6 @@ const Banner = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 min-h-screen items-center">
           
-
           {/* Left Content */}
           <div ref={textRef} className="lg:col-span-7 space-y-8 lg:order-1 order-2">
             {/* Greeting */}
@@ -335,86 +330,138 @@ const Banner = () => {
             </div>
           </div>
 
-          {/* Right Content - Profile Image */}
+          {/* Right Content - Enhanced Profile Circle Design */}
           <div className="lg:col-span-5 flex justify-center items-start lg:pt-[8rem] pt-[2rem] h-full lg:order-2 order-1">
             <div ref={imageRef} className="relative">
-              {/* Animated background rings */}
-              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-3xl ${!isMobile ? 'animate-pulse scale-110' : ''}`} />
-              <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-2xl ${!isMobile ? 'animate-pulse scale-125' : ''}`} style={!isMobile ? { animationDelay: '1s' } : {}} />
+              {/* Outer animated ring layers */}
+              <div className={`absolute -inset-8 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-3xl ${!isMobile ? 'animate-pulse scale-110' : ''}`} />
+              <div className={`absolute -inset-12 rounded-full bg-gradient-to-r from-cyan-500/15 to-blue-500/15 blur-3xl ${!isMobile ? 'animate-pulse scale-125' : ''}`} style={!isMobile ? { animationDelay: '1s' } : {}} />
+              
+              {/* Main circle container */}
+              <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[22rem] xl:w-[28rem] lg:h-[22rem] xl:h-[28rem]">
+                
+                {/* Outer rotating gradient ring */}
+                <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 p-[4px] ${!isMobile ? 'animate-spin-slow' : ''}`}>
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-slate-900 to-slate-800" />
+                </div>
 
-              {/* Profile container */}
-              <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
-                {/* Static profile image */}
-                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/10">
+                {/* Second rotating ring (reverse direction) */}
+                <div className={`absolute inset-[10px] rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 p-[3px] ${!isMobile ? 'animate-spin-slow-reverse' : ''}`}>
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-slate-800 to-slate-900" />
+                </div>
+
+                {/* Third subtle ring */}
+                <div className="absolute inset-[18px] rounded-full bg-gradient-to-r from-fuchsia-500/30 via-purple-500/30 to-cyan-500/30 p-[2px]">
+                  <div className="w-full h-full rounded-full bg-slate-900" />
+                </div>
+
+                {/* Profile image container */}
+                <div className="absolute inset-[-24px] rounded-full overflow-hidden ring-2 ring-white/10 flex justify-center">
                   <img
-                    src="/assets/images/Sahel-Qureshi.png"
+                    src="/assets/images/Sahel-img2.png"
                     alt="Sahel Qureshi"
-                    className="w-full h-[800px] object-contain relative top-[15px] z-10"
+                    className="w-[80%] lg:w-[72%] h-auto object-cover object-top  transition-transform duration-500 "
                   />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/10 to-transparent" />
+                  {/* Animated gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-cyan-500/10 opacity-0 hover:opacity-100 transition-opacity duration-500" />
                 </div>
 
-                {/* Rotating gradient ring - disabled on mobile */}
+                {/* Decorative dots around the circle */}
                 {!isMobile && (
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 p-1 animate-spin" style={{ animationDuration: '8s' }}>
-                    <div className="w-full h-full rounded-full bg-transparent" />
-                  </div>
+                  <>
+                    
+                    {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-2 w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 animate-pulse" style={{ animationDelay: '0.5s' }} /> */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-3 h-3 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 animate-pulse" style={{ animationDelay: '1s' }} />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse" style={{ animationDelay: '1.5s' }} />
+                    
+                    {/* Diagonal decorative dots */}
+                    <div className="absolute top-1/4 -left-3 w-2 h-2 rounded-full bg-purple-400 animate-ping" style={{ animationDelay: '0.3s' }} />
+                    <div className="absolute top-1/4 -right-3 w-2 h-2 rounded-full bg-pink-400 animate-ping" style={{ animationDelay: '0.8s' }} />
+                    <div className="absolute bottom-1/4 -left-3 w-2 h-2 rounded-full bg-cyan-400 animate-ping" style={{ animationDelay: '1.3s' }} />
+                    <div className="absolute bottom-1/4 -right-3 w-2 h-2 rounded-full bg-blue-400 animate-ping" style={{ animationDelay: '1.8s' }} />
+                  </>
                 )}
 
-                {/* Static ring for mobile */}
-                {isMobile && (
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 p-1">
-                    <div className="w-full h-full rounded-full bg-transparent" />
+                {/* Floating tech badges */}
+                <div className={`absolute -top-6 -right-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border border-purple-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <Code className="h-4 w-4 text-purple-300" />
+                    <span className="text-xs font-medium text-white">React Expert</span>
                   </div>
-                )}
-
-                {/* Inner rotating ring - disabled on mobile */}
-                {!isMobile && (
-                  <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 p-0.5 animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}>
-                    <div className="w-full h-full rounded-full bg-transparent" />
-                  </div>
-                )}
-
-                {/* Inner static ring for mobile */}
-                {isMobile && (
-                  <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 p-0.5">
-                    <div className="w-full h-full rounded-full bg-transparent" />
-                  </div>
-                )}
-
-                {/* Decorative elements - disabled bounce/ping on mobile */}
-                <div className={`absolute -top-4 -right-4 w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 ${!isMobile ? 'animate-bounce' : ''}`} />
-                <div className={`absolute -bottom-4 -left-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 ${!isMobile ? 'animate-pulse' : ''}`} />
-                <div className={`absolute top-1/4 -left-6 w-4 h-4 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 ${!isMobile ? 'animate-ping' : ''}`} />
-
-                {/* Floating tech icons - disabled bounce on mobile */}
-                <div className={`absolute -top-8 left-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center ${!isMobile ? 'animate-bounce' : ''}`}>
-                  <Code className="h-6 w-6 text-purple-300" />
                 </div>
-                <div className={`absolute -bottom-8 right-1/4 w-12 h-12 z-20 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center ${!isMobile ? 'animate-bounce' : ''}`} style={!isMobile ? { animationDelay: '1s' } : {}}>
-                  <Zap className="h-6 w-6 text-cyan-300" />
+
+                <div className={`absolute -bottom-6 -left-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-cyan-300" />
+                    <span className="text-xs font-medium text-white">Fast & Scalable</span>
+                  </div>
                 </div>
+
+                {/* Additional floating icons */}
+                <div className={`absolute top-1/3 -right-8 z-20 p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`}>
+                  <Rocket className="h-5 w-5 text-pink-300" />
+                </div>
+
+                <div className={`absolute bottom-1/3 -left-8 z-20 p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
+                  <Shield className="h-5 w-5 text-cyan-300" />
+                </div>
+
+                <div className={`absolute top-1/2 -right-10 z-20 p-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md border border-amber-500/30 ${!isMobile ? 'animate-pulse' : ''}`}>
+                  <Star className="h-3 w-3 text-amber-300" />
+                </div>
+
+                
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Video background option (commented out for now) */}
-      {/*
-      <div className="absolute inset-0 -z-20">
-        <video
-          className="w-full h-full object-cover opacity-20"
-          src="/assets/images/6963744-hd_1280_720_25fps.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-gray-900/60" />
-      </div>
-      */}
+      <style jsx>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes spin-slow-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 10s linear infinite;
+        }
+        .animate-spin-slow-reverse {
+          animation: spin-slow-reverse 7s linear infinite;
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 2s ease-in-out infinite;
+        }
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+        .banner-text.animate-in,
+        .banner-image.animate-in,
+        .banner-social.animate-in,
+        .banner-cta.animate-in {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+          transform: translateY(0) !important;
+        }
+        .banner-text.animate-in {
+          transform: translateY(0) !important;
+        }
+        .banner-image.animate-in {
+          transform: translateX(0) !important;
+        }
+      `}</style>
     </section>
   );
 };

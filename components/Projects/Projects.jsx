@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import {
   Sparkles,
   FolderGit2,
@@ -30,7 +36,7 @@ const projectsData = [
       "/assets/projects/dresza-website (1).png",
       "/assets/projects/dresza-website (2).png",
       "/assets/projects/dresza-website (3).png",
-      "/assets/projects/dresza-website (4).png"
+      "/assets/projects/dresza-website (4).png",
     ],
   },
   {
@@ -46,7 +52,7 @@ const projectsData = [
       "/assets/projects/dresza-admin (1).png",
       "/assets/projects/dresza-admin (2).png",
       "/assets/projects/dresza-admin (3).png",
-      "/assets/projects/dresza-admin (4).png"
+      "/assets/projects/dresza-admin (4).png",
     ],
   },
 ];
@@ -65,7 +71,7 @@ const Projects = () => {
   // Handle client-side mounting
   useEffect(() => {
     setIsClient(true);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setScreenWidth(window.innerWidth);
     }
   }, []);
@@ -75,13 +81,13 @@ const Projects = () => {
     if (!isClient) return;
 
     const updateScreenWidth = () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         setScreenWidth(window.innerWidth);
       }
     };
 
-    window.addEventListener('resize', updateScreenWidth);
-    return () => window.removeEventListener('resize', updateScreenWidth);
+    window.addEventListener("resize", updateScreenWidth);
+    return () => window.removeEventListener("resize", updateScreenWidth);
   }, [isClient]);
 
   // Determine if animations should be disabled (screen width < 991px)
@@ -91,28 +97,33 @@ const Projects = () => {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px',
-      threshold: [0.1, 0.3]
+      rootMargin: "0px",
+      threshold: [0.1, 0.3],
     };
 
     const handleIntersection = (entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const element = entry.target;
           const threshold = entry.intersectionRatio;
-          
-          if (element.classList.contains('projects-header')) {
+
+          if (element.classList.contains("projects-header")) {
             if (threshold > 0.1) {
-              element.classList.add('animate-in');
+              element.classList.add("animate-in");
             }
-          } else if (element.classList.contains('projects-card')) {
+          } else if (element.classList.contains("projects-card")) {
             if (threshold > 0.1) {
-              element.classList.add('animate-in');
-              const cardIndex = Array.from(element.parentNode.children).indexOf(element);
-              element.style.setProperty('--stagger-delay', `${cardIndex * 0.15}s`);
+              element.classList.add("animate-in");
+              const cardIndex = Array.from(element.parentNode.children).indexOf(
+                element,
+              );
+              element.style.setProperty(
+                "--stagger-delay",
+                `${cardIndex * 0.15}s`,
+              );
             }
           }
-          
+
           if (threshold > 0.3 && !isLoaded) {
             setIsLoaded(true);
           }
@@ -120,25 +131,28 @@ const Projects = () => {
       });
     };
 
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    const observer = new IntersectionObserver(
+      handleIntersection,
+      observerOptions,
+    );
 
     // Observe elements
     if (headerRef.current) {
-      headerRef.current.classList.add('projects-header');
+      headerRef.current.classList.add("projects-header");
       observer.observe(headerRef.current);
     }
 
     // Observe cards elements
-    cardsRef.current.forEach(card => {
+    cardsRef.current.forEach((card) => {
       if (card) {
-        card.classList.add('projects-card');
+        card.classList.add("projects-card");
         observer.observe(card);
       }
     });
 
     return () => observer.disconnect();
   }, [isLoaded]);
-  
+
   const [currentImageIndex, setCurrentImageIndex] = useState({});
 
   const allTags = useMemo(() => {
@@ -156,7 +170,7 @@ const Projects = () => {
   // Auto-advance carousel - disabled on mobile
   useEffect(() => {
     if (disableAnimations) return;
-    
+
     const intervals = {};
 
     projectsData.forEach((project, projectIndex) => {
@@ -233,43 +247,64 @@ const Projects = () => {
     >
       {/* Enhanced background with more layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} />
+        
         <div
-          className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`}
-          style={!disableAnimations ? { animationDelay: "2s" } : {}}
+          className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl ${!disableAnimations ? "animate-pulse" : ""}`}
+          style={{ animationDuration: "8s", animationDelay: "2s" }}
         />
         <div
-          className={`absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`}
-          style={!disableAnimations ? { animationDelay: "4s" } : {}}
+          className={`absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl ${!disableAnimations ? "animate-pulse" : ""}`}
+          style={{ animationDuration: "10s", animationDelay: "4s" }}
         />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-fuchsia-500/10 to-transparent" />
+
+        {/* Floating particles */}
+        <div
+          className={`absolute top-20 left-[15%] w-2 h-2 rounded-full bg-fuchsia-400 ${!disableAnimations ? "animate-float" : ""}`}
+          style={{ animationDuration: "4s" }}
+        />
+        <div
+          className={`absolute bottom-32 right-[20%] w-3 h-3 rounded-full bg-cyan-400 ${!disableAnimations ? "animate-float" : ""}`}
+          style={{ animationDuration: "5s", animationDelay: "1s" }}
+        />
+        <div
+          className={`absolute top-1/3 left-[85%] w-1.5 h-1.5 rounded-full bg-purple-400 ${!disableAnimations ? "animate-float" : ""}`}
+          style={{ animationDuration: "3.5s", animationDelay: "0.5s" }}
+        />
       </div>
 
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
-        <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 shadow-lg">
-            <Sparkles className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
+        <div
+          ref={headerRef}
+          className="mx-auto max-w-4xl text-center mb-16 opacity-0 translate-y-8 transition-all duration-700 projects-header"
+        >
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm text-white/80 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <Sparkles
+              className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? "animate-pulse" : ""}`}
+            />
             <span className="font-medium">Featured Projects</span>
-            <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
+            <div
+              className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? "animate-pulse" : ""}`}
+            />
           </div>
 
-          <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
+          <h2 className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
             Creative{" "}
             <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               Projects
             </span>
           </h2>
 
-          <p className="mt-4 text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed">
+          <p className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
             A curated collection of digital experiences I&apos;ve crafted — from
             concept to deployment, each project represents innovation,
             performance, and user-centric design.
           </p>
         </div>
 
-        {/* Enhanced stats and filters */}
+        {/* Stats and filters */}
         <div className="mb-12 flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Stats cards */}
           <div className="flex sm:gap-4 gap-2 sm:flex-nowrap flex-wrap sm:justify-start justify-center">
@@ -315,7 +350,6 @@ const Projects = () => {
                 onClick={() => {
                   setIsFilterChanging(true);
                   setActiveFilter(tag);
-                  // Reset filter changing state after animation
                   setTimeout(() => setIsFilterChanging(false), 300);
                 }}
                 className={`group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
@@ -323,7 +357,6 @@ const Projects = () => {
                     ? "bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white shadow-lg shadow-fuchsia-500/25 scale-105"
                     : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20 border border-white/20 hover:border-white/30"
                 }`}
-                aria-pressed={activeFilter === tag}
               >
                 <span className="relative z-10">{tag}</span>
                 {activeFilter === tag && (
@@ -338,7 +371,7 @@ const Projects = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {filtered.map((project, i) => (
             <article
-              key={`${project.title}-${activeFilter}`} // Add filter to key to force re-render
+              key={`${project.title}-${activeFilter}`}
               ref={(el) => (cardsRef.current[i] = el)}
               onMouseMove={(e) => onTilt(e, i)}
               onMouseLeave={resetTilt}
@@ -369,27 +402,27 @@ const Projects = () => {
                     <div className="relative h-full w-full">
                       <img
                         src={project.images[currentImageIndex[i] || 0]}
-                        alt={`${project.title} - Image ${currentImageIndex[i] || 0 + 1}`}
-                        className="h-full w-full object-cover transition-opacity duration-500"
+                        alt={`${project.title} - Image ${(currentImageIndex[i] || 0) + 1}`}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
 
                       {/* Image overlay gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/20 to-cyan-500/30" />
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                      {/* Navigation buttons - always visible on mobile */}
+                      {/* Navigation buttons - always visible on mobile, appear on hover on desktop */}
                       {project.images.length > 1 && (
                         <>
                           <button
                             onClick={() => prevImage(i, project.images.length)}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
                             aria-label="Previous image"
                           >
                             <ChevronLeft className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => nextImage(i, project.images.length)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
                             aria-label="Next image"
                           >
                             <ChevronRight className="h-4 w-4" />
@@ -399,7 +432,7 @@ const Projects = () => {
 
                       {/* Image indicators */}
                       {project.images.length > 1 && (
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
                           {project.images.map((_, index) => (
                             <button
                               key={index}
@@ -409,10 +442,10 @@ const Projects = () => {
                                   [i]: index,
                                 }))
                               }
-                              className={`h-2 w-2 rounded-full transition-all ${
+                              className={`h-1.5 rounded-full transition-all ${
                                 (currentImageIndex[i] || 0) === index
                                   ? "bg-white w-6"
-                                  : "bg-white/50 hover:bg-white/70"
+                                  : "bg-white/50 w-1.5 hover:bg-white/70"
                               }`}
                               aria-label={`Go to image ${index + 1}`}
                             />
@@ -421,8 +454,8 @@ const Projects = () => {
                       )}
 
                       {/* Animated particles effect - disabled on mobile */}
-                      {!disableAnimations && (
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {!disableAnimations && hoveredCard === i && (
+                        <div className="absolute inset-0 pointer-events-none">
                           <div
                             className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
                             style={{ animationDelay: "0s" }}
@@ -441,35 +474,17 @@ const Projects = () => {
                   </>
                 ) : (
                   /* Fallback gradient if no images */
-                  <div className="h-full w-full">
-                    <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/30 via-purple-500/20 to-cyan-500/30" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Animated particles effect - disabled on mobile */}
-                    {!disableAnimations && (
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div
-                          className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
-                          style={{ animationDelay: "0s" }}
-                        />
-                        <div
-                          className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
-                          style={{ animationDelay: "0.5s" }}
-                        />
-                        <div
-                          className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
-                          style={{ animationDelay: "1s" }}
-                        />
-                      </div>
-                    )}
+                  <div className="h-full w-full bg-gradient-to-br from-fuchsia-500/20 to-cyan-500/20 flex items-center justify-center">
+                    <FolderGit2 className="h-16 w-16 text-white/30" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   </div>
                 )}
               </div>
 
               <div className="p-6">
                 {/* Project header */}
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <h3 className="font-bold text-h5-xs sm:text-h5-sm md:text-h5-md lg:text-h5-lg lgg:text-h5-lgg xl:text-h5-xl 2xl:text-h5-2xl text-white leading-tight">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <h3 className="font-bold text-xl text-white leading-tight">
                     {project.title}
                   </h3>
                   <span className="flex-shrink-0 rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white/90 ring-1 ring-white/30">
@@ -478,12 +493,12 @@ const Projects = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-white/70 text-p-xs sm:text-p-sm md:text-p-md lg:text-p-lg lgg:text-p-lgg xl:text-p-xl 2xl:text-p-2xl leading-relaxed mb-4">
+                <p className="text-white/70 text-sm leading-relaxed mb-4">
                   {project.description}
                 </p>
 
                 {/* Tech tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-5">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -501,18 +516,18 @@ const Projects = () => {
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/btn flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-fuchsia-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-fuchsia-500/40 hover:scale-105"
+                    className="group/btn flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-fuchsia-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-fuchsia-500/40 hover:scale-105"
                   >
                     <Eye className="h-4 w-4" />
                     <span>View Live</span>
-                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                   </a>
 
                   <a
                     href={project.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-3 text-sm font-semibold text-white/90 ring-1 ring-white/20 transition-all duration-300 hover:bg-white/20 hover:ring-white/30 hover:scale-105"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2.5 text-sm font-semibold text-white/90 ring-1 ring-white/20 transition-all duration-300 hover:bg-white/20 hover:ring-white/30 hover:scale-105"
                   >
                     <Github className="h-4 w-4" />
                     <span>Code</span>
@@ -526,7 +541,7 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Load more or pagination could go here */}
+        {/* No results message */}
         {filtered.length === 0 && (
           <div className="text-center py-12">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/70">
@@ -536,6 +551,47 @@ const Projects = () => {
           </div>
         )}
       </div>
+
+      {/* Animation styles */}
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        @keyframes pulse-slow {
+          0%,
+          100% {
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.5;
+            transform: scale(1.05);
+          }
+        }
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+        .animate-pulse {
+          animation: pulse-slow 3s ease-in-out infinite;
+        }
+        .projects-header.animate-in,
+        .projects-card.animate-in {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+        }
+        .projects-header.animate-in {
+          transform: translateY(0) !important;
+        }
+        .projects-card.animate-in {
+          transition-delay: var(--stagger-delay, 0s);
+        }
+      `}</style>
     </section>
   );
 };
