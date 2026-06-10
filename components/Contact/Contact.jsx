@@ -23,6 +23,33 @@ const Contact = () => {
   const cardsRef = useRef([]);
   const headerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(1024);
+  const [isClient, setIsClient] = useState(false);
+
+  // Handle client-side mounting
+  useEffect(() => {
+    setIsClient(true);
+    if (typeof window !== 'undefined') {
+      setScreenWidth(window.innerWidth);
+    }
+  }, []);
+
+  // Update screen width on resize (client-side only)
+  useEffect(() => {
+    if (!isClient) return;
+
+    const updateScreenWidth = () => {
+      if (typeof window !== 'undefined') {
+        setScreenWidth(window.innerWidth);
+      }
+    };
+
+    window.addEventListener('resize', updateScreenWidth);
+    return () => window.removeEventListener('resize', updateScreenWidth);
+  }, [isClient]);
+
+  // Determine if animations should be disabled (screen width < 991px)
+  const disableAnimations = isClient && screenWidth < 991;
 
   // Optimized Intersection Observer for scroll animations
   useEffect(() => {
@@ -109,7 +136,6 @@ const Contact = () => {
 
   // Web3Forms configuration
   const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '';
-
 
   // Social links data
   const socialLinks = [
@@ -209,9 +235,9 @@ const Contact = () => {
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-cyan-600/20 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-rose-500/20 to-orange-500/15 blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+        <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} />
+        <div className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-cyan-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={!disableAnimations ? { animationDelay: '2s' } : {}} />
+        <div className={`absolute top-1/4 right-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-rose-500/20 to-orange-500/15 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={!disableAnimations ? { animationDelay: '4s' } : {}} />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-purple-500/10 to-transparent" />
       </div>
@@ -219,10 +245,10 @@ const Contact = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
-            <MessageSquare className="h-5 w-5 text-purple-300 animate-pulse" />
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 shadow-lg">
+            <MessageSquare className={`h-5 w-5 text-purple-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium">Get In Touch</span>
-            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
+            <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
           </div>
 
           <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
@@ -245,15 +271,17 @@ const Contact = () => {
                 <div
                   key={index}
                   ref={(el) => (cardsRef.current[index] = el)}
-                  className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
+                  className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
                   style={{ opacity: 1 }}
                 >
-                  {/* Animated particles effect */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
-                    <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
-                    <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
-                  </div>
+                  {/* Animated particles effect - disabled on mobile */}
+                  {!disableAnimations && (
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
+                      <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
+                      <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
+                    </div>
+                  )}
 
                   <a
                     href={info.link}
@@ -277,7 +305,7 @@ const Contact = () => {
               ))}
 
               {/* Social links */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative">
@@ -302,13 +330,18 @@ const Contact = () => {
               </div>
 
               {/* Availability status */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-6 shadow-xl">
+              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-6 shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-4 h-4 rounded-full bg-green-400 animate-pulse"></div>
-                    <div className="absolute inset-0 w-4 h-4 rounded-full bg-green-400 animate-ping opacity-40"></div>
+                    <div className="w-4 h-4 rounded-full bg-green-400"></div>
+                    {!disableAnimations && (
+                      <>
+                        <div className="absolute inset-0 w-4 h-4 rounded-full bg-green-400 animate-ping opacity-40"></div>
+                        <div className="w-4 h-4 rounded-full bg-green-400 animate-pulse"></div>
+                      </>
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">Available for Projects</h3>
@@ -322,15 +355,17 @@ const Contact = () => {
             <div className="lg:col-span-7">
               <div
                 ref={formRef}
-                className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10  p-8 shadow-2xl"
+                className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 shadow-2xl"
                 style={{ opacity: 1 }}
               >
-                {/* Animated particles effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
-                  <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
-                  <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
-                </div>
+                {/* Animated particles effect - disabled on mobile */}
+                {!disableAnimations && (
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping" style={{ animationDelay: '0s' }} />
+                    <div className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.5s' }} />
+                    <div className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping" style={{ animationDelay: '1s' }} />
+                  </div>
+                )}
 
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-6 sm:flex-nowrap flex-wrap">
@@ -465,7 +500,7 @@ const Contact = () => {
 
         {/* Call to action */}
         <div className="mt-20 text-center">
-          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8  shadow-xl">
+          <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 shadow-xl">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="relative">

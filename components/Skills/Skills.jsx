@@ -133,6 +133,33 @@ const Skills = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isFilterChanging, setIsFilterChanging] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(1024);
+  const [isClient, setIsClient] = useState(false);
+
+  // Handle client-side mounting
+  useEffect(() => {
+    setIsClient(true);
+    if (typeof window !== 'undefined') {
+      setScreenWidth(window.innerWidth);
+    }
+  }, []);
+
+  // Update screen width on resize (client-side only)
+  useEffect(() => {
+    if (!isClient) return;
+
+    const updateScreenWidth = () => {
+      if (typeof window !== 'undefined') {
+        setScreenWidth(window.innerWidth);
+      }
+    };
+
+    window.addEventListener('resize', updateScreenWidth);
+    return () => window.removeEventListener('resize', updateScreenWidth);
+  }, [isClient]);
+
+  // Determine if animations should be disabled (screen width < 991px)
+  const disableAnimations = isClient && screenWidth < 991;
 
   const categories = ["All", ...skillsData.map((s) => s.title)];
   const filtered =
@@ -140,8 +167,9 @@ const Skills = () => {
       ? skillsData
       : skillsData.filter((s) => s.title === activeCat);
 
-  // Enhanced 3D tilt with better sensitivity
+  // Enhanced 3D tilt with better sensitivity (disabled on mobile)
   const handleTilt = (e, index) => {
+    if (disableAnimations) return;
     setHoveredCard(index);
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
@@ -155,6 +183,7 @@ const Skills = () => {
   };
 
   const resetTilt = (e) => {
+    if (disableAnimations) return;
     setHoveredCard(null);
     e.currentTarget.style.transform = "";
   };
@@ -247,7 +276,7 @@ const Skills = () => {
     // Wait for DOM to update with new filtered cards
     setTimeout(() => {
       setIsFilterChanging(false);
-      if (isLoaded) {
+      if (isLoaded && !disableAnimations) {
         // Reset and re-animate all progress bars
         setTimeout(() => {
           // Reset all bars first
@@ -288,14 +317,14 @@ const Skills = () => {
     >
       {/* Enhanced background with multiple layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl css-float" />
+        <div className={`absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl ${!disableAnimations ? 'css-float' : ''}`} />
         <div
-          className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl css-float"
-          style={{ animationDelay: "2s" }}
+          className={`absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl ${!disableAnimations ? 'css-float' : ''}`}
+          style={!disableAnimations ? { animationDelay: "2s" } : {}}
         />
         <div
-          className="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl css-float"
-          style={{ animationDelay: "4s" }}
+          className={`absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/15 blur-3xl ${!disableAnimations ? 'css-float' : ''}`}
+          style={!disableAnimations ? { animationDelay: "4s" } : {}}
         />
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-fuchsia-500/10 to-transparent" />
@@ -304,10 +333,10 @@ const Skills = () => {
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-16">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80  shadow-lg">
-            <Zap className="h-5 w-5 text-fuchsia-300 animate-pulse" />
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm text-white/80 shadow-lg">
+            <Zap className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium">Technical Expertise</span>
-            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
+            <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
           </div>
 
           <h2 className="mt-6 font-bold tracking-tight text-h2-xs sm:text-h2-sm md:text-h2-md lg:text-h2-lg lgg:text-h2-lgg xl:text-h2-xl 2xl:text-h2-2xl text-white">
@@ -329,7 +358,7 @@ const Skills = () => {
           {/* Left sidebar - Enhanced */}
           <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start">
             {/* About section with enhanced design */}
-            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8  shadow-xl hover:shadow-2xl transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative">
@@ -396,7 +425,7 @@ const Skills = () => {
             </div>
 
             {/* Enhanced filter section */}
-            <div className="rounded-3xl border border-white/20 bg-white/10 p-6  shadow-xl">
+            <div className="rounded-3xl border border-white/20 bg-white/10 p-6 shadow-xl">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="h-5 w-5 text-cyan-300" />
                 <h4 className="font-semibold text-white">Filter by Category</h4>
@@ -410,7 +439,7 @@ const Skills = () => {
                     className={`group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                       activeCat === c
                         ? "bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white shadow-lg shadow-fuchsia-500/25 scale-105"
-                        : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20  border border-white/20 hover:border-white/30"
+                        : "bg-white/10 text-white/70 hover:text-white hover:bg-white/20 border border-white/20 hover:border-white/30"
                     }`}
                     aria-pressed={activeCat === c}
                   >
@@ -424,7 +453,7 @@ const Skills = () => {
             </div>
 
             {/* Achievement badge */}
-            <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6  shadow-xl">
+            <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 shadow-xl">
               <div className="flex items-center gap-3 mb-3">
                 <Sparkles className="h-5 w-5 text-amber-300" />
                 <h4 className="font-semibold text-white">Key Achievements</h4>
@@ -461,7 +490,7 @@ const Skills = () => {
                     data-skill-card
                     onMouseMove={(e) => handleTilt(e, categoryIndex)}
                     onMouseLeave={resetTilt}
-                    className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${color} p-8  shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
+                    className={`group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${color} p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] ${
                       isFilterChanging
                         ? "opacity-60 scale-95"
                         : isLoaded
@@ -475,21 +504,23 @@ const Skills = () => {
                     {/* Enhanced glow border */}
                     <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 group-hover:ring-white/20" />
 
-                    {/* Animated particles effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div
-                        className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
-                        style={{ animationDelay: "0s" }}
-                      />
-                      <div
-                        className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
-                        style={{ animationDelay: "0.5s" }}
-                      />
-                      <div
-                        className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
-                        style={{ animationDelay: "1s" }}
-                      />
-                    </div>
+                    {/* Animated particles effect - disabled on mobile */}
+                    {!disableAnimations && (
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div
+                          className="absolute top-1/4 left-1/4 h-2 w-2 rounded-full bg-white/60 animate-ping"
+                          style={{ animationDelay: "0s" }}
+                        />
+                        <div
+                          className="absolute top-3/4 right-1/4 h-1.5 w-1.5 rounded-full bg-white/40 animate-ping"
+                          style={{ animationDelay: "0.5s" }}
+                        />
+                        <div
+                          className="absolute bottom-1/4 left-1/3 h-1 w-1 rounded-full bg-white/50 animate-ping"
+                          style={{ animationDelay: "1s" }}
+                        />
+                      </div>
+                    )}
 
                     <div className="relative">
                       {/* Enhanced header */}
@@ -511,8 +542,8 @@ const Skills = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Star className="h-5 w-5 text-white/40 group-hover:text-yellow-300 transition-colors duration-300" />
-                          <ChevronRight className="h-5 w-5 text-white/40 group-hover:text-white transition-colors duration-300" />
+                          <Star className={`h-5 w-5 text-white/40 ${!disableAnimations ? 'group-hover:text-yellow-300' : ''} transition-colors duration-300`} />
+                          <ChevronRight className={`h-5 w-5 text-white/40 ${!disableAnimations ? 'group-hover:text-white' : ''} transition-colors duration-300`} />
                         </div>
                       </div>
 
@@ -526,16 +557,16 @@ const Skills = () => {
                                 <div
                                   className={`inline-flex items-center gap-2.5 rounded-full px-3 py-1.5 text-sm font-medium ring-1 transition-all duration-300 ${
                                     badgePalette[(categoryIndex + skillIndex) % badgePalette.length]
-                                  } group-hover/skill:scale-105`}
+                                  } ${!disableAnimations ? 'group-hover/skill:scale-105' : ''}`}
                                 >
-                                  <div className="h-2 w-2 rounded-full bg-current opacity-70 animate-pulse" />
+                                  <div className={`h-2 w-2 rounded-full bg-current opacity-70 ${!disableAnimations ? 'animate-pulse' : ''}`} />
                                   {skill.name}
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <span className="text-sm font-semibold text-white">
                                     {skill.level}%
                                   </span>
-                                  <div className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 animate-pulse" />
+                                  <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
                                 </div>
                               </div>
 
@@ -549,10 +580,13 @@ const Skills = () => {
                                     }
                                   }}
                                   data-level={skill.level}
-                                  className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg progress-bar`}
+                                  className={`h-full rounded-full bg-gradient-to-r ${gradient} shadow-lg ${!disableAnimations ? 'progress-bar' : ''}`}
+                                  style={!disableAnimations ? {} : { width: `${skill.level}%` }}
                                 />
-                                {/* Animated shine effect */}
-                                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
+                                {/* Animated shine effect - disabled on mobile */}
+                                {!disableAnimations && (
+                                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/skill:translate-x-full transition-transform duration-1000" />
+                                )}
                               </div>
                             </li>
                           );

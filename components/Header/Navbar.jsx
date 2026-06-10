@@ -22,6 +22,7 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("banner");
+  const [disableAnimations, setDisableAnimations] = useState(false);
 
   const navbarRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -37,6 +38,18 @@ const Navbar = () => {
     { label: "Reviews", href: "#reviews", icon: MessageSquare },
     { label: "Contact", href: "#contact", icon: Mail },
   ];
+
+  // Check screen size for disabling animations
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setDisableAnimations(window.innerWidth < 991);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -154,13 +167,13 @@ const Navbar = () => {
     <>
       <header
         ref={navbarRef}
-        className={`w-full fixed top-0 z-50 transition-all  duration-300  overflow-hidden ${
+        className={`w-full fixed top-0 z-50 transition-all duration-300 overflow-hidden ${
           scrolled
-            ? "bg-black/20  border-b border-white/10 spec-side shadow-2xl"
+            ? "bg-black/20 border-b border-white/10 spec-side shadow-2xl"
             : "bg-transparent"
         }`}
       >
-        <div className="absolute top-0 left-0  w-full h-full backdrop-blur-[109px]"></div>
+        <div className="absolute top-0 left-0 w-full h-full backdrop-blur-[109px]"></div>
         <div className="container mx-auto px-6 relative">
           <nav className="flex justify-between items-center h-16 md:h-20">
             {/* Logo/Brand */}
@@ -173,7 +186,10 @@ const Navbar = () => {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Sparkles className="h-5 w-5 text-white" />
                 </div>
-                <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
+                {/* Animated glow effect - disabled on mobile */}
+                {!disableAnimations && (
+                  <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
+                )}
               </div>
               <div className="hidden xl:block">
                 <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
@@ -208,9 +224,9 @@ const Navbar = () => {
                     <span className="text-sm">{item.label}</span>
                   </div>
 
-                  {/* Active indicator */}
+                  {/* Active indicator - pulse animation disabled on mobile */}
                   {activeSection === item.href.substring(1) && (
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse" />
+                    <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full ${!disableAnimations ? 'animate-pulse' : ''}`} />
                   )}
                 </button>
               ))}
@@ -269,7 +285,7 @@ const Navbar = () => {
       {/* Mobile Sidebar Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side  border-r border-white/10 z-50 lgg:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-80 bg-gray-900/60 spec-side border-r border-white/10 z-50 lgg:hidden transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -315,8 +331,9 @@ const Navbar = () => {
                         }`}
                       />
                       <span className="font-medium">{item.label}</span>
+                      {/* Active indicator - pulse animation disabled on mobile */}
                       {activeSection === item.href.substring(1) && (
-                        <div className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
+                        <div className={`ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
                       )}
                     </button>
                   </li>
