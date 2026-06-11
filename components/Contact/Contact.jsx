@@ -20,7 +20,7 @@ import {
   Calendar,
   Users,
 } from "lucide-react";
-import Radar from "./Radar";
+import SoftAurora from "./SoftAurora";
 
 const Contact = () => {
   const sectionRef = useRef(null);
@@ -28,7 +28,7 @@ const Contact = () => {
   const cardsRef = useRef([]);
   const headerRef = useRef(null);
   const statsRef = useRef(null);
-  const radarContainerRef = useRef(null);
+  const auroraContainerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
@@ -242,32 +242,31 @@ const Contact = () => {
       id="contact"
       className="relative py-24 md:py-32 "
     >
-      {/* Radar Background - Positioned absolutely */}
+      {/* Soft Aurora Background - Positioned absolutely */}
       <div 
-        ref={radarContainerRef}
+        ref={auroraContainerRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{ 
           zIndex: 0,
-          opacity: 0.3,
+          opacity: 0.5,
           mixBlendMode: 'screen'
         }}
       >
-        <Radar
-          speed={0.8}
-          scale={0.8}
-          ringCount={8}
-          spokeCount={12}
-          ringThickness={0.03}
-          spokeThickness={0.008}
-          sweepSpeed={1.2}
-          sweepWidth={1.5}
-          sweepLobes={1}
-          color="#9f29ff"
-          backgroundColor="#000000"
-          falloff={2.5}
+        <SoftAurora
+          speed={0.6}
+          scale={1.5}
           brightness={0.8}
+          color1="#f7f7f7"
+          color2="#e100ff"
+          noiseFrequency={2.5}
+          noiseAmplitude={0.8}
+          bandHeight={0.5}
+          bandSpread={1.2}
+          octaveDecay={0.15}
+          layerOffset={0.5}
+          colorSpeed={1}
           enableMouseInteraction={!disableAnimations}
-          mouseInfluence={0.15}
+          mouseInfluence={0.2}
         />
       </div>
 
@@ -285,6 +284,7 @@ const Contact = () => {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
+        {/* Rest of your content remains the same... */}
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 contact-header">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
