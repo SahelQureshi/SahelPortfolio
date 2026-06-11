@@ -1,5 +1,4 @@
 import About from "@/components/About/About";
-import BannerAboutCombined from "@/components/Banner/Banner";
 import Banner from "@/components/Banner/Banner";
 import Contact from "@/components/Contact/Contact";
 import Education from "@/components/Education/Education";
@@ -14,8 +13,8 @@ const page = () => {
   return (
     <section className="max-w-full h-auto overflow-hidden">
       
-      <BannerAboutCombined />
-      {/* <About /> */}
+      <Banner />
+      <About />
       <Education />
       <Experice />
       <Skills />
