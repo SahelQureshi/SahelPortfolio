@@ -547,10 +547,10 @@ const Banner = () => {
       >
         <Particles
           particleColors={["#fffff"]}
-          particleCount={29003}
-          particleSpread={90}
+          particleCount={800}
+          particleSpread={16}
           speed={0.1}
-          particleBaseSize={110}
+          particleBaseSize={100}
           moveParticlesOnHover
           alphaParticles={false}
           disableRotation={false}
