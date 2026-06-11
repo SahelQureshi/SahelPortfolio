@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
         {children}
         
         <Footer />
+        <ScrollToTopCircle/>
       </body>
     </html>
   );
