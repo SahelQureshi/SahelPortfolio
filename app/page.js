@@ -11,7 +11,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <section className="max-w-full h-auto overflow-hidden">
+    <section className="max-w-full h-auto overflow-hidden relative">
       
       <Banner />
       <About />
