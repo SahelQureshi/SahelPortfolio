@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Github,
   Linkedin,
@@ -249,7 +250,7 @@ const Banner = () => {
     <section
       ref={sectionRef}
       id="banner"
-      className="relative min-h-screen flex items-center justify-center pt-[5rem] lg:pb-[0rem] pb-[2rem] "
+      className="relative min-h-screen flex items-center justify-center pt-[5rem] lg:pb-[0rem] pb-[2rem]"
     >
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
@@ -272,7 +273,7 @@ const Banner = () => {
           <div ref={textRef} className="lg:col-span-7 space-y-8 lg:order-1 order-2">
             {/* Greeting */}
             <div className="space-y-4 lg:text-left text-center">
-              <div className="inline-flex items-center lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2 ">
+              <div className="inline-flex items-center lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2">
                 <Sparkles className="h-5 w-5 text-purple-300" />
                 <span className="text-white/80 font-medium">Welcome to my portfolio</span>
               </div>
@@ -394,13 +395,19 @@ const Banner = () => {
                   <div className="w-full h-full rounded-full bg-slate-900" />
                 </div>
 
-                {/* Profile image container */}
-                <div className="absolute inset-[-24px] rounded-full overflow-hidden ring-2 ring-white/10 flex justify-center">
-                  <img
-                    src="/assets/images/Sahel-img2.png"
-                    alt="Sahel Qureshi"
-                    className="w-[80%] lg:w-[72%] h-auto object-cover object-top  transition-transform duration-500 "
-                  />
+                {/* Profile image container - Updated with Next.js Image */}
+                <div className="absolute inset-[-24px] rounded-full overflow-hidden ring-2 ring-white/10 flex justify-center items-center">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/assets/images/Sahel-img2.png"
+                      alt="Sahel Qureshi"
+                      fill
+                      className="object-cover object-[4px_14px] transition-transform duration-500 scale-110"
+                      priority
+                      sizes="(max-width: 640px) 240px, (max-width: 768px) 320px, (max-width: 1024px) 352px, 448px"
+                      quality={95}
+                    />
+                  </div>
                   {/* Animated gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-cyan-500/10 opacity-0 hover:opacity-100 transition-opacity duration-500" />
@@ -409,8 +416,6 @@ const Banner = () => {
                 {/* Decorative dots around the circle */}
                 {!isMobile && (
                   <>
-                    
-                    {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-2 w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 animate-pulse" style={{ animationDelay: '0.5s' }} /> */}
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-3 h-3 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 animate-pulse" style={{ animationDelay: '1s' }} />
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse" style={{ animationDelay: '1.5s' }} />
                     
@@ -449,8 +454,6 @@ const Banner = () => {
                 <div className={`absolute top-1/2 -right-10 z-20 p-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md border border-amber-500/30 ${!isMobile ? 'animate-pulse' : ''}`}>
                   <Star className="h-3 w-3 text-amber-300" />
                 </div>
-
-                
               </div>
             </div>
           </div>

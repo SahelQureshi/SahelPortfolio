@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import Image from "next/image";
 
 import {
   Phone,
@@ -267,7 +268,7 @@ const About = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="about" className="relative py-24 md:py-32 ">
+    <section ref={sectionRef} id="about" className="relative py-24 md:py-32">
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         {/* Animated gradient orbs */}
@@ -354,7 +355,7 @@ const About = () => {
 
         {/* Main content grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Profile Image Section - Enhanced */}
+          {/* Profile Image Section - Enhanced with Next.js Image */}
           <div className="lg:col-span-5 flex justify-center">
             <div ref={profileRef} className="relative opacity-0 translate-x-8 transition-all duration-700 about-profile">
               {/* Animated decorative rings */}
@@ -373,13 +374,19 @@ const About = () => {
                   <div className="w-full h-full rounded-full bg-slate-900" />
                 </div>
 
-                {/* Profile image */}
-                <div className="absolute inset-[9px] rounded-full overflow-hidden flex justify-center items-end">
-                  <img
-                    src="/assets/images/Sahel-img2.png"
-                    alt="Sahel Qureshi"
-                    className="w-[96%] h-auto object-cover object-top scale-110"
-                  />
+                {/* Profile image - Updated with Next.js Image */}
+                <div className="absolute inset-[9px] rounded-full overflow-hidden flex justify-center items-center">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/assets/images/Sahel-img2.png"
+                      alt="Sahel Qureshi"
+                      fill
+                      className="object-cover object-[4px_16px] scale-110"
+                      priority
+                      sizes="(max-width: 768px) 288px, (max-width: 1024px) 320px, 416px"
+                      quality={95}
+                    />
+                  </div>
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                 </div>
