@@ -293,7 +293,7 @@ const About = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Header section with animated badge */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 about-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
             <Sparkles className={`h-5 w-5 text-cyan-300 ${!disableAnimations ? 'animate-spin-slow' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">Get to Know Me</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
@@ -324,7 +324,7 @@ const About = () => {
               }}
               onMouseEnter={() => setHoveredStat(index)}
               onMouseLeave={() => setHoveredStat(null)}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:border-white/20 opacity-0 translate-y-8 about-stat"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:border-white/20 opacity-0 translate-y-8 about-stat"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Animated gradient background */}
@@ -335,7 +335,7 @@ const About = () => {
 
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-xl ${stat.bgColor} backdrop-blur-sm`}>
+                  <div className={`p-3 rounded-xl ${stat.bgColor} md:backdrop-blur-sm`}>
                     <stat.icon className={`h-7 w-7 text-white group-hover:scale-110 transition-transform duration-300`} style={{ color: `rgb(${index === 0 ? '245,158,11' : index === 1 ? '16,185,129' : index === 2 ? '244,63,94' : '139,92,246'})` }} />
                   </div>
                   <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
@@ -385,16 +385,16 @@ const About = () => {
                 </div>
 
                 {/* Floating tech badges */}
-                <div className={`absolute -top-4 -right-4 z-20 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`}>
+                <div className={`absolute -top-4 -right-4 z-20 px-3 py-1.5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`}>
                   <span className="flex items-center gap-1">⚛️ React</span>
                 </div>
-                <div className={`absolute -bottom-4 -left-4 z-20 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
+                <div className={`absolute -bottom-4 -left-4 z-20 px-3 py-1.5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
                   <span className="flex items-center gap-1">▲ Next.js</span>
                 </div>
-                <div className={`absolute top-1/4 -right-6 z-20 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`}>
+                <div className={`absolute top-1/4 -right-6 z-20 p-2 rounded-xl bg-white/10 md:backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`}>
                   <Code className="h-4 w-4 text-cyan-300" />
                 </div>
-                <div className={`absolute bottom-1/3 -left-6 z-20 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
+                <div className={`absolute bottom-1/3 -left-6 z-20 p-2 rounded-xl bg-white/10 md:backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
                   <Zap className="h-4 w-4 text-purple-300" />
                 </div>
               </div>
@@ -493,7 +493,7 @@ const About = () => {
               
               <button 
                 onClick={downloadCV}
-                className="group px-8 py-3.5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                className="group px-8 py-3.5 bg-white/5 md:backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105"
               >
                 <span className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
@@ -528,7 +528,7 @@ const About = () => {
             
             {/* Quote mark */}
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-              <div className="p-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm">
+              <div className="p-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 md:backdrop-blur-sm">
                 <Quote className="h-8 w-8 text-cyan-400" />
               </div>
             </div>

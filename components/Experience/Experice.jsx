@@ -201,7 +201,7 @@ const Experience = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 experience-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
             <Briefcase className={`h-5 w-5 text-blue-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">Professional Journey</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
@@ -225,7 +225,7 @@ const Experience = () => {
           {statsData.map((stat, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -272,7 +272,7 @@ const Experience = () => {
 
                     {/* Experience card */}
                     <div className="sm:ml-20 group">
-                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${hoveredCard === index ? 'border-white/30' : ''}`}>
+                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${hoveredCard === index ? 'border-white/30' : ''}`}>
                         {/* Animated gradient background on hover */}
                         <div className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                         
@@ -281,7 +281,7 @@ const Experience = () => {
 
                         {/* Current role indicator */}
                         {exp.current && (
-                          <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-400/30 backdrop-blur-sm z-20">
+                          <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-400/30 md:backdrop-blur-sm z-20">
                             <div className={`w-2 h-2 rounded-full bg-emerald-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
                             <span className="text-xs font-semibold text-emerald-300">Current Role</span>
                           </div>
@@ -397,7 +397,7 @@ const Experience = () => {
               <div className="group relative">
                 <div className={`absolute -inset-3 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm shadow-2xl">
+                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm shadow-2xl">
                   {/* Video */}
                   <div className="relative aspect-video overflow-hidden">
                     <video
@@ -412,13 +412,13 @@ const Experience = () => {
 
                     {/* Play button overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                      <div className="p-5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-300">
                         <Play className="h-8 w-8 text-white" />
                       </div>
                     </div>
 
                     {/* Floating badge */}
-                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20">
+                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 md:backdrop-blur-sm border border-white/20">
                       <span className="text-xs text-white/90 flex items-center gap-1">
                         <Zap className="h-3 w-3 text-blue-400" />
                         Professional Journey
@@ -473,7 +473,7 @@ const Experience = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="relative text-center">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4 backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4 md:backdrop-blur-sm">
                     <Download className="h-4 w-4 text-blue-300" />
                     <span className="text-sm font-medium text-white">Get My Resume</span>
                   </div>

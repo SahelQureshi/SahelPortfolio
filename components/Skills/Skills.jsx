@@ -346,7 +346,7 @@ const Skills = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 skills-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
             <Zap className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-fuchsia-300 to-cyan-300 bg-clip-text text-transparent">Technical Arsenal</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
@@ -367,7 +367,7 @@ const Skills = () => {
 
         {/* Stats Overview */}
         <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 opacity-0 translate-y-8 transition-all duration-700 stats-section">
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
             <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <Code2 className="h-8 w-8 text-fuchsia-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <div className="text-3xl font-bold bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent mb-1">
@@ -375,7 +375,7 @@ const Skills = () => {
             </div>
             <div className="text-white/60 text-sm">Average Proficiency</div>
           </div>
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <Rocket className="h-8 w-8 text-emerald-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <div className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-1">
@@ -383,7 +383,7 @@ const Skills = () => {
             </div>
             <div className="text-white/60 text-sm">Projects Delivered</div>
           </div>
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <TrendingUp className="h-8 w-8 text-cyan-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <div className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-1">
@@ -391,7 +391,7 @@ const Skills = () => {
             </div>
             <div className="text-white/60 text-sm">Performance Gain</div>
           </div>
-          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <Award className="h-8 w-8 text-amber-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <div className="text-3xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent mb-1">
@@ -405,7 +405,7 @@ const Skills = () => {
           {/* Left sidebar - Enhanced */}
           <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start">
             {/* About section */}
-            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
+            <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="relative">
@@ -455,7 +455,7 @@ const Skills = () => {
             </div>
 
             {/* Enhanced filter section */}
-            <div className="rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm p-6 shadow-xl">
+            <div className="rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-6 shadow-xl">
               <div className="flex items-center gap-2 mb-4">
                 <Target className="h-5 w-5 text-cyan-300" />
                 <h4 className="font-semibold text-white">Filter by Category</h4>
@@ -523,7 +523,7 @@ const Skills = () => {
                     ref={(el) => (cardsRef.current[categoryIndex] = el)}
                     onMouseMove={(e) => handleTilt(e, categoryIndex)}
                     onMouseLeave={resetTilt}
-                    className={`group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${
+                    className={`group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${
                       isFilterChanging ? "opacity-60 scale-95" : "opacity-100 scale-100"
                     }`}
                     style={{ transformStyle: "preserve-3d" }}

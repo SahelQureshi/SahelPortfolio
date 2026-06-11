@@ -423,14 +423,14 @@ const Banner = () => {
                 )}
 
                 {/* Floating tech badges */}
-                <div className={`absolute -top-6 -right-9 xs:-right-12 sm:-right-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border border-purple-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`}>
+                <div className={`absolute -top-6 -right-9 xs:-right-12 sm:-right-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 md:backdrop-blur-md border border-purple-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`}>
                   <div className="flex items-center gap-2">
                     <Code className="h-4 w-4 text-purple-300" />
                     <span className="text-xs font-medium text-white">React Expert</span>
                   </div>
                 </div>
 
-                <div className={`absolute -bottom-6 -left-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-md border border-cyan-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
+                <div className={`absolute -bottom-6 -left-6 z-20 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 md:backdrop-blur-md border border-cyan-500/30 shadow-lg ${!isMobile ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
                   <div className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-cyan-300" />
                     <span className="text-xs font-medium text-white">Fast & Scalable</span>
@@ -438,15 +438,15 @@ const Banner = () => {
                 </div>
 
                 {/* Additional floating icons */}
-                <div className={`absolute top-1/3 -right-8 z-20 p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`}>
+                <div className={`absolute top-1/3 -right-8 z-20 p-3 rounded-xl bg-white/10 md:backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`}>
                   <Rocket className="h-5 w-5 text-pink-300" />
                 </div>
 
-                <div className={`absolute bottom-1/3 -left-8 z-20 p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
+                <div className={`absolute bottom-1/3 -left-8 z-20 p-3 rounded-xl bg-white/10 md:backdrop-blur-md border border-white/20 shadow-lg ${!isMobile ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
                   <Shield className="h-5 w-5 text-cyan-300" />
                 </div>
 
-                <div className={`absolute top-1/2 -right-10 z-20 p-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md border border-amber-500/30 ${!isMobile ? 'animate-pulse' : ''}`}>
+                <div className={`absolute top-1/2 -right-10 z-20 p-2 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 md:backdrop-blur-md border border-amber-500/30 ${!isMobile ? 'animate-pulse' : ''}`}>
                   <Star className="h-3 w-3 text-amber-300" />
                 </div>
 
