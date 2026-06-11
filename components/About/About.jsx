@@ -324,7 +324,7 @@ const About = () => {
               }}
               onMouseEnter={() => setHoveredStat(index)}
               onMouseLeave={() => setHoveredStat(null)}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:border-white/20 opacity-0 translate-y-8 about-stat"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:border-white/20 opacity-0 translate-y-8 about-stat"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Animated gradient background */}
