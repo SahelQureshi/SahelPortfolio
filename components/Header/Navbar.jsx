@@ -107,6 +107,9 @@ const Navbar = () => {
       if (!mobile) {
         setIsOpen(false);
         document.body.style.overflow = "auto";
+        document.body.style.position = "";
+        document.body.style.width = "";
+        document.body.style.top = "";
       }
     };
     
@@ -143,21 +146,25 @@ const Navbar = () => {
   // Handle body scroll when sidebar opens/closes
   useEffect(() => {
     if (isOpen && isMobile) {
+      // Store current scroll position before opening
+      const scrollY = window.scrollY;
+      document.body.dataset.scrollY = scrollY;
       // Disable scroll on body when sidebar is open
       document.body.style.overflow = "hidden";
       document.body.style.position = "fixed";
       document.body.style.width = "100%";
-      document.body.style.top = `-${window.scrollY}px`;
-    } else {
+      document.body.style.top = `-${scrollY}px`;
+    } else if (!isOpen && isMobile) {
       // Re-enable scroll when sidebar is closed
-      const scrollY = document.body.style.top;
+      const scrollY = document.body.dataset.scrollY;
       document.body.style.overflow = "";
       document.body.style.position = "";
       document.body.style.width = "";
       document.body.style.top = "";
       
       if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+        window.scrollTo(0, parseInt(scrollY || "0"));
+        delete document.body.dataset.scrollY;
       }
     }
     
@@ -171,11 +178,6 @@ const Navbar = () => {
   }, [isOpen, isMobile]);
 
   const toggleMenu = () => {
-    if (!isOpen) {
-      // Store current scroll position before opening
-      const scrollY = window.scrollY;
-      document.body.dataset.scrollY = scrollY;
-    }
     setIsOpen(!isOpen);
   };
 
@@ -185,24 +187,19 @@ const Navbar = () => {
 
   // Smooth scroll to contact section
   const scrollToContact = () => {
-    if (window.smoother) {
-      window.smoother.scrollTo("#contact", true, "offset 80px");
+    // Close menu first
+    if (isOpen && isMobile) {
+      setIsOpen(false);
+      // Small delay to allow menu to close before scrolling
+      setTimeout(() => {
+        performScroll("#contact");
+      }, 100);
     } else {
-      const element = document.querySelector("#contact");
-      if (element) {
-        const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 = 80px, h-16 = 64px
-        const offsetTop = element.offsetTop - navbarHeight - 20; // -20px buffer
-
-        window.scrollTo({
-          top: offsetTop,
-          behavior: "smooth",
-        });
-      }
+      performScroll("#contact");
     }
-    closeMenu();
   };
 
-  const scrollToSection = (href) => {
+  const performScroll = (href) => {
     if (window.smoother) {
       window.smoother.scrollTo(href, true, "offset 80px");
     } else {
@@ -215,7 +212,19 @@ const Navbar = () => {
         });
       }
     }
-    closeMenu();
+  };
+
+  const scrollToSection = (href) => {
+    // Close the mobile menu if it's open
+    if (isOpen && isMobile) {
+      setIsOpen(false);
+      // Small delay to allow menu animation to complete and body scroll to be restored
+      setTimeout(() => {
+        performScroll(href);
+      }, 150);
+    } else {
+      performScroll(href);
+    }
   };
 
   return (
