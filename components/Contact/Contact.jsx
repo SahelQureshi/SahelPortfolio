@@ -20,7 +20,7 @@ import {
   Calendar,
   Users,
 } from "lucide-react";
-import SoftAurora from "./SoftAurora";
+
 
 const Contact = () => {
   const sectionRef = useRef(null);
@@ -242,33 +242,7 @@ const Contact = () => {
       id="contact"
       className="relative py-24 md:py-32 "
     >
-      {/* Soft Aurora Background - Positioned absolutely */}
-      <div 
-        ref={auroraContainerRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ 
-          zIndex: 0,
-          opacity: 0.5,
-          mixBlendMode: 'screen'
-        }}
-      >
-        <SoftAurora
-          speed={0.6}
-          scale={1.5}
-          brightness={0.8}
-          color1="#f7f7f7"
-          color2="#e100ff"
-          noiseFrequency={2.5}
-          noiseAmplitude={0.8}
-          bandHeight={0.5}
-          bandSpread={1.2}
-          octaveDecay={0.15}
-          layerOffset={0.5}
-          colorSpeed={1}
-          enableMouseInteraction={!disableAnimations}
-          mouseInfluence={0.2}
-        />
-      </div>
+     
 
       {/* Enhanced animated background matching other components */}
       <div className="pointer-events-none absolute inset-0 -z-10">
