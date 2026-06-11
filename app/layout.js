@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         <Navbar />
 
         {children}
-        <ScrollToTopCircle/>
+        
         <Footer />
       </body>
     </html>
