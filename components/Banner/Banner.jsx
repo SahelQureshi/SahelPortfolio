@@ -13,19 +13,15 @@ import {
   Code,
   Heart,
   Zap,
-  ChevronUp,
-  Play,
   ChevronDown,
   Star,
   Rocket,
-  Award,
   Shield,
 } from "lucide-react";
 import Particles from "./Particles";
 
 const Banner = () => {
   const sectionRef = useRef(null);
-  const heroRef = useRef(null);
   const textRef = useRef(null);
   const imageRef = useRef(null);
   const socialRef = useRef(null);
@@ -36,6 +32,8 @@ const Banner = () => {
   const [isTyping, setIsTyping] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [particlesEnabled, setParticlesEnabled] = useState(true);
+  const [webglFailed, setWebglFailed] = useState(false);
 
   const designations = [
     "MERN Stack Developer",
@@ -47,13 +45,29 @@ const Banner = () => {
 
   const currentWord = designations[currentWordIndex];
 
-  // Check screen size for disabling animations
+  // Check screen size and WebGL support
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 991);
     };
 
+    // Check WebGL support
+    const checkWebGL = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) {
+          console.warn('WebGL not supported, disabling particles');
+          setParticlesEnabled(false);
+        }
+      } catch (e) {
+        console.warn('WebGL check failed:', e);
+        setParticlesEnabled(false);
+      }
+    };
+
     checkScreenSize();
+    checkWebGL();
     window.addEventListener("resize", checkScreenSize);
 
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -87,41 +101,13 @@ const Banner = () => {
 
   // Download CV function
   const downloadCV = () => {
-    // Option 1: Direct link to CV file in public folder
-    const cvUrl = "/assets/doc/Sahel_Resume.pdf"; // Make sure to place your CV file in public/assets/
-
-    // Create a temporary anchor element
+    const cvUrl = "/assets/doc/Sahel_Resume.pdf";
     const link = document.createElement("a");
     link.href = cvUrl;
-    link.download = "Sahel_Qureshi_CV.pdf"; // This specifies the download filename
-
-    // Alternative: If you want to use a different filename
-    // link.download = 'Sahel_Qureshi_Resume_2024.pdf';
-
-    // Append to body, click, and remove
+    link.download = "Sahel_Qureshi_CV.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  // Alternative download function with fetch (useful for dynamic content or error handling)
-  const downloadCVWithFetch = async () => {
-    try {
-      const response = await fetch("/assets/Sahel_Qureshi_CV.pdf");
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "Sahel_Qureshi_CV.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading CV:", error);
-      // Fallback: Open in new tab if download fails
-      window.open("/assets/Sahel_Qureshi_CV.pdf", "_blank");
-    }
   };
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -535,28 +521,38 @@ const Banner = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          width: "100%",
-          height: "1000px",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex:0
-        }}
-      >
-        <Particles
-          particleColors={["#fffff"]}
-          particleCount={800}
-          particleSpread={16}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover
-          alphaParticles={false}
-          disableRotation={false}
-          pixelRatio={1}
-        />
-      </div>
+      {/* Particles with SAFE settings - only render if WebGL is supported */}
+      {particlesEnabled && !webglFailed && (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <Particles
+            particleColors={["#a855f7", "#ec4899", "#06b6d4", "#8b5cf6"]}
+            particleCount={800} // Further reduced for stability
+            particleSpread={20}   // Reduced spread
+            speed={0.05}         // Slower for better performance
+            particleBaseSize={200}  // CRITICAL: Reduced from 100 to 3!
+            moveParticlesOnHover={false} // Disabled to save GPU
+            alphaParticles={true} // Alpha particles are more efficient
+            disableRotation={false}
+            pixelRatio={0.75}     // Reduced pixel ratio for performance
+            onError={() => setWebglFailed(true)} // Handle errors gracefully
+          />
+        </div>
+      )}
+
+      {/* Fallback gradient background if particles fail */}
+      {webglFailed && (
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 -z-5" />
+      )}
 
       <style jsx>{`
         @keyframes spin-slow {
