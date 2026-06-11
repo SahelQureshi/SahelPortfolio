@@ -185,7 +185,7 @@ const Education = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
         <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 education-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
             <GraduationCap className={`h-5 w-5 text-emerald-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">Academic Journey</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
@@ -209,7 +209,7 @@ const Education = () => {
           {statsData.map((stat, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -252,7 +252,7 @@ const Education = () => {
 
                     {/* Education card */}
                     <div className="sm:ml-20 group">
-                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${hoveredCard === index ? 'border-white/30' : ''}`}>
+                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${hoveredCard === index ? 'border-white/30' : ''}`}>
                         {/* Animated gradient background on hover */}
                         <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                         
@@ -301,7 +301,7 @@ const Education = () => {
 
                             {/* Grade badge */}
                             <div className="flex flex-col items-end gap-2">
-                              <div className="px-4 py-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 md:backdrop-blur-sm">
+                              <div className="px-4 py-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 backdrop-blur-sm">
                                 <span className={`text-sm font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
                                   {item.grade}
                                 </span>
@@ -374,7 +374,7 @@ const Education = () => {
               <div className="group relative">
                 <div className={`absolute -inset-3 bg-gradient-to-r from-emerald-500/20 via-cyan-500/15 to-purple-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm shadow-2xl">
+                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-sm shadow-2xl">
                   {/* Video */}
                   <div className="relative aspect-video overflow-hidden">
                     <video
@@ -389,13 +389,13 @@ const Education = () => {
 
                     {/* Play button overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="p-5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                      <div className="p-5 rounded-full bg-white/10 backdrop-blur-md border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-300">
                         <Play className="h-8 w-8 text-white" />
                       </div>
                     </div>
 
                     {/* Floating badge */}
-                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 md:backdrop-blur-sm border border-white/20">
+                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/20">
                       <span className="text-xs text-white/90 flex items-center gap-1">
                         <Zap className="h-3 w-3 text-emerald-400" />
                         Learning in Action
@@ -453,7 +453,7 @@ const Education = () => {
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-emerald-500/0 via-emerald-500/50 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ top: -1, bottom: -1, left: -1, right: -1, pointerEvents: 'none' }} />
 
                 <div className="relative text-center">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 px-4 py-2 mb-4 md:backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 px-4 py-2 mb-4 backdrop-blur-sm">
                     <Sparkles className="h-4 w-4 text-emerald-300" />
                     <span className="text-sm font-medium text-white">Ready to Grow?</span>
                   </div>

@@ -415,14 +415,14 @@ const Projects = () => {
                         <>
                           <button
                             onClick={() => prevImage(i, project.images.length)}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 md:backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
                             aria-label="Previous image"
                           >
                             <ChevronLeft className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => nextImage(i, project.images.length)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 md:backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition-all hover:bg-black/70 hover:scale-110 lg:opacity-0 lg:group-hover:opacity-100"
                             aria-label="Next image"
                           >
                             <ChevronRight className="h-4 w-4" />
