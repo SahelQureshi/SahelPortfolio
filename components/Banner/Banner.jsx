@@ -21,7 +21,6 @@ import {
   Award,
   Shield,
 } from "lucide-react";
-import Particles from "./Particles";
 
 const Banner = () => {
   const sectionRef = useRef(null);
@@ -288,7 +287,7 @@ const Banner = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 relative z-[1] pointer-events-none">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 min-h-screen items-center">
           {/* Left Content */}
           <div
@@ -535,28 +534,6 @@ const Banner = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          width: "100%",
-          height: "1000px",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex:0
-        }}
-      >
-        <Particles
-          particleColors={["#fffff"]}
-          particleCount={800}
-          particleSpread={16}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover
-          alphaParticles={false}
-          disableRotation={false}
-          pixelRatio={1}
-        />
-      </div>
 
       <style jsx>{`
         @keyframes spin-slow {
