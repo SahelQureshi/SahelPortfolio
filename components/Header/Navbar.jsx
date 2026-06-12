@@ -193,11 +193,11 @@ const Navbar = () => {
 
   const performScroll = (href) => {
     if (window.smoother) {
-      window.smoother.scrollTo(href, true, "offset 80px");
+      window.smoother.scrollTo(href, true, "offset 20px");
     } else {
       const element = document.querySelector(href);
       if (element) {
-        const offsetTop = element.offsetTop - 80; // Account for navbar height
+        const offsetTop = element.offsetTop - 20; // Account for navbar height
         window.scrollTo({
           top: offsetTop,
           behavior: "smooth",
