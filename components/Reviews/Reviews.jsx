@@ -292,7 +292,7 @@ const Reviews = () => {
     <motion.section
       ref={sectionRef}
       id="reviews"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-16 md:py-24 "
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}

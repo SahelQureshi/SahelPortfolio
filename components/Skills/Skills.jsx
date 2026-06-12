@@ -247,7 +247,7 @@ const Skills = () => {
     <motion.section 
       ref={sectionRef} 
       id="skills" 
-      className="relative py-24 md:py-32"
+      className="relative py-16 md:py-24"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, amount: 0.1 }}
