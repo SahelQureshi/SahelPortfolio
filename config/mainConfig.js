@@ -1,6 +1,4 @@
 import {
-  Menu,
-  X,
   Home,
   User,
   GraduationCap,
@@ -9,56 +7,59 @@ import {
   FolderOpen,
   MessageSquare,
   Mail,
-  Sparkles,
-  ChevronDown,
   Zap,
-  Code2,
   Layout,
   Server,
   Database,
-  Wrench,
-  Smartphone,
-  Trophy,
-  Target,
-  Star,
-  ChevronRight,
-  Globe,
   Cloud,
   Shield,
   Layers,
-  Cpu,
   Rocket,
-  Award,
-  TrendingUp,
-  CheckCircle,
-  BarChart3,
-  Palette,
-  Terminal,
-  Braces,
-  GitBranch,
-  DatabaseZap,
-  Quote,
-  ArrowRight,
   Facebook,
   Github,
   Linkedin,
   Users,
-  ChevronLeft,
-  Heart,
-  Crown,
   Clock,
-  CheckCircle2,
-  Diamond,
-  ThumbsUp,
   Calendar,
   MapPin,
-  Download,
-  Play,
-  Building,
-  Medal,
-  Brain,
   Phone,
+  Trophy,
+  Star,
+  Brain,
+  Medal,
+  Smartphone,
 } from "lucide-react";
+
+// Function to calculate experience string based on actual start date (December 2024)
+const getExperienceString = () => {
+  // Your actual career start date - December 1, 2024
+  const startDate = new Date("2024-12-01");
+  const currentDate = new Date();
+  
+  let years = currentDate.getFullYear() - startDate.getFullYear();
+  let months = currentDate.getMonth() - startDate.getMonth();
+  
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+  
+  // Calculate total months for more accurate decimal
+  const totalMonths = (years * 12) + months;
+  const decimalYears = (totalMonths / 12).toFixed(1);
+  
+  // Create the experience string
+  if (years === 0) {
+    return `${months} months`;
+  } else if (months === 0) {
+    return `${years} year${years > 1 ? 's' : ''}`;
+  } else {
+    return `${decimalYears}+ years`; // This will show something like "1.5+ years" currently
+  }
+};
+
+// Auto-updating experience string
+export const experienceString = getExperienceString();
 
 export const designations = [
   "MERN Stack Developer",
@@ -95,31 +96,36 @@ export const socialLinks = [
   },
 ];
 
- export const navItems = [
-    { label: "Home", href: "#banner", icon: Home },
-    { label: "About", href: "#about", icon: User },
-    { label: "Education", href: "#education", icon: GraduationCap },
-    { label: "Experience", href: "#experience", icon: Briefcase },
-    { label: "Skills", href: "#skills", icon: Code },
-    { label: "Projects", href: "#projects", icon: FolderOpen },
-    { label: "Reviews", href: "#reviews", icon: MessageSquare },
-    { label: "Contact", href: "#contact", icon: Mail },
-  ];
+export const navItems = [
+  { label: "Home", href: "#banner", icon: Home },
+  { label: "About", href: "#about", icon: User },
+  { label: "Education", href: "#education", icon: GraduationCap },
+  { label: "Experience", href: "#experience", icon: Briefcase },
+  { label: "Skills", href: "#skills", icon: Code },
+  { label: "Projects", href: "#projects", icon: FolderOpen },
+  { label: "Reviews", href: "#reviews", icon: MessageSquare },
+  { label: "Contact", href: "#contact", icon: Mail },
+];
 
 export const experiences = [
   {
     period: "December 2024 - Present",
     role: "MERN Stack Developer",
     company: "Leelia Web Solutions Pvt Ltd",
-    location: "Remote",
+    location: "OnSite",
     type: "Full-time",
-    description: "At Leelia Web Solutions, I have been contributing to full-stack development using the MERN stack. My responsibilities include building scalable REST APIs, dynamic front-end interfaces, and implementing secure authentication flows. I collaborate closely with the UI/UX and DevOps teams to deliver modern and high-performing web applications.",
-    achievements: ["Built 5+ scalable APIs", "Improved app performance by 40%", "Led authentication system implementation"],
+    description:
+      "At Leelia Web Solutions, I have been contributing to full-stack development using the MERN stack. My responsibilities include building scalable REST APIs, dynamic front-end interfaces, and implementing secure authentication flows. I collaborate closely with the UI/UX and DevOps teams to deliver modern and high-performing web applications.",
+    achievements: [
+      "Built 5+ scalable APIs",
+      "Improved app performance by 40%",
+      "Led authentication system implementation",
+    ],
     technologies: ["React", "Node.js", "MongoDB", "Express", "JWT"],
     current: true,
     icon: Rocket,
     color: "from-emerald-500 to-teal-500",
-    bgColor: "bg-emerald-500/10"
+    bgColor: "bg-emerald-500/10",
   },
   {
     period: "October 2024 - December 2024",
@@ -127,13 +133,18 @@ export const experiences = [
     company: "Talentrise Technokrate Pvt Ltd",
     location: "Remote",
     type: "Full-time",
-    description: "At Talentrise Technokrate, I specialized in crafting modern UI components using React.js. I focused on building reusable components, improving performance through code-splitting and lazy loading, and integrating APIs to build dynamic dashboards. My role helped shape intuitive user experiences for enterprise clients.",
-    achievements: ["Created 20+ reusable components", "Optimized load times by 30%", "Built 3 enterprise dashboards"],
+    description:
+      "At Talentrise Technokrate, I specialized in crafting modern UI components using React.js. I focused on building reusable components, improving performance through code-splitting and lazy loading, and integrating APIs to build dynamic dashboards. My role helped shape intuitive user experiences for enterprise clients.",
+    achievements: [
+      "Created 20+ reusable components",
+      "Optimized load times by 30%",
+      "Built 3 enterprise dashboards",
+    ],
     technologies: ["React", "JavaScript", "CSS3", "REST APIs", "Git"],
     current: false,
     icon: Code,
     color: "from-blue-500 to-cyan-500",
-    bgColor: "bg-blue-500/10"
+    bgColor: "bg-blue-500/10",
   },
   {
     period: "June 2024 - September 2024",
@@ -141,62 +152,67 @@ export const experiences = [
     company: "EMEI",
     location: "On-site",
     type: "Internship",
-    description: "During my industrial training at EMEI, I gained hands-on experience with core front-end technologies and the React.js framework. This period laid a strong foundation in responsive design, component architecture, and version control using Git. It prepared me for professional development roles with practical exposure.",
-    achievements: ["Mastered React fundamentals", "Built responsive layouts", "Learned Git workflows"],
+    description:
+      "During my industrial training at EMEI, I gained hands-on experience with core front-end technologies and the React.js framework. This period laid a strong foundation in responsive design, component architecture, and version control using Git. It prepared me for professional development roles with practical exposure.",
+    achievements: [
+      "Mastered React fundamentals",
+      "Built responsive layouts",
+      "Learned Git workflows",
+    ],
     technologies: ["HTML5", "CSS3", "JavaScript", "React.js", "Git"],
     current: false,
     icon: Zap,
     color: "from-purple-500 to-pink-500",
-    bgColor: "bg-purple-500/10"
+    bgColor: "bg-purple-500/10",
   },
 ];
 
-
+// Updated statsData with auto-updating experience
 export const statsData = [
-    {
-      icon: Trophy,
-      number: "2+",
-      label: "Years Experience",
-      description: "Building digital solutions",
-      color: "from-amber-500 to-orange-500",
-      bgColor: "bg-amber-500/10",
-    },
-    {
-      icon: Briefcase,
-      number: "50+",
-      label: "Projects Completed",
-      description: "From concept to deployment",
-      color: "from-emerald-500 to-teal-500",
-      bgColor: "bg-emerald-500/10",
-    },
-    {
-      icon: Star,
-      number: "100%",
-      label: "Client Satisfaction",
-      description: "Exceeding expectations",
-      color: "from-rose-500 to-pink-500",
-      bgColor: "bg-rose-500/10",
-    },
-    {
-      icon: Layers,
-      number: "100K+",
-      label: "Lines of Code",
-      description: "Clean & maintainable",
-      color: "from-violet-500 to-purple-500",
-      bgColor: "bg-violet-500/10",
-    }
-  ];
+  {
+    icon: Trophy,
+    number: experienceString, // This will auto-update to correct value (e.g., "1.5+ years")
+    label: "Years Experience",
+    description: "Building digital solutions",
+    color: "from-amber-500 to-orange-500",
+    bgColor: "bg-amber-500/10",
+  },
+  {
+    icon: Briefcase,
+    number: "50+",
+    label: "Projects Completed",
+    description: "From concept to deployment",
+    color: "from-emerald-500 to-teal-500",
+    bgColor: "bg-emerald-500/10",
+  },
+  {
+    icon: Star,
+    number: "100%",
+    label: "Client Satisfaction",
+    description: "Exceeding expectations",
+    color: "from-rose-500 to-pink-500",
+    bgColor: "bg-rose-500/10",
+  },
+  {
+    icon: Layers,
+    number: "100K+",
+    label: "Lines of Code",
+    description: "Clean & maintainable",
+    color: "from-violet-500 to-purple-500",
+    bgColor: "bg-violet-500/10",
+  },
+];
 
-  export const techStack = [
-    { name: "React", level: 95, icon: "⚛️" },
-    { name: "Next.js", level: 90, icon: "▲" },
-    { name: "Node.js", level: 88, icon: "💚" },
-    { name: "TypeScript", level: 85, icon: "📘" },
-    { name: "Tailwind", level: 92, icon: "🎨" },
-    { name: "MongoDB", level: 82, icon: "🍃" }
-  ];
+export const techStack = [
+  { name: "React", level: 95, icon: "⚛️" },
+  { name: "Next.js", level: 90, icon: "▲" },
+  { name: "Node.js", level: 88, icon: "💚" },
+  { name: "TypeScript", level: 85, icon: "📘" },
+  { name: "Tailwind", level: 92, icon: "🎨" },
+  { name: "MongoDB", level: 82, icon: "🍃" },
+];
 
-  export const education = [
+export const education = [
   {
     title: "Bachelor of Computer Application (BCA)",
     institution: "SVIMS",
@@ -204,10 +220,15 @@ export const statsData = [
     location: "India",
     grade: "First Class",
     desc: "Acquired comprehensive knowledge of computer applications, programming fundamentals (C, C++, Java), database management, and software development. Completed projects demonstrating practical implementation of theoretical concepts.",
-    highlights: ["Programming Fundamentals", "Database Management", "Software Development", "Project Work"],
+    highlights: [
+      "Programming Fundamentals",
+      "Database Management",
+      "Software Development",
+      "Project Work",
+    ],
     achievements: ["First Class Grade", "Project Excellence Award"],
     icon: Code,
-    color: "from-emerald-500 to-teal-500"
+    color: "from-emerald-500 to-teal-500",
   },
   {
     title: "12th Grade (Arts)",
@@ -219,7 +240,7 @@ export const statsData = [
     highlights: ["Geography", "English", "History", "Computer Applications"],
     achievements: ["Consistent Performer", "Subject Excellence"],
     icon: Brain,
-    color: "from-cyan-500 to-blue-500"
+    color: "from-cyan-500 to-blue-500",
   },
   {
     title: "10th Grade",
@@ -231,11 +252,9 @@ export const statsData = [
     highlights: ["Mathematics", "Science", "Languages", "Academic Foundation"],
     achievements: ["Logical Reasoning", "Academic Excellence"],
     icon: Medal,
-    color: "from-purple-500 to-pink-500"
+    color: "from-purple-500 to-pink-500",
   },
 ];
-
- 
 
 export const projectsData = [
   {
@@ -275,47 +294,48 @@ export const projectsData = [
 ];
 
 export const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email',
-      value: 'sahelqureshi0089@gmail.com',
-      link: 'mailto:sahelqureshi0089@gmail.com',
-      color: 'from-fuchsia-500/20 to-purple-500/20',
-      gradient: 'from-fuchsia-500 to-purple-500'
-    },
-    {
-      icon: Phone,
-      title: 'Phone',
-      value: '+91 90079 47586',
-      link: 'tel:+919007947586',
-      color: 'from-cyan-500/20 to-blue-500/20',
-      gradient: 'from-cyan-500 to-blue-500'
-    },
-    {
-      icon: MapPin,
-      title: 'Location',
-      value: 'Birlagate, Barrackpore, Kolkata, India',
-      link: '#',
-      color: 'from-purple-500/20 to-pink-500/20',
-      gradient: 'from-purple-500 to-pink-500'
-    }
-  ];
+  {
+    icon: Mail,
+    title: "Email",
+    value: "sahelqureshi0089@gmail.com",
+    link: "mailto:sahelqureshi0089@gmail.com",
+    color: "from-fuchsia-500/20 to-purple-500/20",
+    gradient: "from-fuchsia-500 to-purple-500",
+  },
+  {
+    icon: Phone,
+    title: "Phone",
+    value: "+91 90079 47586",
+    link: "tel:+919007947586",
+    color: "from-cyan-500/20 to-blue-500/20",
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  {
+    icon: MapPin,
+    title: "Location",
+    value: "Birlagate, Barrackpore, Kolkata, India",
+    link: "#",
+    color: "from-purple-500/20 to-pink-500/20",
+    gradient: "from-purple-500 to-pink-500",
+  },
+];
 
-  export const availabilityStats = [
-    { icon: Clock, label: "Response Time", value: "< 24h", color: "emerald" },
-    { icon: Calendar, label: "Experience", value: "2+ Years", color: "fuchsia" },
-    { icon: Users, label: "Happy Clients", value: "15+", color: "cyan" },
-    { icon: Zap, label: "Projects", value: "25+", color: "amber" },
-  ];
+// Updated availabilityStats with auto-updating experience
+export const availabilityStats = [
+  { icon: Clock, label: "Response Time", value: "< 24h", color: "emerald" },
+  { icon: Calendar, label: "Experience", value: experienceString, color: "fuchsia" }, // Auto-updates here too
+  { icon: Users, label: "Happy Clients", value: "15+", color: "cyan" },
+  { icon: Zap, label: "Projects", value: "25+", color: "amber" },
+];
 
-  export const quickLinks = [
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
-  ];
+export const quickLinks = [
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Contact", href: "#contact" },
+];
 
-  export const testimonialsData = [
+export const testimonialsData = [
   {
     name: "Aisha Khan",
     role: "Product Manager, FinTech Co.",
@@ -389,8 +409,6 @@ export const contactInfo = [
     metrics: { speed: "+50%", satisfaction: "99%", roi: "+40%" },
   },
 ];
-
-
 
 export const skillsData = [
   {

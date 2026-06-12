@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Briefcase, Calendar, MapPin, Award, Download, Play, Sparkles, Trophy, Target, Clock, ChevronRight, Star, Building, Code, Rocket, Users, Zap, Medal, Globe, TrendingUp, CheckCircle } from "lucide-react";
-import { experiences } from "@/config/mainConfig";
+import { experiences, experienceString } from "@/config/mainConfig";
 
 
 
@@ -147,6 +147,8 @@ const Experience = () => {
     { label: "Tech Stack", value: "10+", icon: Code, color: "purple" },
     { label: "Performance Boost", value: "40%", icon: TrendingUp, color: "orange" }
   ];
+
+  const updatedExperice=experienceString.replace(/\s*years?/, "").trim();
 
   return (
     <section 
@@ -482,7 +484,7 @@ const Experience = () => {
                       className="text-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-purple-500/30 transition-all duration-300"
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1">2+</div>
+                      <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1">{updatedExperice}</div>
                       <div className="text-sm text-white/60">Years</div>
                     </motion.div>
                   </div>

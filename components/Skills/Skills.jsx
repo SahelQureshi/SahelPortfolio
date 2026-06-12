@@ -31,9 +31,7 @@ import {
   GitBranch,
   DatabaseZap,
 } from "lucide-react";
-import { skillsData } from "@/config/mainConfig";
-
-
+import { experienceString, skillsData } from "@/config/mainConfig";
 
 const Skills = () => {
   const sectionRef = useRef(null);
@@ -47,6 +45,8 @@ const Skills = () => {
   const statsControls = useAnimation();
   const sidebarControls = useAnimation();
   const ref = useRef(null);
+
+  const updateExperience=experienceString.replace(/\s*years?/, "").trim();
   
   // This ensures animation ONLY happens ONCE when first viewed
   const isInView = useInView(ref, { once: true, amount: 0.1 });
@@ -133,12 +133,15 @@ const Skills = () => {
   };
 
   const totalProjects = 25;
-  const experienceYears = 2;
+  // Remove the hardcoded experienceYears and use updateExperience instead
   const satisfactionRate = 100;
 
   // Calculate overall skill average
   const allSkills = skillsData.flatMap(cat => cat.items);
   const avgSkillLevel = Math.round(allSkills.reduce((sum, s) => sum + s.level, 0) / allSkills.length);
+
+  // Extract the numeric value from updateExperience for calculations
+  const experienceValue = parseFloat(updateExperience) || 1.5;
 
   return (
     <section
@@ -281,7 +284,7 @@ const Skills = () => {
                 </div>
 
                 <p className="text-white/70 text-base leading-relaxed mb-6">
-                  Full Stack Developer with {experienceYears}+ years of experience building 
+                  Full Stack Developer with {updateExperience} of experience building 
                   production-ready applications. Expertise spans across modern JavaScript 
                   frameworks, cloud deployment, and performance optimization.
                 </p>
@@ -292,7 +295,7 @@ const Skills = () => {
                     className="text-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <div className="text-2xl font-bold text-white mb-0.5">{experienceYears}+</div>
+                    <div className="text-2xl font-bold text-white mb-0.5">{updateExperience}</div>
                     <div className="text-xs text-white/60">Years Exp</div>
                   </motion.div>
                   <motion.div 
