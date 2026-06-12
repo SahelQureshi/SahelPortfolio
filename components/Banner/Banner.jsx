@@ -1,6 +1,9 @@
+// components/Banner/Banner.jsx
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+
 import Image from "next/image";
 import {
   Github,
@@ -86,44 +89,14 @@ const Banner = () => {
 
   // Download CV function
   const downloadCV = () => {
-    // Option 1: Direct link to CV file in public folder
-    const cvUrl = "/assets/doc/Sahel_Resume.pdf"; // Make sure to place your CV file in public/assets/
-
-    // Create a temporary anchor element
+    const cvUrl = "/assets/doc/Sahel_Resume.pdf";
     const link = document.createElement("a");
     link.href = cvUrl;
-    link.download = "Sahel_Qureshi_CV.pdf"; // This specifies the download filename
-
-    // Alternative: If you want to use a different filename
-    // link.download = 'Sahel_Qureshi_Resume_2024.pdf';
-
-    // Append to body, click, and remove
+    link.download = "Sahel_Qureshi_CV.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
-
-  // Alternative download function with fetch (useful for dynamic content or error handling)
-  const downloadCVWithFetch = async () => {
-    try {
-      const response = await fetch("/assets/Sahel_Qureshi_CV.pdf");
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "Sahel_Qureshi_CV.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading CV:", error);
-      // Fallback: Open in new tab if download fails
-      window.open("/assets/Sahel_Qureshi_CV.pdf", "_blank");
-    }
-  };
-
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Typing animation effect
   useEffect(() => {
@@ -159,72 +132,6 @@ const Banner = () => {
     }
   }, [displayedText, isTyping, currentWord, designations.length]);
 
-  // Optimized Intersection Observer for scroll animations
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: [0.1, 0.3],
-    };
-
-    const handleIntersection = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const element = entry.target;
-          const threshold = entry.intersectionRatio;
-
-          if (element.classList.contains("banner-text")) {
-            if (threshold > 0.1) {
-              element.classList.add("animate-in");
-            }
-          } else if (element.classList.contains("banner-image")) {
-            if (threshold > 0.1) {
-              element.classList.add("animate-in");
-            }
-          } else if (
-            element.classList.contains("banner-social") ||
-            element.classList.contains("banner-cta")
-          ) {
-            if (threshold > 0.1) {
-              element.classList.add("animate-in");
-            }
-          }
-
-          if (threshold > 0.3 && !isLoaded) {
-            setIsLoaded(true);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      handleIntersection,
-      observerOptions,
-    );
-
-    if (textRef.current) {
-      textRef.current.classList.add("banner-text");
-      observer.observe(textRef.current);
-    }
-
-    if (imageRef.current) {
-      imageRef.current.classList.add("banner-image");
-      observer.observe(imageRef.current);
-    }
-
-    if (socialRef.current) {
-      socialRef.current.classList.add("banner-social");
-      observer.observe(socialRef.current);
-    }
-
-    if (ctaRef.current) {
-      ctaRef.current.classList.add("banner-cta");
-      observer.observe(ctaRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isLoaded]);
-
   const socialLinks = [
     {
       icon: Github,
@@ -252,13 +159,44 @@ const Banner = () => {
     },
   ];
 
+  // Variants for staggered children animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotate: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    },
+  };
+
+  const socialVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
   return (
     <section
       ref={sectionRef}
       id="banner"
       className="relative min-h-screen flex items-center justify-center pt-[5rem] lg:pb-[0rem] pb-[2rem]"
     >
-      
       {/* Enhanced background with multiple layers */}
       <div className="absolute inset-0 -z-10">
         <div
@@ -289,19 +227,25 @@ const Banner = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 min-h-screen items-center">
-          {/* Left Content */}
-          <div
-            ref={textRef}
+          {/* Left Content with staggered animations */}
+          <motion.div 
             className="lg:col-span-7 space-y-8 lg:order-1 order-2"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
           >
-            {/* Greeting */}
-            <div className="space-y-4 lg:text-left text-center">
-              <div className="inline-flex items-center relative z-10 pointer-events-auto lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2">
+            {/* Greeting - Top in animation */}
+            <motion.div variants={itemVariants} className="space-y-4 lg:text-left text-center">
+              <motion.div 
+                variants={itemVariants}
+                className="inline-flex items-center relative z-10 pointer-events-auto lg:justify-start justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-2"
+              >
                 <Sparkles className="h-5 w-5 text-purple-300" />
                 <span className="text-white/80 font-medium">
                   Welcome to my portfolio
                 </span>
-              </div>
+              </motion.div>
 
               <div className="space-y-2">
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight">
@@ -317,15 +261,21 @@ const Banner = () => {
                 </h2>
               </div>
 
-              <div className="flex items-center lg:justify-start justify-center gap-4">
+              <motion.div 
+                variants={itemVariants}
+                className="flex items-center lg:justify-start justify-center gap-4"
+              >
                 <div className="h-1 w-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" />
                 <Code className="h-8 w-8 text-purple-300" />
                 <div className="h-1 w-16 bg-gradient-to-r from-pink-400 to-cyan-400 rounded-full" />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Role and Description */}
-            <div className="space-y-6 lg:text-left text-center">
+            {/* Role and Description - Left in animation */}
+            <motion.div 
+              variants={itemVariants}
+              className="space-y-6 lg:text-left text-center"
+            >
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white">
                 {displayedText}
                 <span className="inline-block w-1 h-8 bg-cyan-400 ml-1 animate-pulse" />
@@ -337,35 +287,39 @@ const Banner = () => {
                 innovative solutions. Let&apos;s build something amazing
                 together.
               </p>
-            </div>
+            </motion.div>
 
-            {/* Social Links */}
-            <div
-              ref={socialRef}
+            {/* Social Links - Bottom in animation */}
+            <motion.div 
+              variants={socialVariants}
               className="flex items-center gap-4 lg:justify-start justify-center"
             >
               {socialLinks.map((social, index) => (
-                <a
+                <motion.a
                   key={index}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`group relative z-10 pointer-events-auto overflow-hidden rounded-2xl bg-white/10 border border-white/20 p-4 transition-all duration-300 hover:scale-110 ${social.color}`}
                   aria-label={social.label}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <social.icon className="h-6 w-6 text-white group-hover:text-white transition-colors" />
-                </a>
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
 
-            {/* CTA Buttons */}
-            <div
-              ref={ctaRef}
+            {/* CTA Buttons - Scale animation */}
+            <motion.div 
+              variants={itemVariants}
               className="flex lg:justify-start justify-center sm:flex-nowrap flex-wrap gap-4 pt-8"
             >
-              <button
+              <motion.button
                 onClick={scrollToContact}
                 className="group relative z-10 pointer-events-auto overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold py-4 px-8 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 text-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative flex items-center justify-center gap-3">
@@ -373,22 +327,27 @@ const Banner = () => {
                   <span>Hire Me</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </div>
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
                 onClick={downloadCV}
                 className="group relative z-10 pointer-events-auto overflow-hidden rounded-2xl border border-white/20 bg-white/10 text-white font-semibold py-4 px-8 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className="relative flex items-center justify-center gap-3">
                   <Download className="h-5 w-5" />
                   <span>Download Resume</span>
                   <Download className="h-5 w-5 transition-transform group-hover:translate-y-1" />
                 </div>
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
-            {/* Scroll indicator */}
-            <div className="flex justify-center lg:justify-start pt-12">
+            {/* Scroll indicator - Fade in */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex justify-center lg:justify-start pt-12"
+            >
               <button
                 onClick={scrollToAbout}
                 className="group flex flex-col items-center gap-4 text-white/60 hover:text-white transition-colors duration-300 cursor-pointer"
@@ -399,12 +358,18 @@ const Banner = () => {
                 </div>
                 <ChevronDown className="h-5 w-5 animate-bounce" />
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right Content - Enhanced Profile Circle Design */}
-          <div className="lg:col-span-5 flex justify-center items-start lg:pt-[8rem] pt-[2rem] h-full lg:order-2 order-1">
-            <div ref={imageRef} className="relative z-[10]">
+          {/* Right Content - Image with scale and rotate animation */}
+          <motion.div 
+            className="lg:col-span-5 flex justify-center items-start lg:pt-[8rem] pt-[2rem] h-full lg:order-2 order-1"
+            variants={imageVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+          >
+            <div className="relative z-[10]">
               {/* Outer animated ring layers */}
               <div
                 className={`absolute -inset-8 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-3xl ${!isMobile ? "animate-pulse scale-110" : ""}`}
@@ -435,7 +400,7 @@ const Banner = () => {
                   <div className="w-full h-full rounded-full bg-slate-900" />
                 </div>
 
-                {/* Profile image container - Updated with Next.js Image */}
+                {/* Profile image container */}
                 <div className="absolute inset-[-24px] rounded-full overflow-hidden ring-2 ring-white/10 flex justify-center items-center">
                   <div className="relative w-full h-full">
                     <Image
@@ -530,10 +495,9 @@ const Banner = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-
 
       <style jsx>{`
         @keyframes spin-slow {
@@ -581,20 +545,6 @@ const Banner = () => {
         }
         .animate-float {
           animation: float 4s ease-in-out infinite;
-        }
-        .banner-text.animate-in,
-        .banner-image.animate-in,
-        .banner-social.animate-in,
-        .banner-cta.animate-in {
-          opacity: 1 !important;
-          transform: translateX(0) !important;
-          transform: translateY(0) !important;
-        }
-        .banner-text.animate-in {
-          transform: translateY(0) !important;
-        }
-        .banner-image.animate-in {
-          transform: translateX(0) !important;
         }
       `}</style>
     </section>

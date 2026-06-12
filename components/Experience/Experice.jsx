@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Briefcase, Calendar, MapPin, Award, Download, Play, Sparkles, Trophy, Target, Clock, ChevronRight, Star, Building, Code, Rocket, Users, Zap, Medal, Globe, TrendingUp, CheckCircle } from "lucide-react";
 
 const experiences = [
@@ -50,10 +51,6 @@ const experiences = [
 
 const Experience = () => {
   const sectionRef = useRef(null);
-  const timelineRef = useRef(null);
-  const cardsRef = useRef([]);
-  const headerRef = useRef(null);
-  const statsRef = useRef(null);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
@@ -92,63 +89,13 @@ const Experience = () => {
     document.body.removeChild(link);
   };
 
+  // Auto-rotate active card for desktop
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: [0.1, 0.3]
-    };
-
-    const handleIntersection = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target;
-          const threshold = entry.intersectionRatio;
-          
-          if (element.classList.contains('experience-header')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('experience-timeline')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('experience-card')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('stats-section')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-
-    if (headerRef.current) {
-      headerRef.current.classList.add('experience-header');
-      observer.observe(headerRef.current);
-    }
-
-    if (timelineRef.current) {
-      timelineRef.current.classList.add('experience-timeline');
-      observer.observe(timelineRef.current);
-    }
-
-    if (statsRef.current) {
-      statsRef.current.classList.add('stats-section');
-      observer.observe(statsRef.current);
-    }
-
-    cardsRef.current.forEach((card, index) => {
-      if (card) {
-        card.classList.add('experience-card');
-        observer.observe(card);
-      }
-    });
-
-    // Auto-rotate active card for desktop
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % experiences.length);
     }, 5000);
 
     return () => {
-      observer.disconnect();
       clearInterval(interval);
     };
   }, []);
@@ -165,6 +112,57 @@ const Experience = () => {
     }
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const timelineVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const videoVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { duration: 0.7, ease: "easeOut", delay: 0.2 }
+    },
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut", delay: 0.3 }
+    },
+  };
+
   const statsData = [
     { label: "Projects Delivered", value: "25+", icon: Briefcase, color: "emerald" },
     { label: "Happy Clients", value: "15+", icon: Users, color: "blue" },
@@ -173,11 +171,17 @@ const Experience = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="experience" className="relative py-24 md:py-32 ">
+    <motion.section 
+      ref={sectionRef} 
+      id="experience" 
+      className="relative py-24 md:py-32"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.1 }}
+      variants={containerVariants}
+    >
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        
-        
         {/* Animated gradient orbs */}
         <div className={`absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/40 to-cyan-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '6s' }} />
         <div className={`absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/40 to-pink-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
@@ -200,64 +204,53 @@ const Experience = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 experience-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+          <motion.div 
+            variants={itemVariants}
+            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+          >
             <Briefcase className={`h-5 w-5 text-blue-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">Professional Journey</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
-          </div>
+          </motion.div>
 
-          <h2 className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
+          <motion.h2 
+            variants={itemVariants}
+            className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight"
+          >
             My
             <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mt-2">
               Work Experience
             </span>
-          </h2>
+          </motion.h2>
 
-          <p className="mt-6 text-white/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto">
+          <motion.p 
+            variants={itemVariants}
+            className="mt-6 text-white/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto"
+          >
             A journey of growth, innovation, and technical excellence. From internships to leadership roles,
             each position has shaped my expertise in modern web development.
-          </p>
-        </div>
-
-        {/* Stats Overview
-        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 opacity-0 translate-y-8 transition-all duration-700 stats-section">
-          {statsData.map((stat, index) => (
-            <div
-              key={index}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              <stat.icon className={`h-8 w-8 text-${stat.color}-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`} />
-              <div className={`text-3xl font-bold bg-gradient-to-r from-${stat.color}-400 to-${stat.color}-300 bg-clip-text text-transparent mb-1`}>
-                {stat.value}
-              </div>
-              <div className="text-white/60 text-sm">{stat.label}</div>
-            </div>
-          ))}
-        </div> */}
+          </motion.p>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Experience Timeline */}
-          <div className="lg:col-span-7">
+          <motion.div 
+            variants={timelineVariants}
+            className="lg:col-span-7"
+          >
             <div className="relative">
-              {/* Enhanced timeline line */}
-              <div
-                ref={timelineRef}
-                className="absolute sm:block hidden left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-purple-400 to-pink-500 rounded-full opacity-0 scale-y-0 transition-all duration-1000 experience-timeline"
-                style={{ transformOrigin: 'top' }}
-              />
+              {/* Timeline line */}
+              <div className="absolute sm:block hidden left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-purple-400 to-pink-500 rounded-full" />
 
               {/* Timeline nodes */}
               {experiences.map((exp, index) => {
                 const IconComponent = exp.icon;
                 return (
-                  <div
+                  <motion.div
                     key={index}
-                    ref={(el) => (cardsRef.current[index] = el)}
-                    className="relative mb-12 last:mb-0 opacity-0 translate-x-[-30px] transition-all duration-700 experience-card"
-                    style={{ transitionDelay: `${index * 150}ms` }}
+                    variants={cardVariants}
+                    className="relative mb-12 last:mb-0"
                     onMouseEnter={() => setHoveredCard(index)}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
@@ -265,14 +258,22 @@ const Experience = () => {
                     <div className={`absolute sm:flex hidden left-4 top-8 w-10 h-10 rounded-full bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-white/20 shadow-xl z-10 items-center justify-center ${
                       exp.current && !disableAnimations ? 'animate-pulse' : ''
                     }`}>
-                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${
-                        exp.current ? 'from-emerald-400 to-green-400' : 'from-blue-400 to-purple-400'
-                      }`} />
+                      <motion.div 
+                        className={`w-3 h-3 rounded-full bg-gradient-to-r ${
+                          exp.current ? 'from-emerald-400 to-green-400' : 'from-blue-400 to-purple-400'
+                        }`}
+                        animate={exp.current ? { scale: [1, 1.2, 1] } : {}}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
                     </div>
 
                     {/* Experience card */}
-                    <div className="sm:ml-20 group">
-                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${hoveredCard === index ? 'border-white/30' : ''}`}>
+                    <motion.div 
+                      className="sm:ml-20 group"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className={`relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl transition-all duration-500 hover:shadow-2xl ${hoveredCard === index ? 'border-white/30' : ''}`}>
                         {/* Animated gradient background on hover */}
                         <div className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                         
@@ -281,18 +282,35 @@ const Experience = () => {
 
                         {/* Current role indicator */}
                         {exp.current && (
-                          <div className="absolute top-[5px]  md:top-6 right-[8px]  md:right-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-400/30 md:backdrop-blur-sm z-20">
+                          <motion.div 
+                            className="absolute top-[5px] md:top-6 right-[8px] md:right-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-400/30 md:backdrop-blur-sm z-20"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.3 }}
+                          >
                             <div className={`w-2 h-2 rounded-full bg-emerald-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
                             <span className="text-xs font-semibold text-emerald-300">Current Role</span>
-                          </div>
+                          </motion.div>
                         )}
 
                         {/* Animated particles */}
                         {!disableAnimations && hoveredCard === index && (
                           <div className="absolute inset-0 pointer-events-none">
-                            <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-white/60 animate-ping" style={{ animationDuration: '1s' }} />
-                            <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 rounded-full bg-white/40 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }} />
-                            <div className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-white/50 animate-ping" style={{ animationDuration: '1.2s', animationDelay: '0.6s' }} />
+                            <motion.div 
+                              className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-white/60"
+                              animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                            />
+                            <motion.div 
+                              className="absolute top-3/4 right-1/4 w-1.5 h-1.5 rounded-full bg-white/40"
+                              animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                            />
+                            <motion.div 
+                              className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-white/50"
+                              animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                              transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
+                            />
                           </div>
                         )}
 
@@ -301,9 +319,13 @@ const Experience = () => {
                           <div className="flex items-start justify-between gap-4 mb-6">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-3">
-                                <div className={`p-3 rounded-xl bg-gradient-to-br ${exp.color}/20`}>
+                                <motion.div 
+                                  className={`p-3 rounded-xl bg-gradient-to-br ${exp.color}/20`}
+                                  whileHover={{ rotate: 360 }}
+                                  transition={{ duration: 0.5 }}
+                                >
                                   <IconComponent className="h-6 w-6 text-white" />
-                                </div>
+                                </motion.div>
                                 <div>
                                   <h3 className="font-bold text-xl text-white leading-tight">
                                     {exp.role}
@@ -341,9 +363,14 @@ const Experience = () => {
                           </div>
 
                           {/* Description */}
-                          <p className="text-white/70 text-base leading-relaxed mb-6">
+                          <motion.p 
+                            className="text-white/70 text-base leading-relaxed mb-6"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                          >
                             {exp.description}
-                          </p>
+                          </motion.p>
 
                           {/* Technologies */}
                           <div className="mb-6">
@@ -353,12 +380,13 @@ const Experience = () => {
                             </h4>
                             <div className="flex flex-wrap gap-2">
                               {exp.technologies.map((tech, idx) => (
-                                <span
+                                <motion.span
                                   key={idx}
                                   className="px-3 py-1.5 rounded-full bg-white/5 text-white/70 text-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                                  whileHover={{ scale: 1.05, y: -2 }}
                                 >
                                   {tech}
-                                </span>
+                                </motion.span>
                               ))}
                             </div>
                           </div>
@@ -371,146 +399,185 @@ const Experience = () => {
                             </h4>
                             <div className="space-y-2">
                               {exp.achievements.map((achievement, idx) => (
-                                <div
+                                <motion.div
                                   key={idx}
                                   className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 group/achievement"
+                                  whileHover={{ x: 5 }}
                                 >
                                   <CheckCircle className="h-4 w-4 text-emerald-400" />
                                   <span className="text-sm text-white/80">{achievement}</span>
-                                </div>
+                                </motion.div>
                               ))}
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
           {/* Enhanced Video/Visual Section */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-24 space-y-8">
-              {/* Video section */}
-              <div className="group relative">
-                <div className={`absolute -inset-3 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
+          <div className="lg:col-span-5 space-y-8">
+            {/* Video section */}
+            <motion.div 
+              variants={videoVariants}
+              className="group relative"
+            >
+              <div className={`absolute -inset-3 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
 
-                <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm shadow-2xl">
-                  {/* Video */}
-                  <div className="relative aspect-video overflow-hidden">
-                    <video
-                      className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
-                      src="/assets/images/6963744-hd_1280_720_25fps.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent" />
+              <div className="relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 md:backdrop-blur-sm shadow-2xl">
+                {/* Video */}
+                <div className="relative aspect-video overflow-hidden">
+                  <video
+                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
+                    src="/assets/images/6963744-hd_1280_720_25fps.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent" />
 
-                    {/* Play button overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="p-5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                        <Play className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-
-                    {/* Floating badge */}
-                    <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 md:backdrop-blur-sm border border-white/20">
-                      <span className="text-xs text-white/90 flex items-center gap-1">
-                        <Zap className="h-3 w-3 text-blue-400" />
-                        Professional Journey
-                      </span>
-                    </div>
+                  {/* Play button overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <motion.div 
+                      className="p-5 rounded-full bg-white/10 md:backdrop-blur-md border border-white/30"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Play className="h-8 w-8 text-white" />
+                    </motion.div>
                   </div>
 
-                  {/* Content overlay */}
-                  <div className="p-8">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
-                        <Building className="h-6 w-6 text-blue-300" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white">Career Milestones</h3>
-                        <p className="text-white/50 text-sm">Building Impact & Expertise</p>
-                      </div>
-                    </div>
-
-                    <p className="text-white/70 text-base leading-relaxed mb-6">
-                      Each role has been an opportunity to grow, innovate, and deliver meaningful results.
-                      From mastering core technologies to leading complex projects, every experience adds
-                      value to my professional journey.
-                    </p>
-
-                    {/* Quick stats */}
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-blue-500/30 transition-all duration-300">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-1">3</div>
-                        <div className="text-sm text-white/60">Companies</div>
-                      </div>
-                      <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1">2+</div>
-                        <div className="text-sm text-white/60">Years</div>
-                      </div>
-                    </div>
-
-                    {/* Skill tags */}
-                    <div className="flex flex-wrap gap-2">
-                      {["Leadership", "Problem Solving", "Team Collaboration", "Agile", "Code Review", "Mentoring"].map((skill, idx) => (
-                        <span key={idx} className="px-2 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-white/60">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Floating badge */}
+                  <motion.div 
+                    className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 md:backdrop-blur-sm border border-white/20"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <span className="text-xs text-white/90 flex items-center gap-1">
+                      <Zap className="h-3 w-3 text-blue-400" />
+                      Professional Journey
+                    </span>
+                  </motion.div>
                 </div>
-              </div>
 
-              {/* Download resume */}
-              <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-white/5 to-transparent p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="relative text-center">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4 md:backdrop-blur-sm">
-                    <Download className="h-4 w-4 text-blue-300" />
-                    <span className="text-sm font-medium text-white">Get My Resume</span>
+                {/* Content overlay */}
+                <div className="p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <motion.div 
+                      className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Building className="h-6 w-6 text-blue-300" />
+                    </motion.div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Career Milestones</h3>
+                      <p className="text-white/50 text-sm">Building Impact & Expertise</p>
+                    </div>
                   </div>
 
-                  <h4 className="text-2xl font-bold text-white mb-3">Ready to Collaborate?</h4>
-                  <p className="text-white/60 text-sm mb-6 leading-relaxed">
-                    Download my detailed resume to learn more about my skills, experience, and how I can
-                    contribute to your next project.
+                  <p className="text-white/70 text-base leading-relaxed mb-6">
+                    Each role has been an opportunity to grow, innovate, and deliver meaningful results.
+                    From mastering core technologies to leading complex projects, every experience adds
+                    value to my professional journey.
                   </p>
 
-                  <button
-                    onClick={downloadCV}
-                    className="group/btn inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105 cursor-pointer"
-                  >
-                    <Download className="h-5 w-5" />
-                    <span>Download CV</span>
-                    <ChevronRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
-                  </button>
-                </div>
-              </div>
+                  {/* Quick stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <motion.div 
+                      className="text-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-blue-500/30 transition-all duration-300"
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-1">3</div>
+                      <div className="text-sm text-white/60">Companies</div>
+                    </motion.div>
+                    <motion.div 
+                      className="text-center p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:border-purple-500/30 transition-all duration-300"
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1">2+</div>
+                      <div className="text-sm text-white/60">Years</div>
+                    </motion.div>
+                  </div>
 
-              {/* Expertise quote */}
-              <div className="text-center p-6 rounded-2xl border border-white/10 bg-white/5">
-                <div className="flex justify-center mb-3">
-                  <Globe className="h-8 w-8 text-blue-400/50" />
-                </div>
-                <p className="text-white/50 text-sm italic">
-                  "Experience is the teacher of all things. Every project, every challenge, every success — 
-                  each one adds a new dimension to my expertise."
-                </p>
-                <div className="mt-3 flex justify-center gap-1">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-purple-400" />
-                  ))}
+                  {/* Skill tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {["Leadership", "Problem Solving", "Team Collaboration", "Agile", "Code Review", "Mentoring"].map((skill, idx) => (
+                      <motion.span 
+                        key={idx} 
+                        className="px-2 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-white/60"
+                        whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
+                      >
+                        {skill}
+                      </motion.span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Download resume */}
+            <motion.div 
+              variants={ctaVariants}
+              className="group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-white/5 to-transparent p-8 shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative text-center">
+                <motion.div 
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-4 py-2 mb-4 md:backdrop-blur-sm"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Download className="h-4 w-4 text-blue-300" />
+                  <span className="text-sm font-medium text-white">Get My Resume</span>
+                </motion.div>
+
+                <h4 className="text-2xl font-bold text-white mb-3">Ready to Collaborate?</h4>
+                <p className="text-white/60 text-sm mb-6 leading-relaxed">
+                  Download my detailed resume to learn more about my skills, experience, and how I can
+                  contribute to your next project.
+                </p>
+
+                <motion.button
+                  onClick={downloadCV}
+                  className="group/btn inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Download className="h-5 w-5" />
+                  <span>Download CV</span>
+                  <ChevronRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
+                </motion.button>
+              </div>
+            </motion.div>
+
+            {/* Expertise quote */}
+            <motion.div 
+              variants={itemVariants}
+              className="text-center p-6 rounded-2xl border border-white/10 bg-white/5"
+            >
+              <div className="flex justify-center mb-3">
+                <Globe className="h-8 w-8 text-blue-400/50" />
+              </div>
+              <p className="text-white/50 text-sm italic">
+                "Experience is the teacher of all things. Every project, every challenge, every success — 
+                each one adds a new dimension to my expertise."
+              </p>
+              <div className="mt-3 flex justify-center gap-1">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-purple-400"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                  />
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -524,19 +591,8 @@ const Experience = () => {
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
-        .experience-header.animate-in,
-        .stats-section.animate-in,
-        .experience-timeline.animate-in {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-          transform: scaleY(1) !important;
-        }
-        .experience-card.animate-in {
-          opacity: 1 !important;
-          transform: translateX(0) !important;
-        }
       `}</style>
-    </section>
+    </motion.section>
   );
 };
 

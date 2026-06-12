@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import {
   Mail,
   Phone,
@@ -21,17 +22,17 @@ import {
   Users,
 } from "lucide-react";
 
-
 const Contact = () => {
   const sectionRef = useRef(null);
-  const formRef = useRef(null);
-  const cardsRef = useRef([]);
-  const headerRef = useRef(null);
-  const statsRef = useRef(null);
-  const auroraContainerRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -42,101 +43,66 @@ const Contact = () => {
 
   useEffect(() => {
     if (!isClient) return;
-
     const updateScreenWidth = () => {
       if (typeof window !== 'undefined') {
         setScreenWidth(window.innerWidth);
       }
     };
-
     window.addEventListener('resize', updateScreenWidth);
     return () => window.removeEventListener('resize', updateScreenWidth);
   }, [isClient]);
 
   const disableAnimations = isClient && screenWidth < 991;
 
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: [0.1, 0.3]
-    };
+  const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 
-    const handleIntersection = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target;
-          const threshold = entry.intersectionRatio;
-          
-          if (element.classList.contains('contact-header')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('stats-section')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('contact-card')) {
-            if (threshold > 0.1) {
-              element.classList.add('animate-in');
-              const cardIndex = Array.from(element.parentNode.children).indexOf(element);
-              element.style.setProperty('--stagger-delay', `${cardIndex * 0.1}s`);
-            }
-          } else if (element.classList.contains('contact-form')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          }
-          
-          if (threshold > 0.3 && !isLoaded) {
-            setIsLoaded(true);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-
-    if (headerRef.current) {
-      headerRef.current.classList.add('contact-header');
-      observer.observe(headerRef.current);
-    }
-
-    if (statsRef.current) {
-      statsRef.current.classList.add('stats-section');
-      observer.observe(statsRef.current);
-    }
-
-    if (formRef.current) {
-      formRef.current.classList.add('contact-form');
-      observer.observe(formRef.current);
-    }
-
-    cardsRef.current.forEach(card => {
-      if (card) {
-        card.classList.add('contact-card');
-        observer.observe(card);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [isLoaded]);
-
-  const scrollToProjects = () => {
-    const element = document.querySelector('#projects');
-    if (element) {
-      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
-      const offsetTop = element.offsetTop - navbarHeight - 20;
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
-      });
-    }
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
   };
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
-  const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+  const statsContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const statItemVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, x: 30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut", delay: 0.2 } },
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.3 } },
+  };
 
   const socialLinks = [
     {
@@ -236,14 +202,28 @@ const Contact = () => {
     }
   };
 
+  const scrollToProjects = () => {
+    const element = document.querySelector('#projects');
+    if (element) {
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
+      const offsetTop = element.offsetTop - navbarHeight - 20;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       id="contact"
-      className="relative py-24 md:py-32 "
+      className="relative py-24 md:py-32"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.1 }}
+      variants={containerVariants}
     >
-     
-
       {/* Enhanced animated background matching other components */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/40 to-purple-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '6s' }} />
@@ -258,35 +238,47 @@ const Contact = () => {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Rest of your content remains the same... */}
         {/* Enhanced header section */}
-        <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 contact-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+          <motion.div 
+            variants={itemVariants}
+            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+          >
             <MessageSquare className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-fuchsia-300 to-cyan-300 bg-clip-text text-transparent">Get In Touch</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
-          </div>
+          </motion.div>
 
-          <h2 className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
+          <motion.h2 
+            variants={itemVariants}
+            className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight"
+          >
             Let's
             <span className="block bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mt-2">
               Connect
             </span>
-          </h2>
+          </motion.h2>
 
-          <p className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+          <motion.p 
+            variants={itemVariants}
+            className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+          >
             Ready to bring your ideas to life? I'd love to hear about your project and discuss
             how we can work together to create something amazing.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Stats Overview */}
-        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 opacity-0 translate-y-8 transition-all duration-700 stats-section">
+        <motion.div 
+          variants={statsContainerVariants}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
+        >
           {availabilityStats.map((stat, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={statItemVariants}
               className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:scale-105 hover:border-white/20"
-              style={{ transitionDelay: `${index * 100}ms` }}
+              whileHover={{ scale: 1.05 }}
             >
               <div className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               <stat.icon className={`h-8 w-8 text-${stat.color}-400 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`} />
@@ -294,9 +286,9 @@ const Contact = () => {
                 {stat.value}
               </div>
               <div className="text-white/60 text-sm">{stat.label}</div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Main contact layout */}
         <div className="max-w-7xl mx-auto">
@@ -305,11 +297,12 @@ const Contact = () => {
             <div className="lg:col-span-5 space-y-6">
               {/* Contact cards */}
               {contactInfo.map((info, index) => (
-                <div
+                <motion.div
                   key={index}
-                  ref={(el) => (cardsRef.current[index] = el)}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] opacity-0 translate-x-[-20px] contact-card"
-                  style={{ transitionDelay: `${index * 100}ms` }}
+                  variants={cardVariants}
+                  custom={index}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
+                  whileHover={{ scale: 1.02 }}
                 >
                   {/* Animated gradient background */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -340,11 +333,14 @@ const Contact = () => {
                       <div className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/40 animate-ping" style={{ animationDelay: '0.3s' }} />
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
 
               {/* Social links */}
-              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-fuchsia-500/30">
+              <motion.div 
+                variants={cardVariants}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-fuchsia-500/30"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative">
@@ -354,22 +350,27 @@ const Contact = () => {
                   </h3>
                   <div className="flex gap-3">
                     {socialLinks.map((social, index) => (
-                      <a
+                      <motion.a
                         key={index}
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`group/social flex items-center justify-center w-11 h-11 rounded-xl bg-white/10 border border-white/20 ${social.color} transition-all duration-300 hover:scale-110`}
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <social.icon className="h-5 w-5 text-white/80 group-hover/social:text-white transition-colors" />
-                      </a>
+                      </motion.a>
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Availability status */}
-              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-emerald-500/30">
+              <motion.div 
+                variants={cardVariants}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-emerald-500/30"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-green-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative flex items-center gap-4">
@@ -389,22 +390,25 @@ const Contact = () => {
                     <span className="text-xs text-emerald-300 font-medium">Active</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Quote */}
-              <div className="text-center p-4 rounded-xl border border-white/10 bg-white/5">
+              <motion.div 
+                variants={cardVariants}
+                className="text-center p-4 rounded-xl border border-white/10 bg-white/5"
+              >
                 <p className="text-white/40 text-xs italic">
                   "Great things never come from comfort zones."
                 </p>
-              </div>
+              </motion.div>
             </div>
 
             {/* Contact Form - Right Side */}
-            <div className="lg:col-span-7">
-              <div
-                ref={formRef}
-                className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 shadow-2xl transition-all duration-500 hover:border-fuchsia-500/30 opacity-0 translate-x-[20px] contact-form"
-              >
+            <motion.div 
+              variants={formVariants}
+              className="lg:col-span-7"
+            >
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 shadow-2xl transition-all duration-500 hover:border-fuchsia-500/30">
                 {/* Decorative corner accents */}
                 <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-fuchsia-500/30 rounded-tl-2xl" />
                 <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-fuchsia-500/30 rounded-tr-2xl" />
@@ -479,10 +483,12 @@ const Contact = () => {
                       <div className="text-xs text-white/40">
                         * Required fields
                       </div>
-                      <button
+                      <motion.button
                         type="submit"
                         disabled={isSubmitting}
                         className="group/btn inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
                       >
                         {isSubmitting ? (
                           <>
@@ -505,17 +511,21 @@ const Contact = () => {
                             <span>Send Message</span>
                           </>
                         )}
-                      </button>
+                      </motion.button>
                     </div>
                   </form>
 
                   {/* Success/Error messages */}
                   {submitStatus && (
-                    <div className={`mt-5 p-3 rounded-xl border ${
-                      submitStatus === 'success'
-                        ? 'bg-emerald-500/10 border-emerald-400/30'
-                        : 'bg-red-500/10 border-red-400/30'
-                    }`}>
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`mt-5 p-3 rounded-xl border ${
+                        submitStatus === 'success'
+                          ? 'bg-emerald-500/10 border-emerald-400/30'
+                          : 'bg-red-500/10 border-red-400/30'
+                      }`}
+                    >
                       <div className="flex items-center gap-2">
                         {submitStatus === 'success' ? (
                           <CheckCircle className="h-4 w-4 text-emerald-400" />
@@ -531,19 +541,22 @@ const Contact = () => {
                           }
                         </span>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
 
                 {/* Hover glow effect */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-fuchsia-500/5 via-purple-500/3 to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Call to action */}
-        <div className="mt-20 text-center">
+        <motion.div 
+          variants={ctaVariants}
+          className="mt-20 text-center"
+        >
           <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500/10 via-transparent to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
@@ -559,24 +572,28 @@ const Contact = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
+                <motion.a
                   href="mailto:sahelqureshi0089@gmail.com"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300 hover:scale-105"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <Mail className="h-4 w-4" />
                   <span>Email Me Directly</span>
-                </a>
-                <button
+                </motion.a>
+                <motion.button
                   onClick={scrollToProjects}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-105"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <span>View My Work</span>
                   <ArrowRight className="h-4 w-4" />
-                </button>
+                </motion.button>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <style jsx>{`
@@ -587,20 +604,8 @@ const Contact = () => {
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
-        .contact-header.animate-in,
-        .stats-section.animate-in,
-        .contact-form.animate-in {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-          transform: translateX(0) !important;
-        }
-        .contact-card.animate-in {
-          opacity: 1 !important;
-          transform: translateX(0) !important;
-          transition-delay: var(--stagger-delay, 0s);
-        }
       `}</style>
-    </section>
+    </motion.section>
   );
 };
 

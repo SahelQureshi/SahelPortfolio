@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   Star,
@@ -106,12 +107,11 @@ const testimonialsData = [
 
 const Reviews = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [activeMetric, setActiveMetric] = useState("speed");
   const sectionRef = useRef(null);
-  const cardRef = useRef(null);
-  const headerRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
 
@@ -147,55 +147,13 @@ const Reviews = () => {
     }
   };
 
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: [0.1, 0.3]
-    };
-
-    const handleIntersection = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target;
-          const threshold = entry.intersectionRatio;
-          
-          if (element.classList.contains('reviews-header')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          } else if (element.classList.contains('reviews-card')) {
-            if (threshold > 0.1) element.classList.add('animate-in');
-          }
-          
-          if (threshold > 0.3 && !isLoaded) {
-            setIsLoaded(true);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-
-    if (headerRef.current) {
-      headerRef.current.classList.add('reviews-header');
-      observer.observe(headerRef.current);
-    }
-
-    if (cardRef.current) {
-      cardRef.current.classList.add('reviews-card');
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isLoaded]);
-
   const currentTestimonial = testimonialsData[currentIndex];
   const totalTestimonials = testimonialsData.length;
 
   const nextTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % testimonialsData.length);
     setTimeout(() => setIsAnimating(false), 500);
   };
@@ -203,6 +161,7 @@ const Reviews = () => {
   const prevTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
+    setDirection(-1);
     setCurrentIndex(
       (prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length
     );
@@ -212,6 +171,7 @@ const Reviews = () => {
   const goToTestimonial = (index) => {
     if (isAnimating || index === currentIndex) return;
     setIsAnimating(true);
+    setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
     setTimeout(() => setIsAnimating(false), 500);
   };
@@ -224,7 +184,7 @@ const Reviews = () => {
       }
     }, 8000);
     return () => clearInterval(interval);
-  }, [hoveredCard, nextTestimonial, disableAnimations]);
+  }, [hoveredCard, disableAnimations]);
 
   // Rotate metrics display
   useEffect(() => {
@@ -238,6 +198,87 @@ const Reviews = () => {
     return () => clearInterval(metricInterval);
   }, []);
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const metricVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut", delay: 0.2 } },
+  };
+
+  const profileVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut", delay: 0.3 } },
+  };
+
+  const detailsVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.4,
+      },
+    },
+  };
+
+  const detailItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut", delay: 0.4 }
+    },
+  };
+
+  // Slide animation variants for the quote card
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.9,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.3 },
+        scale: { duration: 0.3 }
+      }
+    },
+    exit: (direction) => ({
+      x: direction > 0 ? -300 : 300,
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.3 },
+        scale: { duration: 0.3 }
+      }
+    }),
+  };
+
   const metricLabels = {
     speed: { icon: Zap, label: "Performance Gain", color: "cyan" },
     satisfaction: { icon: ThumbsUp, label: "Client Satisfaction", color: "emerald" },
@@ -248,22 +289,22 @@ const Reviews = () => {
   const MetricIcon = currentMetric.icon;
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       id="reviews"
-      className="relative py-24 md:py-32 "
+      className="relative py-24 md:py-32 overflow-hidden"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.1 }}
+      variants={containerVariants}
       onMouseEnter={() => setHoveredCard(true)}
       onMouseLeave={() => setHoveredCard(false)}
     >
       {/* Enhanced animated background matching other components */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-       
-        
         <div className={`absolute -top-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-fuchsia-500/30 to-purple-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '6s' }} />
         <div className={`absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-600/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
         <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-pink-500/10 to-purple-500/5 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '10s', animationDelay: '2s' }} />
-        
-        
         
         {/* Floating particles */}
         <div className={`absolute top-20 left-[10%] w-2 h-2 rounded-full bg-fuchsia-400 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDuration: '4s' }} />
@@ -274,40 +315,56 @@ const Reviews = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <div ref={headerRef} className="mx-auto max-w-4xl text-center mb-20 opacity-0 translate-y-8 transition-all duration-700 reviews-header">
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+          <motion.div 
+            variants={itemVariants}
+            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+          >
             <MessageSquare className={`h-5 w-5 text-fuchsia-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-fuchsia-300 to-cyan-300 bg-clip-text text-transparent">Client Testimonials</span>
             <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
-          </div>
+          </motion.div>
 
-          <h2 className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
+          <motion.h2 
+            variants={itemVariants}
+            className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight"
+          >
             What
             <span className="block bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mt-2">
               Clients Say
             </span>
-          </h2>
+          </motion.h2>
 
-          <p className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+          <motion.p 
+            variants={itemVariants}
+            className="mt-6 text-white/70 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+          >
             Don't just take my word for it — hear from partners who've experienced 
             the impact of quality code and dedicated collaboration.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Main testimonial layout */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            {/* Left Side - Dynamic Information Panel */}
+            {/* Left Side - Dynamic Information Panel (No animation on testimonial change) */}
             <div className="order-2 lg:order-1 space-y-6">
               {/* Floating metric card */}
-              <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-fuchsia-500/10 to-purple-500/10 border border-fuchsia-500/20 p-6 md:backdrop-blur-sm">
+              <motion.div 
+                variants={metricVariants}
+                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-fuchsia-500/10 to-purple-500/10 border border-fuchsia-500/20 p-6 md:backdrop-blur-sm"
+              >
                 <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br from-${currentMetric.color}-500/20 to-${currentMetric.color}-600/20`}>
+                    <motion.div 
+                      className={`p-3 rounded-xl bg-gradient-to-br from-${currentMetric.color}-500/20 to-${currentMetric.color}-600/20`}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
                       <MetricIcon className={`h-6 w-6 text-${currentMetric.color}-400`} />
-                    </div>
+                    </motion.div>
                     <div>
                       <p className="text-white/60 text-sm">{currentMetric.label}</p>
                       <p className={`text-2xl font-bold bg-gradient-to-r from-${currentMetric.color}-400 to-${currentMetric.color}-300 bg-clip-text text-transparent`}>
@@ -316,15 +373,34 @@ const Reviews = () => {
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <div className={`w-2 h-2 rounded-full ${activeMetric === "speed" ? "bg-cyan-400" : "bg-white/30"}`} />
-                    <div className={`w-2 h-2 rounded-full ${activeMetric === "satisfaction" ? "bg-emerald-400" : "bg-white/30"}`} />
-                    <div className={`w-2 h-2 rounded-full ${activeMetric === "roi" ? "bg-purple-400" : "bg-white/30"}`} />
+                    <motion.div 
+                      className={`w-2 h-2 rounded-full ${activeMetric === "speed" ? "bg-cyan-400" : "bg-white/30"}`}
+                      animate={activeMetric === "speed" ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                    <motion.div 
+                      className={`w-2 h-2 rounded-full ${activeMetric === "satisfaction" ? "bg-emerald-400" : "bg-white/30"}`}
+                      animate={activeMetric === "satisfaction" ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                    <motion.div 
+                      className={`w-2 h-2 rounded-full ${activeMetric === "roi" ? "bg-purple-400" : "bg-white/30"}`}
+                      animate={activeMetric === "roi" ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Client profile card */}
-              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 transition-all duration-500 hover:border-fuchsia-500/30">
+              {/* Client profile card - Animate content changes with key */}
+              <motion.div 
+                key={`profile-${currentIndex}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 transition-all duration-500 hover:border-fuchsia-500/30"
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="relative flex items-center gap-5">
@@ -347,7 +423,11 @@ const Reviews = () => {
                         </div>
                       )}
                     </div>
-                    <div className={`absolute -inset-1 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 opacity-0 group-hover:opacity-30 transition-opacity duration-300 ${!disableAnimations ? 'animate-pulse' : ''}`} />
+                    <motion.div 
+                      className={`absolute -inset-1 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400 opacity-0 group-hover:opacity-30 transition-opacity duration-300 ${!disableAnimations ? 'animate-pulse' : ''}`}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
                     <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-600 border-2 border-slate-950">
                       <CheckCircle2 className="h-3 w-3 text-white" />
                     </div>
@@ -376,10 +456,16 @@ const Reviews = () => {
                     <span className="text-cyan-300 font-medium">{currentTestimonial.highlight}</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Project details grid */}
-              <div className="grid grid-cols-2 gap-3">
+              {/* Project details grid - Animate content changes */}
+              <motion.div 
+                key={`details-${currentIndex}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="grid grid-cols-2 gap-3"
+              >
                 <div className="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
                   <Briefcase className="h-5 w-5 text-fuchsia-400 mb-2" />
                   <p className="text-white/50 text-xs">Company</p>
@@ -400,43 +486,67 @@ const Reviews = () => {
                   <p className="text-white/50 text-xs">Team Size</p>
                   <p className="text-white font-semibold text-sm">2-3 Members</p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Social connections */}
-              <div className="flex gap-2">
+              <motion.div 
+                key={`social-${currentIndex}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="flex gap-2"
+              >
                 {currentTestimonial.socialLinks.linkedin && (
-                  <a href={currentTestimonial.socialLinks.linkedin} target="_blank" rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all duration-300">
+                  <motion.a 
+                    href={currentTestimonial.socialLinks.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-500/30 transition-all duration-300"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Linkedin className="h-5 w-5 text-white/70 hover:text-blue-400" />
-                  </a>
+                  </motion.a>
                 )}
                 {currentTestimonial.socialLinks.github && (
-                  <a href={currentTestimonial.socialLinks.github} target="_blank" rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-gray-500/20 hover:border-gray-500/30 transition-all duration-300">
+                  <motion.a 
+                    href={currentTestimonial.socialLinks.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-gray-500/20 hover:border-gray-500/30 transition-all duration-300"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Github className="h-5 w-5 text-white/70 hover:text-gray-400" />
-                  </a>
+                  </motion.a>
                 )}
                 {currentTestimonial.socialLinks.email && (
-                  <a href={`mailto:${currentTestimonial.socialLinks.email}`}
-                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all duration-300">
+                  <motion.a 
+                    href={`mailto:${currentTestimonial.socialLinks.email}`}
+                    className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all duration-300"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Mail className="h-5 w-5 text-white/70 hover:text-emerald-400" />
-                  </a>
+                  </motion.a>
                 )}
-              </div>
+              </motion.div>
 
               {/* Navigation controls */}
-              <div className="flex items-center justify-between pt-4">
-                <button
+              <motion.div variants={itemVariants} className="flex items-center justify-between pt-4">
+                <motion.button
                   onClick={prevTestimonial}
                   disabled={isAnimating}
                   className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500/30 transition-all duration-300 disabled:opacity-50"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <ChevronLeft className="h-5 w-5 text-white" />
-                </button>
+                </motion.button>
 
                 <div className="flex items-center gap-2">
                   {testimonialsData.map((_, idx) => (
-                    <button
+                    <motion.button
                       key={idx}
                       onClick={() => goToTestimonial(idx)}
                       className={`h-2 rounded-full transition-all duration-300 ${
@@ -444,97 +554,114 @@ const Reviews = () => {
                           ? "w-8 bg-gradient-to-r from-fuchsia-400 to-cyan-400"
                           : "w-2 bg-white/30 hover:bg-white/50"
                       }`}
+                      whileHover={{ scale: 1.2 }}
                     />
                   ))}
                 </div>
 
-                <button
+                <motion.button
                   onClick={nextTestimonial}
                   disabled={isAnimating}
                   className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-fuchsia-500/20 hover:border-fuchsia-500/30 transition-all duration-300 disabled:opacity-50"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <ChevronRight className="h-5 w-5 text-white" />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
 
-            {/* Right Side - Quote Card */}
+            {/* Right Side - Quote Card with smooth slide animation */}
             <div className="order-1 lg:order-2">
-              <div
-                ref={cardRef}
-                className={`relative transform transition-all duration-500 ${
-                  isAnimating ? "scale-95 opacity-80" : "scale-100 opacity-100"
-                }`}
-              >
-                {/* Animated gradient rings */}
-                <div className={`absolute -inset-3 rounded-3xl bg-gradient-to-r from-fuchsia-500/20 via-purple-500/15 to-cyan-500/20 blur-xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '3s' }} />
-                <div className={`absolute -inset-6 rounded-3xl bg-gradient-to-r from-fuchsia-500/10 via-transparent to-cyan-500/10 blur-2xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '4s', animationDelay: '1s' }} />
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  className="relative"
+                >
+                  {/* Animated gradient rings */}
+                  <div className={`absolute -inset-3 rounded-3xl bg-gradient-to-r from-fuchsia-500/20 via-purple-500/15 to-cyan-500/20 blur-xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '3s' }} />
+                  <div className={`absolute -inset-6 rounded-3xl bg-gradient-to-r from-fuchsia-500/10 via-transparent to-cyan-500/10 blur-2xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '4s', animationDelay: '1s' }} />
 
-                <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 lg:p-10 shadow-2xl">
-                  {/* Decorative corner accents */}
-                  <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-fuchsia-500/30 rounded-tl-2xl" />
-                  <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-fuchsia-500/30 rounded-tr-2xl" />
-                  <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-fuchsia-500/30 rounded-bl-2xl" />
-                  <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-fuchsia-500/30 rounded-br-2xl" />
+                  <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 lg:p-10 shadow-2xl">
+                    {/* Decorative corner accents */}
+                    <div className="absolute top-0 left-0 w-20 h-20 border-l-2 border-t-2 border-fuchsia-500/30 rounded-tl-2xl" />
+                    <div className="absolute top-0 right-0 w-20 h-20 border-r-2 border-t-2 border-fuchsia-500/30 rounded-tr-2xl" />
+                    <div className="absolute bottom-0 left-0 w-20 h-20 border-l-2 border-b-2 border-fuchsia-500/30 rounded-bl-2xl" />
+                    <div className="absolute bottom-0 right-0 w-20 h-20 border-r-2 border-b-2 border-fuchsia-500/30 rounded-br-2xl" />
 
-                  {/* Quote icon */}
-                  <div className="absolute top-6 right-6 opacity-10">
-                    <Quote className="h-16 w-16 text-white" />
-                  </div>
-
-                  <div className="relative space-y-8">
-                    {/* Rating stars */}
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <Star
-                          key={idx}
-                          className={`h-5 w-5 ${
-                            idx < currentTestimonial.rating
-                              ? "text-fuchsia-400 fill-fuchsia-400"
-                              : "text-white/20"
-                          }`}
-                        />
-                      ))}
+                    {/* Quote icon */}
+                    <div className="absolute top-6 right-6 opacity-10">
+                      <Quote className="h-16 w-16 text-white" />
                     </div>
 
-                    {/* Quote text */}
-                    <p className="text-lg lg:text-xl leading-relaxed text-white/80 font-medium">
-                      &ldquo;{currentTestimonial.quote}&rdquo;
-                    </p>
+                    <div className="relative space-y-8">
+                      {/* Rating stars */}
+                      <div className="flex gap-1">
+                        {Array.from({ length: 5 }).map((_, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.1 }}
+                          >
+                            <Star
+                              className={`h-5 w-5 ${
+                                idx < currentTestimonial.rating
+                                  ? "text-fuchsia-400 fill-fuchsia-400"
+                                  : "text-white/20"
+                              }`}
+                            />
+                          </motion.div>
+                        ))}
+                      </div>
 
-                    {/* Decorative line */}
-                    <div className="flex items-center gap-2">
-                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
-                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500" />
-                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
-                    </div>
-
-                    {/* Author info */}
-                    <div>
-                      <h4 className="text-white font-bold text-lg">
-                        {currentTestimonial.name}
-                      </h4>
-                      <p className="text-fuchsia-400 text-sm">
-                        {currentTestimonial.role}
+                      {/* Quote text */}
+                      <p className="text-lg lg:text-xl leading-relaxed text-white/80 font-medium">
+                        &ldquo;{currentTestimonial.quote}&rdquo;
                       </p>
-                      <div className="flex items-center gap-2 mt-3 text-xs text-white/40">
-                        <span>Testimonial {currentIndex + 1}</span>
-                        <span>•</span>
-                        <span>{totalTestimonials} Success Stories</span>
+
+                      {/* Decorative line */}
+                      <div className="flex items-center gap-2">
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
+                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500" />
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
+                      </div>
+
+                      {/* Author info */}
+                      <div>
+                        <h4 className="text-white font-bold text-lg">
+                          {currentTestimonial.name}
+                        </h4>
+                        <p className="text-fuchsia-400 text-sm">
+                          {currentTestimonial.role}
+                        </p>
+                        <div className="flex items-center gap-2 mt-3 text-xs text-white/40">
+                          <span>Testimonial {currentIndex + 1}</span>
+                          <span>•</span>
+                          <span>{totalTestimonials} Success Stories</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-fuchsia-500/5 via-purple-500/3 to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </div>
-              </div>
+                    {/* Hover glow */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-fuchsia-500/5 via-purple-500/3 to-cyan-500/5 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
 
         {/* Enhanced CTA Section */}
-        <div className="mx-auto mt-20 max-w-3xl text-center">
+        <motion.div 
+          variants={ctaVariants}
+          className="mx-auto mt-20 max-w-3xl text-center"
+        >
           <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500/10 via-transparent to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
@@ -549,16 +676,18 @@ const Reviews = () => {
                 extraordinary together.
               </p>
 
-              <button
+              <motion.button
                 onClick={scrollToContact}
-                className="group/btn inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300 hover:scale-105"
+                className="group/btn inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-fuchsia-500/25 hover:shadow-xl hover:shadow-fuchsia-500/40 transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <span>Get in Touch</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-              </button>
+              </motion.button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <style jsx>{`
@@ -569,16 +698,8 @@ const Reviews = () => {
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
-        .reviews-header.animate-in {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-        .reviews-card.animate-in {
-          opacity: 1 !important;
-          transform: translateX(0) !important;
-        }
       `}</style>
-    </section>
+    </motion.section>
   );
 };
 
