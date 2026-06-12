@@ -538,20 +538,7 @@ const Education = () => {
         </div>
       </div>
 
-      {/* Animation styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-      `}</style>
+    
     </motion.section>
   );
 };

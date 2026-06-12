@@ -617,35 +617,7 @@ const Projects = () => {
         </AnimatePresence>
       </div>
 
-      {/* Animation styles */}
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        @keyframes pulse-slow {
-          0%,
-          100% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.05);
-          }
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-        .animate-pulse {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-      `}</style>
+     
     </motion.section>
   );
 };

@@ -499,54 +499,7 @@ const Banner = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes spin-slow {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        @keyframes spin-slow-reverse {
-          from {
-            transform: rotate(360deg);
-          }
-          to {
-            transform: rotate(0deg);
-          }
-        }
-        @keyframes bounce-slow {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 10s linear infinite;
-        }
-        .animate-spin-slow-reverse {
-          animation: spin-slow-reverse 7s linear infinite;
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-      `}</style>
+    
     </section>
   );
 };
