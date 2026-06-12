@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { GraduationCap, Calendar, MapPin, Award, BookOpen, Sparkles, Trophy, Star, ChevronRight, Play, Code, Brain, Rocket, Clock, Zap, Medal, Target, Users, Globe } from "lucide-react";
 
 const education = [
@@ -50,12 +50,32 @@ const Education = () => {
   const [isClient, setIsClient] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Animation controls
+  const controls = useAnimation();
+  const timelineControls = useAnimation();
+  const videoControls = useAnimation();
+  const ctaControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      timelineControls.start("visible");
+      videoControls.start("visible");
+      ctaControls.start("visible");
+    }
+  }, [isInView, controls, timelineControls, videoControls, ctaControls]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -147,14 +167,10 @@ const Education = () => {
   };
 
   return (
-    <motion.section 
-      ref={sectionRef} 
+    <section 
+      ref={ref}
       id="education" 
       className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
     >
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -180,7 +196,12 @@ const Education = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -213,6 +234,8 @@ const Education = () => {
           {/* Education Timeline */}
           <motion.div 
             variants={timelineVariants}
+            initial="hidden"
+            animate={timelineControls}
             className="lg:col-span-7"
           >
             <div className="relative">
@@ -391,6 +414,8 @@ const Education = () => {
             {/* Video section */}
             <motion.div 
               variants={videoVariants}
+              initial="hidden"
+              animate={videoControls}
               className="group relative"
             >
               <div className={`absolute -inset-3 bg-gradient-to-r from-emerald-500/20 via-cyan-500/15 to-purple-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
@@ -490,6 +515,8 @@ const Education = () => {
             {/* Call to action */}
             <motion.div 
               variants={ctaVariants}
+              initial="hidden"
+              animate={ctaControls}
               className="group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-white/5 to-transparent p-8 shadow-xl hover:shadow-2xl transition-all duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -527,6 +554,8 @@ const Education = () => {
             {/* Quote */}
             <motion.div 
               variants={itemVariants}
+              initial="hidden"
+              animate={controls}
               className="text-center p-6 rounded-2xl border border-white/10 bg-white/5"
             >
               <p className="text-white/60 text-sm italic">
@@ -537,9 +566,7 @@ const Education = () => {
           </div>
         </div>
       </div>
-
-    
-    </motion.section>
+    </section>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion";
 import {
   Code2,
   Layout,
@@ -145,12 +145,30 @@ const Skills = () => {
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
 
+  // Animation controls
+  const controls = useAnimation();
+  const statsControls = useAnimation();
+  const sidebarControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      statsControls.start("visible");
+      sidebarControls.start("visible");
+    }
+  }, [isInView, controls, statsControls, sidebarControls]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -173,13 +191,6 @@ const Skills = () => {
   const filteredSkills = activeCat === "All"
     ? skillsData
     : skillsData.filter((skill) => skill.title === activeCat);
-
-  // Debug logging
-  useEffect(() => {
-    console.log("Active Category:", activeCat);
-    console.log("Filtered Skills Count:", filteredSkills.length);
-    console.log("Filtered Skills:", filteredSkills);
-  }, [activeCat, filteredSkills]);
 
   // Animation variants
   const containerVariants = {
@@ -219,17 +230,6 @@ const Skills = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut", delay: 0.2 } },
   };
 
-  const skillsContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
   const skillCardVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
@@ -244,14 +244,10 @@ const Skills = () => {
   const avgSkillLevel = Math.round(allSkills.reduce((sum, s) => sum + s.level, 0) / allSkills.length);
 
   return (
-    <motion.section 
-      ref={sectionRef} 
-      id="skills" 
+    <section
+      ref={ref}
+      id="skills"
       className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
     >
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -276,7 +272,12 @@ const Skills = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -308,6 +309,8 @@ const Skills = () => {
         {/* Stats Overview */}
         <motion.div 
           variants={statsContainerVariants}
+          initial="hidden"
+          animate={statsControls}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
         >
           <motion.div 
@@ -364,6 +367,8 @@ const Skills = () => {
           {/* Left sidebar - Enhanced */}
           <motion.aside 
             variants={sidebarVariants}
+            initial="hidden"
+            animate={sidebarControls}
             className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start"
           >
             {/* About section */}
@@ -419,8 +424,7 @@ const Skills = () => {
                     <motion.div
                       className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500"
                       initial={{ width: 0 }}
-                      whileInView={{ width: `${avgSkillLevel}%` }}
-                      viewport={{ once: false }}
+                      animate={{ width: `${avgSkillLevel}%` }}
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </div>
@@ -471,7 +475,7 @@ const Skills = () => {
                     key={idx} 
                     className="flex items-start gap-2 text-sm text-white/70"
                     initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 }}
                   >
                     <CheckCircle className="h-4 w-4 text-amber-400 mt-0.5 flex-shrink-0" />
@@ -501,105 +505,108 @@ const Skills = () => {
           </motion.aside>
 
           {/* Right content - Enhanced skills grid */}
-          <motion.div 
-            key={activeCat}
-            variants={skillsContainerVariants}
-            initial="hidden"
-            animate="visible"
-            className="lg:col-span-8"
-          >
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {filteredSkills.length > 0 ? (
-                filteredSkills.map((skill) => (
-                  <motion.article
-                    key={skill.id}
-                    variants={skillCardVariants}
-                    className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
-                    style={{ transformStyle: "preserve-3d" }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    {/* Glow border on hover */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={activeCat}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="lg:col-span-8"
+            >
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {filteredSkills.length > 0 ? (
+                  filteredSkills.map((skill) => (
+                    <motion.article
+                      key={skill.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: skill.id * 0.1 }}
+                      className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
+                      style={{ transformStyle: "preserve-3d" }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      {/* Glow border on hover */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                    {/* Animated particles */}
-                    {!disableAnimations && (
-                      <div className="absolute inset-0 pointer-events-none">
-                        <motion.div
-                          className="absolute top-1/4 left-1/4 w-1.5 h-1.5 rounded-full bg-white/60"
-                          animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
-                          transition={{ duration: 1, repeat: Infinity }}
-                        />
-                        <motion.div
-                          className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/40"
-                          animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-                        />
-                        <motion.div
-                          className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-white/50"
-                          animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
-                          transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
-                        />
-                      </div>
-                    )}
-
-                    <div className="relative">
-                      {/* Header */}
-                      <div className="flex items-center gap-3 mb-5">
-                        <motion.div 
-                          className="rounded-xl bg-gradient-to-br from-white/15 to-white/5 p-2.5 ring-1 ring-white/20 group-hover:ring-white/30 transition-all duration-300"
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <skill.Icon className="h-5 w-5 text-white" />
-                        </motion.div>
-                        <div>
-                          <h3 className="font-bold text-lg text-white">{skill.title}</h3>
-                          <p className="text-xs text-white/50">{skill.items.length} technologies</p>
+                      {/* Animated particles */}
+                      {!disableAnimations && (
+                        <div className="absolute inset-0 pointer-events-none">
+                          <motion.div
+                            className="absolute top-1/4 left-1/4 w-1.5 h-1.5 rounded-full bg-white/60"
+                            animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                          />
+                          <motion.div
+                            className="absolute top-3/4 right-1/4 w-1 h-1 rounded-full bg-white/40"
+                            animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                          />
+                          <motion.div
+                            className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full bg-white/50"
+                            animate={{ scale: [1, 1.5, 1], opacity: [0, 1, 0] }}
+                            transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }}
+                          />
                         </div>
-                      </div>
+                      )}
 
-                      {/* Skills list */}
-                      <ul className="space-y-4">
-                        {skill.items.map((skillItem, skillIndex) => (
-                          <li key={skillItem.name} className="group/skill">
-                            <div className="flex items-center justify-between mb-1.5">
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-sm">{skillItem.icon}</span>
-                                <span className="text-sm text-white/80 font-medium">{skillItem.name}</span>
+                      <div className="relative">
+                        {/* Header */}
+                        <div className="flex items-center gap-3 mb-5">
+                          <motion.div 
+                            className="rounded-xl bg-gradient-to-br from-white/15 to-white/5 p-2.5 ring-1 ring-white/20 group-hover:ring-white/30 transition-all duration-300"
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <skill.Icon className="h-5 w-5 text-white" />
+                          </motion.div>
+                          <div>
+                            <h3 className="font-bold text-lg text-white">{skill.title}</h3>
+                            <p className="text-xs text-white/50">{skill.items.length} technologies</p>
+                          </div>
+                        </div>
+
+                        {/* Skills list */}
+                        <ul className="space-y-4">
+                          {skill.items.map((skillItem, skillIndex) => (
+                            <li key={skillItem.name} className="group/skill">
+                              <div className="flex items-center justify-between mb-1.5">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-sm">{skillItem.icon}</span>
+                                  <span className="text-sm text-white/80 font-medium">{skillItem.name}</span>
+                                </div>
+                                <span className={`text-sm font-semibold bg-gradient-to-r ${skill.gradientLight} bg-clip-text text-transparent`}>
+                                  {skillItem.level}%
+                                </span>
                               </div>
-                              <span className={`text-sm font-semibold bg-gradient-to-r ${skill.gradientLight} bg-clip-text text-transparent`}>
-                                {skillItem.level}%
-                              </span>
-                            </div>
-                            <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/10">
-                              <motion.div
-                                className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 shadow-lg"
-                                initial={{ width: 0 }}
-                                whileInView={{ width: `${skillItem.level}%` }}
-                                viewport={{ once: false }}
-                                transition={{ duration: 0.8, delay: skillIndex * 0.05 }}
-                              />
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                              <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/10">
+                                <motion.div
+                                  className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 shadow-lg"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${skillItem.level}%` }}
+                                  transition={{ duration: 0.8, delay: skillIndex * 0.05 }}
+                                />
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.article>
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-12">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/70">
+                      <Sparkles className="h-4 w-4" />
+                      No skills found for "{activeCat}"
                     </div>
-                  </motion.article>
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/70">
-                    <Sparkles className="h-4 w-4" />
-                    No skills found for "{activeCat}"
                   </div>
-                </div>
-              )}
-            </div>
-          </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
-
-    </motion.section>
+    </section>
   );
 };
 

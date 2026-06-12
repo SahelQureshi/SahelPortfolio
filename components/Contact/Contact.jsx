@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import {
   Mail,
   Phone,
@@ -21,6 +21,7 @@ import {
   Calendar,
   Users,
 } from "lucide-react";
+import { availabilityStats, contactInfo, socialLinks } from "@/config/mainConfig";
 
 const Contact = () => {
   const sectionRef = useRef(null);
@@ -34,12 +35,32 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  // Animation controls
+  const controls = useAnimation();
+  const statsControls = useAnimation();
+  const formControls = useAnimation();
+  const ctaControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      statsControls.start("visible");
+      formControls.start("visible");
+      ctaControls.start("visible");
+    }
+  }, [isInView, controls, statsControls, formControls, ctaControls]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -104,60 +125,9 @@ const Contact = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.3 } },
   };
 
-  const socialLinks = [
-    {
-      name: 'GitHub',
-      icon: Github,
-      url: 'https://github.com/SahelQureshi',
-      color: 'hover:bg-gray-500/20 hover:border-gray-400/30'
-    },
-    {
-      name: 'LinkedIn',
-      icon: Linkedin,
-      url: 'https://www.linkedin.com/in/sahel-qureshi-47b1252a8',
-      color: 'hover:bg-blue-500/20 hover:border-blue-400/30'
-    },
-    {
-      name: 'Twitter',
-      icon: Twitter,
-      url: 'https://twitter.com',
-      color: 'hover:bg-sky-500/20 hover:border-sky-400/30'
-    }
-  ];
+   
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email',
-      value: 'sahelqureshi0089@gmail.com',
-      link: 'mailto:sahelqureshi0089@gmail.com',
-      color: 'from-fuchsia-500/20 to-purple-500/20',
-      gradient: 'from-fuchsia-500 to-purple-500'
-    },
-    {
-      icon: Phone,
-      title: 'Phone',
-      value: '+91 90079 47586',
-      link: 'tel:+919007947586',
-      color: 'from-cyan-500/20 to-blue-500/20',
-      gradient: 'from-cyan-500 to-blue-500'
-    },
-    {
-      icon: MapPin,
-      title: 'Location',
-      value: 'Birlagate, Barrackpore, Kolkata, India',
-      link: '#',
-      color: 'from-purple-500/20 to-pink-500/20',
-      gradient: 'from-purple-500 to-pink-500'
-    }
-  ];
-
-  const availabilityStats = [
-    { icon: Clock, label: "Response Time", value: "< 24h", color: "emerald" },
-    { icon: Calendar, label: "Experience", value: "2+ Years", color: "fuchsia" },
-    { icon: Users, label: "Happy Clients", value: "15+", color: "cyan" },
-    { icon: Zap, label: "Projects", value: "25+", color: "amber" },
-  ];
+  
 
   const handleInputChange = (e) => {
     setFormData({
@@ -215,14 +185,10 @@ const Contact = () => {
   };
 
   return (
-    <motion.section
-      ref={sectionRef}
+    <section
+      ref={ref}
       id="contact"
       className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
     >
       {/* Enhanced animated background matching other components */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -239,7 +205,12 @@ const Contact = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -271,6 +242,8 @@ const Contact = () => {
         {/* Stats Overview */}
         <motion.div 
           variants={statsContainerVariants}
+          initial="hidden"
+          animate={statsControls}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
         >
           {availabilityStats.map((stat, index) => (
@@ -300,6 +273,8 @@ const Contact = () => {
                 <motion.div
                   key={index}
                   variants={cardVariants}
+                  initial="hidden"
+                  animate={controls}
                   custom={index}
                   className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
                   whileHover={{ scale: 1.02 }}
@@ -339,6 +314,8 @@ const Contact = () => {
               {/* Social links */}
               <motion.div 
                 variants={cardVariants}
+                initial="hidden"
+                animate={controls}
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-fuchsia-500/30"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -369,6 +346,8 @@ const Contact = () => {
               {/* Availability status */}
               <motion.div 
                 variants={cardVariants}
+                initial="hidden"
+                animate={controls}
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-xl transition-all duration-500 hover:border-emerald-500/30"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-green-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -395,6 +374,8 @@ const Contact = () => {
               {/* Quote */}
               <motion.div 
                 variants={cardVariants}
+                initial="hidden"
+                animate={controls}
                 className="text-center p-4 rounded-xl border border-white/10 bg-white/5"
               >
                 <p className="text-white/40 text-xs italic">
@@ -406,6 +387,8 @@ const Contact = () => {
             {/* Contact Form - Right Side */}
             <motion.div 
               variants={formVariants}
+              initial="hidden"
+              animate={formControls}
               className="lg:col-span-7"
             >
               <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 shadow-2xl transition-all duration-500 hover:border-fuchsia-500/30">
@@ -555,6 +538,8 @@ const Contact = () => {
         {/* Call to action */}
         <motion.div 
           variants={ctaVariants}
+          initial="hidden"
+          animate={ctaControls}
           className="mt-20 text-center"
         >
           <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
@@ -595,9 +580,7 @@ const Contact = () => {
           </div>
         </motion.div>
       </div>
-
-
-    </motion.section>
+    </section>
   );
 };
 

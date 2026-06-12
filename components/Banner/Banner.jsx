@@ -2,8 +2,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-
+import { motion, useAnimation, useInView } from "framer-motion";
 import Image from "next/image";
 import {
   Github,
@@ -16,38 +15,44 @@ import {
   Code,
   Heart,
   Zap,
-  ChevronUp,
-  Play,
   ChevronDown,
   Star,
   Rocket,
-  Award,
   Shield,
 } from "lucide-react";
 
+import { designations, socialLinks } from "@/config/mainConfig";
+
 const Banner = () => {
   const sectionRef = useRef(null);
-  const heroRef = useRef(null);
-  const textRef = useRef(null);
-  const imageRef = useRef(null);
-  const socialRef = useRef(null);
-  const ctaRef = useRef(null);
-
+  
+  // Animation controls
+  const controls = useAnimation();
+  const imageControls = useAnimation();
+  const socialControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  
   // Typing animation state
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  const designations = [
-    "MERN Stack Developer",
-    "React.js Specialist",
-    "React Native Developer",
-    "Next.js Full Stack Developer",
-    "Frontend Developer",
-  ];
+  
 
   const currentWord = designations[currentWordIndex];
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      imageControls.start("visible");
+      socialControls.start("visible");
+    }
+  }, [isInView, controls, imageControls, socialControls]);
 
   // Check screen size for disabling animations
   useEffect(() => {
@@ -57,7 +62,6 @@ const Banner = () => {
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
-
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
@@ -132,32 +136,7 @@ const Banner = () => {
     }
   }, [displayedText, isTyping, currentWord, designations.length]);
 
-  const socialLinks = [
-    {
-      icon: Github,
-      href: "https://github.com/SahelQureshi",
-      label: "GitHub",
-      color: "hover:bg-gray-500/20 hover:border-gray-400/30",
-    },
-    {
-      icon: Linkedin,
-      href: "https://www.linkedin.com/in/sahel-qureshi-47b1252a8",
-      label: "LinkedIn",
-      color: "hover:bg-blue-500/20 hover:border-blue-400/30",
-    },
-    {
-      icon: Facebook,
-      href: "https://www.facebook.com/sahel.qureshi.948",
-      label: "Facebook",
-      color: "hover:bg-blue-600/20 hover:border-blue-500/30",
-    },
-    {
-      icon: Mail,
-      href: "mailto:sahelqureshi0089@gmail.com",
-      label: "Email",
-      color: "hover:bg-red-500/20 hover:border-red-400/30",
-    },
-  ];
+  
 
   // Variants for staggered children animations
   const containerVariants = {
@@ -225,15 +204,14 @@ const Banner = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div ref={ref} className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 min-h-screen items-center">
           {/* Left Content with staggered animations */}
           <motion.div 
             className="lg:col-span-7 space-y-8 lg:order-1 order-2"
             variants={containerVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
+            animate={controls}
           >
             {/* Greeting - Top in animation */}
             <motion.div variants={itemVariants} className="space-y-4 lg:text-left text-center">
@@ -292,6 +270,7 @@ const Banner = () => {
             {/* Social Links - Bottom in animation */}
             <motion.div 
               variants={socialVariants}
+              animate={socialControls}
               className="flex items-center gap-4 lg:justify-start justify-center"
             >
               {socialLinks.map((social, index) => (
@@ -366,8 +345,7 @@ const Banner = () => {
             className="lg:col-span-5 flex justify-center items-start lg:pt-[8rem] pt-[2rem] h-full lg:order-2 order-1"
             variants={imageVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
+            animate={imageControls}
           >
             <div className="relative z-[10]">
               {/* Outer animated ring layers */}
@@ -498,8 +476,6 @@ const Banner = () => {
           </motion.div>
         </div>
       </div>
-
-    
     </section>
   );
 };

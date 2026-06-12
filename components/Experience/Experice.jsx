@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { Briefcase, Calendar, MapPin, Award, Download, Play, Sparkles, Trophy, Target, Clock, ChevronRight, Star, Building, Code, Rocket, Users, Zap, Medal, Globe, TrendingUp, CheckCircle } from "lucide-react";
 
 const experiences = [
@@ -56,12 +56,32 @@ const Experience = () => {
   const [isClient, setIsClient] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Animation controls
+  const controls = useAnimation();
+  const timelineControls = useAnimation();
+  const videoControls = useAnimation();
+  const ctaControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      timelineControls.start("visible");
+      videoControls.start("visible");
+      ctaControls.start("visible");
+    }
+  }, [isInView, controls, timelineControls, videoControls, ctaControls]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -171,14 +191,10 @@ const Experience = () => {
   ];
 
   return (
-    <motion.section 
-      ref={sectionRef} 
+    <section 
+      ref={ref}
       id="experience" 
       className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
     >
       {/* Enhanced animated background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -204,7 +220,12 @@ const Experience = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -237,6 +258,8 @@ const Experience = () => {
           {/* Experience Timeline */}
           <motion.div 
             variants={timelineVariants}
+            initial="hidden"
+            animate={timelineControls}
             className="lg:col-span-7"
           >
             <div className="relative">
@@ -424,6 +447,8 @@ const Experience = () => {
             {/* Video section */}
             <motion.div 
               variants={videoVariants}
+              initial="hidden"
+              animate={videoControls}
               className="group relative"
             >
               <div className={`absolute -inset-3 bg-gradient-to-r from-blue-500/20 via-purple-500/15 to-pink-500/20 rounded-3xl blur-xl transition-all duration-500 group-hover:opacity-80 ${!disableAnimations ? 'opacity-60' : ''}`} />
@@ -523,6 +548,8 @@ const Experience = () => {
             {/* Download resume */}
             <motion.div 
               variants={ctaVariants}
+              initial="hidden"
+              animate={ctaControls}
               className="group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-white/5 to-transparent p-8 shadow-xl hover:shadow-2xl transition-all duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -558,6 +585,8 @@ const Experience = () => {
             {/* Expertise quote */}
             <motion.div 
               variants={itemVariants}
+              initial="hidden"
+              animate={controls}
               className="text-center p-6 rounded-2xl border border-white/10 bg-white/5"
             >
               <div className="flex justify-center mb-3">
@@ -581,9 +610,7 @@ const Experience = () => {
           </div>
         </div>
       </div>
-
-   
-    </motion.section>
+    </section>
   );
 };
 

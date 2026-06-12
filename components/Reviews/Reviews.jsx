@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   Star,
@@ -107,7 +107,7 @@ const testimonialsData = [
 
 const Reviews = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const [direction, setDirection] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [activeMetric, setActiveMetric] = useState("speed");
@@ -115,12 +115,36 @@ const Reviews = () => {
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
 
+  // Animation controls
+  const controls = useAnimation();
+  const metricControls = useAnimation();
+  const profileControls = useAnimation();
+  const detailsControls = useAnimation();
+  const socialControls = useAnimation();
+  const ctaControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   useEffect(() => {
     setIsClient(true);
     if (typeof window !== 'undefined') {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      metricControls.start("visible");
+      profileControls.start("visible");
+      detailsControls.start("visible");
+      socialControls.start("visible");
+      ctaControls.start("visible");
+    }
+  }, [isInView, controls, metricControls, profileControls, detailsControls, socialControls, ctaControls]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -289,14 +313,10 @@ const Reviews = () => {
   const MetricIcon = currentMetric.icon;
 
   return (
-    <motion.section
-      ref={sectionRef}
+    <section
+      ref={ref}
       id="reviews"
-      className="relative py-16 md:py-24 "
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
+      className="relative py-16 md:py-24"
       onMouseEnter={() => setHoveredCard(true)}
       onMouseLeave={() => setHoveredCard(false)}
     >
@@ -315,7 +335,12 @@ const Reviews = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 md:backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -347,11 +372,13 @@ const Reviews = () => {
         {/* Main testimonial layout */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            {/* Left Side - Dynamic Information Panel (No animation on testimonial change) */}
+            {/* Left Side - Dynamic Information Panel */}
             <div className="order-2 lg:order-1 space-y-6">
               {/* Floating metric card */}
               <motion.div 
                 variants={metricVariants}
+                initial="hidden"
+                animate={metricControls}
                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-fuchsia-500/10 to-purple-500/10 border border-fuchsia-500/20 p-6 md:backdrop-blur-sm"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-fuchsia-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -533,7 +560,12 @@ const Reviews = () => {
               </motion.div>
 
               {/* Navigation controls */}
-              <motion.div variants={itemVariants} className="flex items-center justify-between pt-4">
+              <motion.div 
+                variants={itemVariants}
+                initial="hidden"
+                animate={controls}
+                className="flex items-center justify-between pt-4"
+              >
                 <motion.button
                   onClick={prevTestimonial}
                   disabled={isAnimating}
@@ -660,6 +692,8 @@ const Reviews = () => {
         {/* Enhanced CTA Section */}
         <motion.div 
           variants={ctaVariants}
+          initial="hidden"
+          animate={ctaControls}
           className="mx-auto mt-20 max-w-3xl text-center"
         >
           <div className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white/5 md:backdrop-blur-sm p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
@@ -689,9 +723,7 @@ const Reviews = () => {
           </div>
         </motion.div>
       </div>
-
-      
-    </motion.section>
+    </section>
   );
 };
 

@@ -7,7 +7,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   FolderGit2,
@@ -21,44 +21,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { projectsData } from "@/config/mainConfig";
 
 // Demo data — replace with your real projects later
-const projectsData = [
-  {
-    id: 1,
-    title: "Dresza E-Commerce Platform (User)",
-    year: 2025,
-    description:
-      "Full-stack e-commerce storefront built with Next.js featuring SSR for SEO, product browsing, cart, and secure Razorpay payments.",
-    tags: ["Next.js", "React", "Redux Toolkit", "React Query", "Tailwind"],
-    live: "https://dresza.netlify.app/",
-    repo: "https://github.com/SahelQureshi",
-    featured: true,
-    images: [
-      "/assets/projects/dresza-website (1).png",
-      "/assets/projects/dresza-website (2).png",
-      "/assets/projects/dresza-website (3).png",
-      "/assets/projects/dresza-website (4).png",
-    ],
-  },
-  {
-    id: 2,
-    title: "Dresza Admin Dashboard",
-    year: 2025,
-    description:
-      "React-based admin panel for managing products, orders, and users with full CRUD operations and real-time data handling.",
-    tags: ["React", "Redux Toolkit", "Node.js", "MongoDB", "Express"],
-    live: "https://dresza-admin.netlify.app/login",
-    repo: "https://github.com/SahelQureshi",
-    featured: true,
-    images: [
-      "/assets/projects/dresza-admin (1).png",
-      "/assets/projects/dresza-admin (2).png",
-      "/assets/projects/dresza-admin (3).png",
-      "/assets/projects/dresza-admin (4).png",
-    ],
-  },
-];
+
 
 const Projects = () => {
   const sectionRef = useRef(null);
@@ -67,6 +33,15 @@ const Projects = () => {
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
 
+  // Animation controls
+  const controls = useAnimation();
+  const statsControls = useAnimation();
+  const filterControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   // Handle client-side mounting
   useEffect(() => {
     setIsClient(true);
@@ -74,6 +49,15 @@ const Projects = () => {
       setScreenWidth(window.innerWidth);
     }
   }, []);
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      statsControls.start("visible");
+      filterControls.start("visible");
+    }
+  }, [isInView, controls, statsControls, filterControls]);
 
   // Update screen width on resize (client-side only)
   useEffect(() => {
@@ -112,13 +96,6 @@ const Projects = () => {
       project.tags.includes(activeFilter)
     );
   }, [activeFilter]);
-
-  // Debug logging to check filter functionality
-  useEffect(() => {
-    console.log("Active Filter:", activeFilter);
-    console.log("Filtered Projects Count:", filteredProjects.length);
-    console.log("Filtered Projects:", filteredProjects);
-  }, [activeFilter, filteredProjects]);
 
   // Auto-advance carousel - disabled on mobile
   useEffect(() => {
@@ -208,26 +185,6 @@ const Projects = () => {
     },
   };
 
-  const projectsContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const projectCardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    },
-  };
-
   // Enhanced 3D hover tilt with better sensitivity - disabled on mobile
   const onTilt = (e, index) => {
     if (disableAnimations) return;
@@ -255,14 +212,10 @@ const Projects = () => {
   const featuredProjects = projectsData.filter((p) => p.featured).length;
 
   return (
-    <motion.section
-      ref={sectionRef}
+    <section
+      ref={ref}
       id="projects"
       className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
     >
       {/* Enhanced background with more layers */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -294,7 +247,12 @@ const Projects = () => {
 
       <div className="container mx-auto px-6">
         {/* Enhanced header section */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-16">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-16"
+        >
           <motion.div 
             variants={itemVariants}
             className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm text-white/80 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -333,6 +291,8 @@ const Projects = () => {
           {/* Stats cards */}
           <motion.div 
             variants={statsContainerVariants}
+            initial="hidden"
+            animate={statsControls}
             className="flex sm:gap-4 gap-2 sm:flex-nowrap flex-wrap sm:justify-start justify-center"
           >
             <motion.div 
@@ -384,6 +344,8 @@ const Projects = () => {
           {/* Filter buttons */}
           <motion.div 
             variants={filterVariants}
+            initial="hidden"
+            animate={filterControls}
             className="flex flex-wrap items-center justify-center gap-3"
           >
             {allTags.map((tag) => (
@@ -406,21 +368,23 @@ const Projects = () => {
           </motion.div>
         </div>
 
-        {/* Enhanced projects grid */}
+        {/* Enhanced projects grid - Fixed filter animation */}
         <AnimatePresence mode="wait">
           <motion.div 
             key={activeFilter}
-            variants={projectsContainerVariants}
-            initial="hidden"
-            animate="visible"
-            exit={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
             className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
           >
             {filteredProjects.length > 0 ? (
-              filteredProjects.map((project, i) => (
+              filteredProjects.map((project, index) => (
                 <motion.article
                   key={project.id}
-                  variants={projectCardVariants}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   onMouseMove={(e) => onTilt(e, project.id)}
                   onMouseLeave={resetTilt}
                   className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
@@ -490,22 +454,22 @@ const Projects = () => {
                           {/* Image indicators */}
                           {project.images.length > 1 && (
                             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
-                              {project.images.map((_, index) => (
+                              {project.images.map((_, imgIndex) => (
                                 <button
-                                  key={index}
+                                  key={imgIndex}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setCurrentImageIndex((prev) => ({
                                       ...prev,
-                                      [project.id]: index,
+                                      [project.id]: imgIndex,
                                     }));
                                   }}
                                   className={`h-1.5 rounded-full transition-all ${
-                                    (currentImageIndex[project.id] || 0) === index
+                                    (currentImageIndex[project.id] || 0) === imgIndex
                                       ? "bg-white w-6"
                                       : "bg-white/50 w-1.5 hover:bg-white/70"
                                   }`}
-                                  aria-label={`Go to image ${index + 1}`}
+                                  aria-label={`Go to image ${imgIndex + 1}`}
                                 />
                               ))}
                             </div>
@@ -616,9 +580,7 @@ const Projects = () => {
           </motion.div>
         </AnimatePresence>
       </div>
-
-     
-    </motion.section>
+    </section>
   );
 };
 

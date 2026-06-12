@@ -1,58 +1,59 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimation, useInView } from "framer-motion";
 import Image from "next/image";
-
 import {
-  Phone,
-  Calendar,
-  Mail,
-  MapPin,
   Download,
   Sparkles,
-  Award,
   Code,
-  Users,
-  Star,
-  Heart,
-  ChevronRight,
   ArrowUpRight,
   Zap,
   Quote,
-  Target,
-  Rocket,
-  Coffee,
-  Lightbulb,
   Trophy,
   Briefcase,
+  Star,
   Layers,
   Cpu,
   Github,
   Linkedin,
   Twitter,
-  ExternalLink
 } from "lucide-react";
+import { designations, socialLinks, statsData, techStack } from "@/config/mainConfig";
 
 const About = () => {
-  const sectionRef = useRef(null);
   const [screenWidth, setScreenWidth] = useState(1024);
   const [isClient, setIsClient] = useState(false);
   const [hoveredStat, setHoveredStat] = useState(null);
+  
+  // Animation controls
+  const controls = useAnimation();
+  const statsControls = useAnimation();
+  const techControls = useAnimation();
+  const quoteControls = useAnimation();
+  const ref = useRef(null);
+  
+  // This ensures animation ONLY happens ONCE when first viewed
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
   
   // Typing animation state
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-  const designations = [
-    "Full Stack Architect",
-    "UI/UX Visionary",
-    "Problem Solver",
-    "Tech Innovator"
-  ];
+ 
 
   const currentWord = designations[currentWordIndex];
+
+  // Trigger animation ONLY ONCE when component first comes into view
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+      statsControls.start("visible");
+      techControls.start("visible");
+      quoteControls.start("visible");
+    }
+  }, [isInView, controls, statsControls, techControls, quoteControls]);
 
   useEffect(() => {
     setIsClient(true);
@@ -133,7 +134,7 @@ const About = () => {
     document.body.removeChild(link);
   };
 
-  // Animation variants for container and children
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -201,145 +202,46 @@ const About = () => {
     },
   };
 
-  // Enhanced stats data with colors and icons
-  const statsData = [
-    {
-      icon: Trophy,
-      number: "2+",
-      label: "Years Experience",
-      description: "Building digital solutions",
-      color: "from-amber-500 to-orange-500",
-      bgColor: "bg-amber-500/10",
-      glowColor: "shadow-amber-500/20"
-    },
-    {
-      icon: Briefcase,
-      number: "50+",
-      label: "Projects Completed",
-      description: "From concept to deployment",
-      color: "from-emerald-500 to-teal-500",
-      bgColor: "bg-emerald-500/10",
-      glowColor: "shadow-emerald-500/20"
-    },
-    {
-      icon: Star,
-      number: "100%",
-      label: "Client Satisfaction",
-      description: "Exceeding expectations",
-      color: "from-rose-500 to-pink-500",
-      bgColor: "bg-rose-500/10",
-      glowColor: "shadow-rose-500/20"
-    },
-    {
-      icon: Layers,
-      number: "100K+",
-      label: "Lines of Code",
-      description: "Clean & maintainable",
-      color: "from-violet-500 to-purple-500",
-      bgColor: "bg-violet-500/10",
-      glowColor: "shadow-violet-500/20"
-    }
-  ];
-
-  const techStack = [
-    { name: "React", level: 95, icon: "⚛️" },
-    { name: "Next.js", level: 90, icon: "▲" },
-    { name: "Node.js", level: 88, icon: "💚" },
-    { name: "TypeScript", level: 85, icon: "📘" },
-    { name: "Tailwind", level: 92, icon: "🎨" },
-    { name: "MongoDB", level: 82, icon: "🍃" }
-  ];
-
-  const [isLoaded, setIsLoaded] = useState(true);
-
-  // Social links with actual URLs
-  const socialLinks = [
-    {
-      icon: Github,
-      href: "https://github.com/SahelQureshi",
-      label: "GitHub"
-    },
-    {
-      icon: Linkedin,
-      href: "https://www.linkedin.com/in/sahel-qureshi-47b1252a8",
-      label: "LinkedIn"
-    },
-    {
-      icon: Twitter,
-      href: "https://twitter.com/yourusername",
-      label: "Twitter"
-    }
-  ];
+  
 
   return (
-    <motion.section 
-      ref={sectionRef} 
-      id="about" 
-      className="relative py-16 md:py-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.1 }}
-      variants={containerVariants}
-    >
-      {/* Enhanced animated background */}
+    <section ref={ref} id="about" className="relative py-16 md:py-24">
+      {/* Background elements */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Animated gradient orbs */}
         <div className={`absolute -top-40 -left-20 h-96 w-96 rounded-full bg-gradient-to-br from-blue-500/40 to-cyan-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '6s' }} />
         <div className={`absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/40 to-pink-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '8s', animationDelay: '1s' }} />
-        <div className={`absolute top-1/3 left-1/3 h-64 w-64 rounded-full bg-gradient-to-br from-indigo-500/30 to-violet-500/15 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '10s', animationDelay: '2s' }} />
-        
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")`
-          }}
-        />
-        
-        {/* Floating particles */}
-        <div className={`absolute top-20 left-[15%] w-2 h-2 rounded-full bg-blue-400 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDuration: '4s' }} />
-        <div className={`absolute bottom-32 right-[20%] w-3 h-3 rounded-full bg-purple-400 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDuration: '5s', animationDelay: '1s' }} />
-        <div className={`absolute top-1/3 left-[85%] w-1.5 h-1.5 rounded-full bg-cyan-400 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDuration: '3.5s', animationDelay: '0.5s' }} />
-        <div className={`absolute bottom-1/4 left-[10%] w-2.5 h-2.5 rounded-full bg-pink-400 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute inset-0 opacity-50" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='60' height='60' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 60 0 L 0 0 0 60' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C/svg%3E")` }} />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Header section with animated badge */}
-        <motion.div variants={itemVariants} className="mx-auto max-w-4xl text-center mb-20">
-          <motion.div 
-            variants={itemVariants}
-            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-          >
+        {/* Header section */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="mx-auto max-w-4xl text-center mb-20"
+        >
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3 text-sm text-white/90 shadow-xl">
             <Sparkles className={`h-5 w-5 text-cyan-300 ${!disableAnimations ? 'animate-spin-slow' : ''}`} />
             <span className="font-medium bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">Get to Know Me</span>
-            <div className={`h-2 w-2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 ${!disableAnimations ? 'animate-pulse' : ''}`} />
           </motion.div>
 
-          <motion.h2 
-            variants={itemVariants}
-            className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight"
-          >
+          <motion.h2 variants={itemVariants} className="mt-8 font-bold tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight">
             Crafting Digital
-            <span className="block bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mt-2">
-              Excellence
-            </span>
+            <span className="block bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mt-2">Excellence</span>
           </motion.h2>
 
-          <motion.p 
-            variants={itemVariants}
-            className="mt-6 text-white/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto"
-          >
+          <motion.p variants={itemVariants} className="mt-6 text-white/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto">
             Passionate full-stack developer dedicated to building exceptional digital experiences 
             that combine cutting-edge technology with intuitive design.
           </motion.p>
         </motion.div>
 
-        {/* Stats section with enhanced cards */}
+        {/* Stats section */}
         <motion.div 
           variants={statsContainerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
+          animate={statsControls}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
         >
           {statsData.map((stat, index) => (
@@ -349,18 +251,12 @@ const About = () => {
               onMouseEnter={() => setHoveredStat(index)}
               onMouseLeave={() => setHoveredStat(null)}
               className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:backdrop-blur-sm p-6 transition-all duration-500 hover:scale-105 hover:border-white/20"
-              whileHover={{ scale: 1.05 }}
             >
-              {/* Animated gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-              
-              {/* Glow effect on hover */}
-              <div className={`absolute -inset-1 bg-gradient-to-r ${stat.color} rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} />
-
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-3 rounded-xl ${stat.bgColor} backdrop-blur-sm`}>
-                    <stat.icon className={`h-7 w-7 text-white group-hover:scale-110 transition-transform duration-300`} style={{ color: `rgb(${index === 0 ? '245,158,11' : index === 1 ? '16,185,129' : index === 2 ? '244,63,94' : '139,92,246'})` }} />
+                    <stat.icon className="h-7 w-7 text-white group-hover:scale-110 transition-transform duration-300" />
                   </div>
                   <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
                     {stat.number}
@@ -369,39 +265,29 @@ const About = () => {
                 <h3 className="text-lg font-semibold text-white mb-1">{stat.label}</h3>
                 <p className="text-white/50 text-sm">{stat.description}</p>
               </div>
-
-              {/* Decorative line */}
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </motion.div>
           ))}
         </motion.div>
 
         {/* Main content grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Profile Image Section - Enhanced with Next.js Image */}
+          {/* Profile Image Section */}
           <motion.div 
             variants={imageVariants}
+            initial="hidden"
+            animate={controls}
             className="lg:col-span-5 flex justify-center"
           >
             <div className="relative">
-              {/* Animated decorative rings */}
-              <div className={`absolute -inset-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-2xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '3s' }} />
-              <div className={`absolute -inset-8 rounded-full bg-gradient-to-r from-blue-500/10 to-pink-500/10 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '4s', animationDelay: '1s' }} />
-
-              {/* Main profile container */}
+              <div className={`absolute -inset-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-2xl ${!disableAnimations ? 'animate-pulse' : ''}`} />
               <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-[26rem] lg:h-[26rem]">
-                {/* Rotating border */}
                 <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 p-[3px] ${!disableAnimations ? 'animate-spin-slow' : ''}`}>
                   <div className="w-full h-full rounded-full bg-slate-900" />
                 </div>
-                
-                {/* Inner rotating ring */}
                 <div className={`absolute inset-[6px] rounded-full bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400 p-[2px] ${!disableAnimations ? 'animate-spin-slow-reverse' : ''}`}>
                   <div className="w-full h-full rounded-full bg-slate-900" />
                 </div>
-
-                {/* Profile image - Updated with Next.js Image */}
-                <div className="absolute inset-[9px] rounded-full overflow-hidden flex justify-center items-center">
+                <div className="absolute inset-[9px] rounded-full overflow-hidden">
                   <div className="relative w-full h-full">
                     <Image
                       src="/assets/images/Sahel-img2.png"
@@ -413,30 +299,14 @@ const About = () => {
                       quality={95}
                     />
                   </div>
-                  {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-                </div>
-
-                {/* Floating tech badges */}
-                <div className={`absolute -top-4 -right-4 z-20 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`}>
-                  <span className="flex items-center gap-1">⚛️ React</span>
-                </div>
-                <div className={`absolute -bottom-4 -left-4 z-20 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-white ${!disableAnimations ? 'animate-bounce-slow' : ''}`} style={{ animationDelay: '0.5s' }}>
-                  <span className="flex items-center gap-1">▲ Next.js</span>
-                </div>
-                <div className={`absolute top-1/4 -right-6 z-20 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`}>
-                  <Code className="h-4 w-4 text-cyan-300" />
-                </div>
-                <div className={`absolute bottom-1/3 -left-6 z-20 p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 ${!disableAnimations ? 'animate-float' : ''}`} style={{ animationDelay: '1s' }}>
-                  <Zap className="h-4 w-4 text-purple-300" />
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Content Section - Enhanced */}
+          {/* Content Section */}
           <div className="lg:col-span-7 space-y-8">
-            {/* Typing animation header */}
             <motion.div variants={itemVariants}>
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
                 I'm Sahel, a
@@ -446,7 +316,7 @@ const About = () => {
                 </span>
               </h3>
 
-              <motion.div variants={itemVariants} className="space-y-4 text-white/70 text-base md:text-lg leading-relaxed">
+              <div className="space-y-4 text-white/70 text-base md:text-lg leading-relaxed">
                 <p>
                   I'm a passionate full-stack developer who loves turning complex problems into 
                   elegant, user-friendly solutions. With a keen eye for design and a heart for 
@@ -457,19 +327,14 @@ const About = () => {
                   scalable applications used by thousands. I believe in continuous learning and 
                   pushing the boundaries of what's possible on the web.
                 </p>
-                <p>
-                  When I'm not coding, you'll find me exploring new technologies, mentoring aspiring 
-                  developers, or contributing to open-source projects that make a difference.
-                </p>
-              </motion.div>
+              </div>
             </motion.div>
 
-            {/* Tech Stack with progress bars */}
+            {/* Tech Stack */}
             <motion.div 
               variants={techStackVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              animate={techControls}
               className="space-y-4"
             >
               <motion.h4 variants={techItemVariants} className="text-xl font-semibold text-white flex items-center gap-2">
@@ -487,8 +352,7 @@ const About = () => {
                       <motion.div 
                         className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full"
                         initial={{ width: 0 }}
-                        whileInView={{ width: `${tech.level}%` }}
-                        viewport={{ once: false }}
+                        animate={{ width: `${tech.level}%` }}
                         transition={{ duration: 1, delay: idx * 0.1 }}
                       />
                     </div>
@@ -502,32 +366,24 @@ const About = () => {
               variants={containerVariants}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
-              <motion.div 
-                variants={itemVariants}
-                className="group p-5 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 hover:scale-[1.02]"
-                whileHover={{ scale: 1.02 }}
-              >
+              <motion.div variants={itemVariants} className="group p-5 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-xl bg-cyan-500/20">
                     <Layers className="h-5 w-5 text-cyan-300" />
                   </div>
                   <h4 className="text-lg font-semibold text-white">Frontend Mastery</h4>
                 </div>
-                <p className="text-white/60 text-sm">React, Next.js, TypeScript, Tailwind CSS, and modern animations for stunning UIs.</p>
+                <p className="text-white/60 text-sm">React, Next.js, TypeScript, Tailwind CSS for stunning UIs.</p>
               </motion.div>
 
-              <motion.div 
-                variants={itemVariants}
-                className="group p-5 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:scale-[1.02]"
-                whileHover={{ scale: 1.02 }}
-              >
+              <motion.div variants={itemVariants} className="group p-5 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-xl bg-purple-500/20">
                     <Zap className="h-5 w-5 text-purple-300" />
                   </div>
                   <h4 className="text-lg font-semibold text-white">Backend Power</h4>
                 </div>
-                <p className="text-white/60 text-sm">Node.js, Express, MongoDB, PostgreSQL — building robust and scalable APIs.</p>
+                <p className="text-white/60 text-sm">Node.js, Express, MongoDB — building robust and scalable APIs.</p>
               </motion.div>
             </motion.div>
 
@@ -535,22 +391,17 @@ const About = () => {
             <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
               <motion.button
                 onClick={scrollToContact}
-                className="group relative overflow-hidden px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                className="group relative overflow-hidden px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all duration-300"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Let's Collaborate
                   <ArrowUpRight className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
               
               <motion.button 
                 onClick={downloadCV}
-                className="group px-8 py-3.5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300 hover:scale-105"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                className="group px-8 py-3.5 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 transition-all duration-300"
               >
                 <span className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
@@ -567,10 +418,8 @@ const About = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                  aria-label={social.label}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
+                  whileHover={{ scale: 1.1 }}
                 >
                   <social.icon className="h-5 w-5" />
                 </motion.a>
@@ -579,45 +428,32 @@ const About = () => {
           </div>
         </div>
 
-        {/* Quote section with enhanced design */}
+        {/* Quote section */}
         <motion.div 
           variants={quoteVariants}
+          initial="hidden"
+          animate={quoteControls}
           className="mt-32 text-center"
         >
           <div className="relative max-w-4xl mx-auto">
-            {/* Animated background glow */}
-            <div className={`absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 blur-3xl ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDuration: '4s' }} />
-            
-            {/* Quote mark */}
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
               <div className="p-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm">
                 <Quote className="h-8 w-8 text-cyan-400" />
               </div>
             </div>
-
             <blockquote className="pt-12 text-xl md:text-2xl lg:text-3xl text-white/80 font-light leading-relaxed italic">
               "Code is not just about functionality — it's about creating experiences that inspire, 
               interfaces that delight, and solutions that make a difference in people's lives."
             </blockquote>
-
             <div className="mt-6 flex items-center justify-center gap-2">
               <div className="h-px w-8 bg-gradient-to-r from-transparent to-cyan-400" />
               <cite className="text-white/60 not-italic text-lg">— Sahel Qureshi</cite>
               <div className="h-px w-8 bg-gradient-to-l from-transparent to-cyan-400" />
             </div>
-
-            {/* Signature line */}
-            <div className="mt-4 flex justify-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 ${!disableAnimations ? 'animate-pulse' : ''}`} style={{ animationDelay: `${i * 0.2}s` }} />
-              ))}
-            </div>
           </div>
         </motion.div>
       </div>
-
-      
-    </motion.section>
+    </section>
   );
 };
 
