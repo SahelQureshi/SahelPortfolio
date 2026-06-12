@@ -3,45 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { GraduationCap, Calendar, MapPin, Award, BookOpen, Sparkles, Trophy, Star, ChevronRight, Play, Code, Brain, Rocket, Clock, Zap, Medal, Target, Users, Globe } from "lucide-react";
+import { education } from "@/config/mainConfig";
 
-const education = [
-  {
-    title: "Bachelor of Computer Application (BCA)",
-    institution: "SVIMS",
-    date: "2021 - 2024",
-    location: "India",
-    grade: "First Class",
-    desc: "Acquired comprehensive knowledge of computer applications, programming fundamentals (C, C++, Java), database management, and software development. Completed projects demonstrating practical implementation of theoretical concepts.",
-    highlights: ["Programming Fundamentals", "Database Management", "Software Development", "Project Work"],
-    achievements: ["First Class Grade", "Project Excellence Award"],
-    icon: Code,
-    color: "from-emerald-500 to-teal-500"
-  },
-  {
-    title: "12th Grade (Arts)",
-    institution: "Man Matha Nath High School",
-    date: "2019 - 2021",
-    location: "India",
-    grade: "85%",
-    desc: "Pursued Science stream with specialization in Physics, Chemistry, and Mathematics. Gained problem-solving skills and scientific thinking that formed the basis for my technical education.",
-    highlights: ["Geography", "English", "History", "Computer Applications"],
-    achievements: ["Consistent Performer", "Subject Excellence"],
-    icon: Brain,
-    color: "from-cyan-500 to-blue-500"
-  },
-  {
-    title: "10th Grade",
-    institution: "Man Matha Nath High School",
-    date: "2018",
-    location: "India",
-    grade: "88%",
-    desc: "Completed secondary education with focus on foundational subjects including Mathematics, Science, and Languages. Developed strong academic fundamentals that prepared me for higher studies.",
-    highlights: ["Mathematics", "Science", "Languages", "Academic Foundation"],
-    achievements: ["Logical Reasoning", "Academic Excellence"],
-    icon: Medal,
-    color: "from-purple-500 to-pink-500"
-  },
-];
 
 const Education = () => {
   const sectionRef = useRef(null);

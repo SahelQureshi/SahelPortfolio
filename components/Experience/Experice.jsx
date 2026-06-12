@@ -3,51 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { Briefcase, Calendar, MapPin, Award, Download, Play, Sparkles, Trophy, Target, Clock, ChevronRight, Star, Building, Code, Rocket, Users, Zap, Medal, Globe, TrendingUp, CheckCircle } from "lucide-react";
+import { experiences } from "@/config/mainConfig";
 
-const experiences = [
-  {
-    period: "December 2024 - Present",
-    role: "MERN Stack Developer",
-    company: "Leelia Web Solutions Pvt Ltd",
-    location: "Remote",
-    type: "Full-time",
-    description: "At Leelia Web Solutions, I have been contributing to full-stack development using the MERN stack. My responsibilities include building scalable REST APIs, dynamic front-end interfaces, and implementing secure authentication flows. I collaborate closely with the UI/UX and DevOps teams to deliver modern and high-performing web applications.",
-    achievements: ["Built 5+ scalable APIs", "Improved app performance by 40%", "Led authentication system implementation"],
-    technologies: ["React", "Node.js", "MongoDB", "Express", "JWT"],
-    current: true,
-    icon: Rocket,
-    color: "from-emerald-500 to-teal-500",
-    bgColor: "bg-emerald-500/10"
-  },
-  {
-    period: "October 2024 - December 2024",
-    role: "React.js Developer",
-    company: "Talentrise Technokrate Pvt Ltd",
-    location: "Remote",
-    type: "Full-time",
-    description: "At Talentrise Technokrate, I specialized in crafting modern UI components using React.js. I focused on building reusable components, improving performance through code-splitting and lazy loading, and integrating APIs to build dynamic dashboards. My role helped shape intuitive user experiences for enterprise clients.",
-    achievements: ["Created 20+ reusable components", "Optimized load times by 30%", "Built 3 enterprise dashboards"],
-    technologies: ["React", "JavaScript", "CSS3", "REST APIs", "Git"],
-    current: false,
-    icon: Code,
-    color: "from-blue-500 to-cyan-500",
-    bgColor: "bg-blue-500/10"
-  },
-  {
-    period: "June 2024 - September 2024",
-    role: "Frontend Development Intern",
-    company: "EMEI",
-    location: "On-site",
-    type: "Internship",
-    description: "During my industrial training at EMEI, I gained hands-on experience with core front-end technologies and the React.js framework. This period laid a strong foundation in responsive design, component architecture, and version control using Git. It prepared me for professional development roles with practical exposure.",
-    achievements: ["Mastered React fundamentals", "Built responsive layouts", "Learned Git workflows"],
-    technologies: ["HTML5", "CSS3", "JavaScript", "React.js", "Git"],
-    current: false,
-    icon: Zap,
-    color: "from-purple-500 to-pink-500",
-    bgColor: "bg-purple-500/10"
-  },
-];
+
 
 const Experience = () => {
   const sectionRef = useRef(null);

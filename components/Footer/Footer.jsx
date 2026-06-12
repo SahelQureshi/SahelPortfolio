@@ -18,6 +18,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import ScrollToTopCircle from "../spinner/ScrollSpinner";
+import { quickLinks, socialLinks } from "@/config/mainConfig";
 
 const Footer = () => {
   const footerRef = useRef(null);
@@ -25,33 +26,10 @@ const Footer = () => {
   const socialRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const socialLinks = [
-    {
-      icon: Github,
-      href: "https://github.com",
-      label: "GitHub",
-      color: "hover:bg-gray-500/20 hover:border-gray-400/30",
-    },
-    {
-      icon: Linkedin,
-      href: "https://linkedin.com",
-      label: "LinkedIn",
-      color: "hover:bg-blue-500/20 hover:border-blue-400/30",
-    },
-    {
-      icon: Mail,
-      href: "mailto:sahel@example.com",
-      label: "Email",
-      color: "hover:bg-red-500/20 hover:border-red-400/30",
-    },
-  ];
 
-  const quickLinks = [
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
-  ];
+
+
+  
 
   const scrollToTop = () => {
     if (window.smoother) {

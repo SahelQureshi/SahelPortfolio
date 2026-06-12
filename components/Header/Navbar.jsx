@@ -16,6 +16,7 @@ import {
   ChevronDown,
   Zap,
 } from "lucide-react";
+import { navItems } from "@/config/mainConfig";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,16 +32,7 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
   const logoRef = useRef(null);
 
-  const navItems = [
-    { label: "Home", href: "#banner", icon: Home },
-    { label: "About", href: "#about", icon: User },
-    { label: "Education", href: "#education", icon: GraduationCap },
-    { label: "Experience", href: "#experience", icon: Briefcase },
-    { label: "Skills", href: "#skills", icon: Code },
-    { label: "Projects", href: "#projects", icon: FolderOpen },
-    { label: "Reviews", href: "#reviews", icon: MessageSquare },
-    { label: "Contact", href: "#contact", icon: Mail },
-  ];
+ 
 
   // Check screen size for disabling animations
   useEffect(() => {

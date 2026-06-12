@@ -29,81 +29,9 @@ import {
   ThumbsUp,
   TrendingUp,
 } from "lucide-react";
+import { testimonialsData } from "@/config/mainConfig";
 
-const testimonialsData = [
-  {
-    name: "Aisha Khan",
-    role: "Product Manager, FinTech Co.",
-    rating: 5,
-    quote:
-      "Sahel delivered a robust web app ahead of schedule. The UI feels premium and performance is excellent. Our users love the smooth experience and the conversion rates have improved significantly.",
-    initials: "AK",
-    avatar: "/avatar1.jpg",
-    company: "FinTech Co.",
-    project: "E-commerce Platform",
-    duration: "3 months",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/aishakhan",
-      email: "aisha@fintech.com",
-    },
-    highlight: "Conversion rates improved by 35%",
-    metrics: { speed: "+45%", satisfaction: "98%", roi: "+32%" },
-  },
-  {
-    name: "Rahul Mehta",
-    role: "Founder, StartupX",
-    rating: 5,
-    quote:
-      "Great communication and attention to detail. Our conversion rate improved noticeably after the revamp. The code quality is exceptional and the project was delivered on time.",
-    initials: "RM",
-    avatar: "/avatar2.jpg",
-    company: "StartupX",
-    project: "SaaS Dashboard",
-    duration: "4 months",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/rahulmehta",
-      github: "https://github.com/rahulmehta",
-    },
-    highlight: "Delivered 2 weeks ahead of schedule",
-    metrics: { speed: "+30%", satisfaction: "96%", roi: "+28%" },
-  },
-  {
-    name: "Emily Chen",
-    role: "Design Lead, Studio 9",
-    rating: 5,
-    quote:
-      "Clean, maintainable code and smooth animations. Handoffs were easy and the result matched the designs perfectly. The collaboration was seamless.",
-    initials: "EC",
-    avatar: "/avatar3.jpg",
-    company: "Studio 9",
-    project: "Design System",
-    duration: "2 months",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/emilychen",
-      email: "emily@studio9.com",
-    },
-    highlight: "Pixel-perfect implementation",
-    metrics: { speed: "+25%", satisfaction: "100%", roi: "+25%" },
-  },
-  {
-    name: "Omar Farooq",
-    role: "CTO, EduSphere",
-    rating: 5,
-    quote:
-      "Our dashboard loads faster and users love the new features. Highly recommend working with Sahel. The technical expertise and problem-solving skills are outstanding.",
-    initials: "OF",
-    avatar: "/avatar4.jpg",
-    company: "EduSphere",
-    project: "Learning Management System",
-    duration: "6 months",
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/omarfarooq",
-      github: "https://github.com/omarfarooq",
-    },
-    highlight: "50% faster load times",
-    metrics: { speed: "+50%", satisfaction: "99%", roi: "+40%" },
-  },
-];
+
 
 const Reviews = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
